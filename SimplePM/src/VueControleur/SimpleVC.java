@@ -9,6 +9,7 @@ import java.awt.Point;
 import Modele.Couloir;
 import Modele.Grille;
 import Modele.MS;
+import Modele.Mur;
 import Modele.SimplePacMan;
 import java.util.Hashtable;
 import java.util.Observable;
@@ -119,15 +120,13 @@ public class SimpleVC extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        iamge(ensembleimage.get("vide").getPath());
-        
         root.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() { // on écoute le clavier
             
 
             @Override
             public void handle(javafx.scene.input.KeyEvent event) {
                 if (event.isShiftDown()) {
-                    grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
+                    //grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
                 }
             }
         });
@@ -143,13 +142,16 @@ public class SimpleVC extends Application {
             for(int j=0; j<SIZE_Y;j++){
                 Point point = new Point(i,j);
                 MS ms = grille.getvalueGS(point);
-                if(ms instanceof Couloir){  
-                    ImageView img;
-                    img = new ImageView((ensembleImage));
-                    
-                tab[i][j] = img;
                 
-                grid.add(img, i, j);
+                if(ms instanceof Couloir){
+                    ImageView img = new ImageView((ensembleImage).get("vide"));
+                    tab[i][j] = img;
+                    grid.add(img, i, j);
+               }
+                if(ms instanceof Mur){
+                    ImageView img = new ImageView((ensembleImage).get("mur"));
+                    tab[i][j] = img;
+                    grid.add(img, i, j);
                }
             }
         }
