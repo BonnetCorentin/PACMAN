@@ -6,6 +6,7 @@
 package VueControleur;
 
 import Modele.SimplePacMan;
+import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.scene.image.Image;
@@ -34,45 +35,49 @@ public class SimpleVC extends Application {
         
         GridPane grid = new GridPane(); // création de la grille 
         
-        // Pacman.svg.png
-        Image imbarriereFantome = new Image("images/barriereFantome.png"); // préparation des images
-        Image imbean = new Image("images/bean.png");
-        Image imfan_mangeable = new Image("images/fan_mangeable.png"); // préparation des images
-        Image imfantome_cyan = new Image("images/fantome_cyan.png");
-        Image imfantome_orange = new Image("images/fantome_orange.png"); // préparation des images
-        Image imfantome_rose = new Image("images/fantome_rose.png");
-        Image imfantome_rouge = new Image("images/fantome_rouge.png"); // préparation des images
-        Image imfantomeBleu = new Image("images/fantomeBleu.png");
-        Image imFantomePeur0 = new Image("images/FantomePeur0.png"); // préparation des images
-        Image imFantomePeur1 = new Image("images/FantomePeur1.png");
-        Image imfantomeRose = new Image("images/fantomeRose.png"); // préparation des images
-        Image imfantomeRouge = new Image("images/fantomeRouge.png");
-        Image imfantomeVert = new Image("images/fantomeVert.png"); // préparation des images
-        Image imgros_bean = new Image("images/gros_bean.png");
-        Image imMort0 = new Image("images/Mort0.png"); // préparation des images
-        Image imMort1 = new Image("images/Mort1.png");
-        Image imMort2 = new Image("images/Mort2.png"); // préparation des images
-        Image imMort3 = new Image("images/Mort3.png");
-        Image immur = new Image("images/mur.png"); // préparation des images
-        Image impacman = new Image("images/pacman.png");
-        Image impacman_2 = new Image("images/pacman_2.png"); // préparation des images
-        Image impacman_2f = new Image("images/pacman_2f.png");
-        Image impacman_3 = new Image("images/pacman_3.png"); // préparation des images
-        Image impacman_3f = new Image("images/pacman_3f.png");
-        Image impacman_4 = new Image("images/pacman_4.png"); // préparation des images
-        Image impacman_4f = new Image("images/pacman_4f.png");
-        Image impacman_f = new Image("images/pacman_f.png"); // préparation des images
-        Image impacmanBas0 = new Image("images/pacmanBas0.png");
-        Image impacmanBas1 = new Image("images/pacmanBas1.png"); // préparation des images
-        Image impacmanDroite0 = new Image("images/pacmanDroite0.png");
-        Image impacmanDroite1 = new Image("images/pacmanDroite1.png"); // préparation des images
-        Image impacmanGauche0 = new Image("images/pacmanGauche0.png");
-        Image impacmanGauche1 = new Image("images/pacmanGauche1.png"); // préparation des images
-        Image impacmanHaut0 = new Image("images/pacmanHaut0.png");
-        Image impacmanHaut1 = new Image("images/pacmanHaut1.png"); // préparation des images
-        Image impouvoir = new Image("images/pouvoir.png"); // préparation des images
-        Image imvide = new Image("images/vide.png");
+        Hashtable<String,Image> ensembleImage=new Hashtable<String, Image>();
         
+        // Pacman.svg.png
+        
+        ensembleImage.put("barriereFantome",new Image("images/barriereFantome.png"));// préparation des images
+        ensembleImage.put("bean",new Image("images/bean.png"));
+        ensembleImage.put("fan_mangeable",new Image("images/fan_mangeable.png"));
+        ensembleImage.put("fan_mangeable",new Image("images/fan_mangeable.png"));
+        ensembleImage.put("fantome_cyan",new Image("images/fan_cyan.png"));
+        ensembleImage.put("fantome_orange",new Image("images/fantome_orange.png"));
+        ensembleImage.put("fantome_rose",new Image("images/fantome_rose.png"));
+        ensembleImage.put("fantome_rouge",new Image("images/fantome_rouge.png"));
+        ensembleImage.put("fantomeBleu",new Image("images/fantomeBleu.png"));// préparation des images
+        ensembleImage.put("fantomePeur0",new Image("images/fantomePeur0.png"));
+        ensembleImage.put("fantomePeur1",new Image("images/fantomePeur1.png"));
+        ensembleImage.put("fantomeRose",new Image("images/fantomeRose.png"));
+        ensembleImage.put("fantomeRouge",new Image("images/fantomeRouge.png"));// préparation des images
+        ensembleImage.put("fantomeVert",new Image("images/fantomeVert.png"));
+        ensembleImage.put("gros_bean",new Image("images/gros_bean.png"));
+        ensembleImage.put("Mort0",new Image("images/Mort0.png"));
+        ensembleImage.put("Mort1",new Image("images/Mort1.png"));
+        ensembleImage.put("Mort2",new Image("images/Mort2.png"));
+        ensembleImage.put("Mort3",new Image("images/Mort3.png"));
+        ensembleImage.put("mur",new Image("images/mur.png"));// préparation des images
+        ensembleImage.put("pacman",new Image("images/pacman.png"));
+        ensembleImage.put("pacman_2",new Image("images/pacman_2.png"));
+        ensembleImage.put("pacman_2f",new Image("images/pacman_2f.png"));
+        ensembleImage.put("pacman_3",new Image("images/pacman_3.png"));
+        ensembleImage.put("pacman_3f",new Image("images/pacman_3f.png"));
+        ensembleImage.put("pacman_4",new Image("images/pacman_4.png"));
+        ensembleImage.put("pacman_4f",new Image("images/pacman_4f.png"));
+        ensembleImage.put("pacman_f",new Image("images/pacman_f.png"));
+        ensembleImage.put("pacmanBas0",new Image("images/pacmanBas0.png"));// préparation des images
+        ensembleImage.put("pacmanBas1",new Image("images/pacmanBas1.png"));
+        ensembleImage.put("pacmanDroite0",new Image("images/pacmanDroite0.png"));
+        ensembleImage.put("pacmanDroite1",new Image("images/pacmanDroite1.png"));
+        ensembleImage.put("pacmanGauche0",new Image("images/pacmanGauche0.png"));
+        ensembleImage.put("pacmanGauche1",new Image("images/pacmanGauche1.png"));
+        ensembleImage.put("pacmanHaut0",new Image("images/pacmanHaut0.png"));// préparation des images
+        ensembleImage.put("pacmanHaut1",new Image("images/pacmanHaut1.png"));
+        ensembleImage.put("pouvoir",new Image("images/pouvoir.png"));
+        ensembleImage.put("vide",new Image("images/vide.png"));
+                
         //img.setScaleY(0.01);
         //img.setScaleX(0.01);
         
@@ -92,75 +97,7 @@ public class SimpleVC extends Application {
         Observer o =  new Observer() { // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
             @Override
             public void update(Observable o, Object arg) {
-                for (int i = 0; i < SIZE_X; i++) { // rafraichissement graphique
-                    for (int j = 0; j < SIZE_Y; j++) {
-
-                    	if (spm.getTab(i,j) == 0) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imbarriereFantome);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 1) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imbean);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 2) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantome_cyan);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 3) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantome_orange);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 4) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantome_rose);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 5) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantome_rouge);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 6) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantomeBleu);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 7) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantomeRose);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 8) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantomeRouge);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 9) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imfantomeVert);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 10) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imgros_bean);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 11) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(immur);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 12) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(impacman);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 13) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(impacman);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 14) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(impouvoir);
-                            
-                        }
-                    	if (spm.getTab(i,j) == 15) { // spm est à la position i, j => le dessiner
-                            tab[i][j].setImage(imvide);
-                            
-                        }
-                    }
-                }    
+                
             }
         };
         
