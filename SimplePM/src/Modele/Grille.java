@@ -19,6 +19,7 @@ public class Grille extends Observable implements Runnable{
     private HashMap<ME, Point> grilleDynamique;
     private HashMap<Point,MS> grilleStatique;
     
+    
     public Grille (){
         
     }
@@ -60,5 +61,14 @@ public class Grille extends Observable implements Runnable{
     
     }
     
+
+    public HashMap<Point,MS> getvalueGS(){
+        return this.grilleStatique;
+    }
+    
+    public HashMap<ME,Point> getvalueGD(){
+        return this.grilleDynamique;
+    }
+
     
 }
