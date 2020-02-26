@@ -22,12 +22,13 @@ public class Grille extends Observable{
         
     }
     
-    public HashMap<Point,MS> getvalueGS(){
-        return this.grilleStatique;
+    public MS getvalueGS(Point p){
+        return this.grilleStatique.get(p);
+        
     }
     
-    public HashMap<ME,Point> getvalueGD(){
-        return this.grilleDynamique;
+    public Point getvalueGD(Point p){
+        return this.grilleDynamique.get(p);
     }
     
 }

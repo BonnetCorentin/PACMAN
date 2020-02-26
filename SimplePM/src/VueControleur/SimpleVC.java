@@ -142,7 +142,8 @@ public class SimpleVC extends Application {
                 Point point = new Point(i,j);
                 MS ms = grille.getvalueGS(point);
                 if(ms instanceof Couloir){  
-                    ImageView img = new ImageView(ensembleImage.get("vide").getPath());
+                    ImageView img;
+                    img = new ImageView((ensembleImage));
                     
                 tab[i][j] = img;
                 
