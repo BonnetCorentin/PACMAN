@@ -5,6 +5,10 @@
  */
 package VueControleur;
 
+import java.awt.Point;
+import Modele.Couloir;
+import Modele.Grille;
+import Modele.MS;
 import Modele.SimplePacMan;
 import java.util.Hashtable;
 import java.util.Observable;
@@ -26,16 +30,17 @@ public class SimpleVC extends Application {
     
     public final int SIZE_X = 20;
     public final int SIZE_Y = 20;
+    Grille grille = new Grille();
+    ImageView[][] tab = new ImageView[SIZE_X][SIZE_Y]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement
+    GridPane grid = new GridPane(); // création de la grille 
+    Hashtable<String,Image> ensembleImage=new Hashtable<String, Image>();
     
     @Override
+    
     public void start(Stage primaryStage) {
         
+       
         
-        SimplePacMan spm = new SimplePacMan(SIZE_X, SIZE_Y); // initialisation du modèle
-        
-        GridPane grid = new GridPane(); // création de la grille 
-        
-        Hashtable<String,Image> ensembleImage=new Hashtable<String, Image>();
         
         // Pacman.svg.png
         
@@ -81,7 +86,7 @@ public class SimpleVC extends Application {
         //img.setScaleY(0.01);
         //img.setScaleX(0.01);
         
-        ImageView[][] tab = new ImageView[SIZE_X][SIZE_Y]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement
+        
 
         for (int i = 0; i < SIZE_X; i++) { // initialisation de la grille (sans image)
             for (int j = 0; j < SIZE_Y; j++) {
@@ -102,8 +107,8 @@ public class SimpleVC extends Application {
         };
         
         
-        spm.addObserver(o);
-        spm.start(); // on démarre spm
+        grille.addObserver(o);
+        grille.start(); // on démarre spm
         
         StackPane root = new StackPane();
         root.getChildren().add(grid);
@@ -120,7 +125,7 @@ public class SimpleVC extends Application {
             @Override
             public void handle(javafx.scene.input.KeyEvent event) {
                 if (event.isShiftDown()) {
-                    spm.initXY(); // si on clique sur shift, on remet spm en haut à gauche
+                    grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
                 }
             }
         });
@@ -129,6 +134,22 @@ public class SimpleVC extends Application {
          
         
         
+    }
+    
+    public void TextureInit(){
+        for (int i=0; i<SIZE_X; i++){
+            for(int j=0; j<SIZE_Y;j++){
+                Point point = new Point(i,j);
+                MS ms = grille.getvalueGS(point);
+                if(ms instanceof Couloir){  
+                    ImageView img = new ImageView(ensembleImage.get("vide").getPath());
+                    
+                tab[i][j] = img;
+                
+                grid.add(img, i, j);
+               }
+            }
+        }
     }
 
     /**

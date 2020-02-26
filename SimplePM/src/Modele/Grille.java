@@ -17,9 +17,17 @@ public class Grille extends Observable{
     HashMap<ME, Point> grilleDynamique;
     HashMap<Point,MS> grilleStatique;
     
+    
     public Grille (){
         
     }
     
+    public HashMap<Point,MS> getvalueGS(){
+        return this.grilleStatique;
+    }
+    
+    public HashMap<ME,Point> getvalueGD(){
+        return this.grilleDynamique;
+    }
     
 }
