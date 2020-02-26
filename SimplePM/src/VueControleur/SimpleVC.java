@@ -114,6 +114,8 @@ public class SimpleVC extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        iamge(ensembleimage.get("vide").getPath());
+        
         root.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() { // on écoute le clavier
             
 
