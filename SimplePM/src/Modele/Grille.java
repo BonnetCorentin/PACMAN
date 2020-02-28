@@ -33,13 +33,20 @@ public class Grille extends Observable implements Runnable{
             grilleStatique.put(new Point(i,0), new Mur ());
         }
         
-        for (int i=1;i<9;i++){
-            grilleStatique.put(new Point(1,i), new Couloir ());
-        }
-        
+        for (int i=1;i<18;i++){
+            if (i!=9)
+                grilleStatique.put(new Point(1,i), new Couloir ());
+            else
+                grilleStatique.put(new Point(1,i), new Mur ());
+        }        
         for (int i=0;i<7;i++){
             grilleStatique.put(new Point(0,i), new Mur ());
         }
+        for (int i=0;i<7;i++){
+            grilleStatique.put(new Point(18,i), new Mur ());
+        }
+        
+        grilleStatique.put(new Point(1,1), new Couloir ());
     }
     
     @Override
