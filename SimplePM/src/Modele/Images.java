@@ -9,10 +9,10 @@ package Modele;
  *
  * @author coren
  */
-public class Image {
-    private String path;
+public class Images {
+    private final String path;
     
-    public Image (String path){
+    public Images (String path){
         this.path=path;
     }
     
