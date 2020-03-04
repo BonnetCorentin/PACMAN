@@ -21,40 +21,18 @@ public class Grille extends Observable implements Runnable{
     
     
     public Grille (){
-        
+        CreationTerrain creationTerrain = new CreationTerrain ();
+        grilleStatique= creationTerrain.getHashmap();
     }
     
     public void start() {
         new Thread(this).start();
     }
     
-    private void initialisationGrille (){
-        for (int i=0;i<19;i++){
-            grilleStatique.put(new Point(i,0), new Mur ());
-        }
-        
-        for (int i=1;i<18;i++){
-            if (i!=9)
-                grilleStatique.put(new Point(1,i), new Couloir ());
-            else
-                grilleStatique.put(new Point(1,i), new Mur ());
-        }        
-        for (int i=0;i<7;i++){
-            grilleStatique.put(new Point(0,i), new Mur ());
-        }
-        for (int i=0;i<7;i++){
-            grilleStatique.put(new Point(18,i), new Mur ());
-        }
-        
-        grilleStatique.put(new Point(1,1), new Couloir ());
-    }
-    
     @Override
     public void run() {
         while(true) {
-        	
-           //System.out.println(x + " - " + y);
-           
+                   
            setChanged(); 
            notifyObservers(); // notification de l'observer
            

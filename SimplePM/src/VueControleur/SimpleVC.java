@@ -24,14 +24,14 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author frederic.armetta
+ * @author
  */
 public class SimpleVC extends Application {
     
-    public final int SIZE_X = 20;
-    public final int SIZE_Y = 20;
+    public final int SIZE_X = 21;
+    public final int SIZE_Y = 14;
     Grille grille = new Grille();
-    ImageView[][] tab = new ImageView[SIZE_X][SIZE_Y]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement
+    ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement UTILITE ???????????
     GridPane grid = new GridPane(); // création de la grille 
     Hashtable<String,Images> ensembleImage=new Hashtable<String, Images>();
     
@@ -80,18 +80,16 @@ public class SimpleVC extends Application {
         ensembleImage.put("pouvoir",new Images("images/pouvoir.png"));
         ensembleImage.put("vide",new Images("images/vide.png"));
                 
-        //img.setScaleY(0.01);
-        //img.setScaleX(0.01);
-        
+   
         
 
-        for (int i = 0; i < SIZE_X; i++) { // initialisation de la grille (sans image)
-            for (int j = 0; j < SIZE_Y; j++) {
+        for (int i = 0; i < SIZE_Y; i++) { // initialisation de la grille (sans image)
+            for (int j = 0; j < SIZE_X; j++) {
                 ImageView img = new ImageView();
                 
                 tab[i][j] = img;
                 
-                grid.add(img, i, j);
+                grid.add(img, j, i);
             }
             
         }
@@ -99,7 +97,7 @@ public class SimpleVC extends Application {
         Observer o =  new Observer() { // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
             @Override
             public void update(Observable o, Object arg) {
-                
+                TextureInit ();
             }
         };
         
@@ -110,7 +108,7 @@ public class SimpleVC extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(grid);
         
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 1000, 1000);
         
         primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
@@ -132,19 +130,34 @@ public class SimpleVC extends Application {
     }
     
     public void TextureInit(){
-        for (int i=0; i<SIZE_X; i++){
-            for(int j=0; j<SIZE_Y;j++){
-                Point point = new Point(i,j);
+        System.out.println(SIZE_Y);
+        for (int i=0; i<SIZE_Y; i++){
+            System.out.println(i);
+            for(int j=0; j<SIZE_X;j++){
+                System.out.print (i+" "+j+" ");
+                Point point = new Point(j,i);
                 MS ms = grille.getvalueGS(point);
                 if(ms instanceof Couloir){  
                     ImageView img;
-                    img = new ImageView(ensembleImage.get("vide").getPath());
+                    img = new ImageView(ensembleImage.get("bean").getPath());
+                    
+                    //System.out.print (" couloir");
                     
                     tab[i][j] = img;
                 
-                    grid.add(img, i, j);
+                    grid.add(tab[i][j], j, i);
                }
+                else {
+                    ImageView img;
+                    img = new ImageView(ensembleImage.get("mur").getPath());
+                    tab[i][j] = img;
+                
+                    //System.out.print (" mur");
+                    
+                    grid.add(tab[i][j], j, i);
+                }
             }
+            //System.out.println ();
         }
     }
 
