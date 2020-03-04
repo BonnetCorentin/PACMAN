@@ -10,6 +10,7 @@ import Modele.Couloir;
 import Modele.Grille;
 import Modele.Images;
 import Modele.MS;
+import Modele.Mur;
 import Modele.SimplePacMan;
 import java.util.Hashtable;
 import java.util.Observable;
@@ -40,7 +41,6 @@ public class SimpleVC extends Application {
     public void start(Stage primaryStage) {
         
         // Pacman.svg.png
-        
         ensembleImage.put("barriereFantome",new Images("images/barriereFantome.png"));// préparation des images
         ensembleImage.put("bean",new Images("images/bean.png"));
         ensembleImage.put("fan_mangeable",new Images("images/fan_mangeable.png"));
@@ -94,6 +94,8 @@ public class SimpleVC extends Application {
             
         }
         
+        TextureInit();
+        
         Observer o =  new Observer() { // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
             @Override
             public void update(Observable o, Object arg) {
@@ -113,13 +115,14 @@ public class SimpleVC extends Application {
         primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
         primaryStage.show();
-               
         root.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() { // on écoute le clavier
             
 
             @Override
             public void handle(javafx.scene.input.KeyEvent event) {
-              
+                if (event.isShiftDown()) {
+                    //grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
+                }
             }
         });
         
