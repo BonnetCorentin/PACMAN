@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 public class SimpleVC extends Application {
     
     public final int SIZE_X = 21;
-    public final int SIZE_Y = 14;
+    public final int SIZE_Y = 21;
     Grille grille = new Grille();
     ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement UTILITE ???????????
     GridPane grid = new GridPane(); // création de la grille 
@@ -75,10 +75,11 @@ public class SimpleVC extends Application {
         ensembleImage.put("pacmanDroite1",new Images("images/pacmanDroite1.png"));
         ensembleImage.put("pacmanGauche0",new Images("images/pacmanGauche0.png"));
         ensembleImage.put("pacmanGauche1",new Images("images/pacmanGauche1.png"));
+        ensembleImage.put("blanc",new Images("images/blanc.png"));
         ensembleImage.put("pacmanHaut0",new Images("images/pacmanHaut0.png"));// préparation des images
         ensembleImage.put("pacmanHaut1",new Images("images/pacmanHaut1.png"));
         ensembleImage.put("pouvoir",new Images("images/pouvoir.png"));
-        ensembleImage.put("vide",new Images("images/vide.png"));
+        
                 
    
         
@@ -133,34 +134,37 @@ public class SimpleVC extends Application {
     }
     
     public void TextureInit(){
-        System.out.println(SIZE_Y);
         for (int i=0; i<SIZE_Y; i++){
-            System.out.println(i);
+
             for(int j=0; j<SIZE_X;j++){
-                System.out.print (i+" "+j+" ");
+            
                 Point point = new Point(j,i);
                 MS ms = grille.getvalueGS(point);
                 if(ms instanceof Couloir){  
                     ImageView img;
                     img = new ImageView(ensembleImage.get("bean").getPath());
-                    
-                    //System.out.print (" couloir");
-                    
+               
                     tab[i][j] = img;
                 
                     grid.add(tab[i][j], j, i);
                }
-                else {
+                else if (ms instanceof Mur){
                     ImageView img;
+         
                     img = new ImageView(ensembleImage.get("mur").getPath());
                     tab[i][j] = img;
-                
-                    //System.out.print (" mur");
-                    
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else {
+                    ImageView img;
+                    img = new ImageView(ensembleImage.get("bean").getPath());
+                    tab[i][j] = img;
+             
                     grid.add(tab[i][j], j, i);
                 }
             }
-            //System.out.println ();
+           
         }
     }
 
