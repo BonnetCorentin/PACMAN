@@ -19,8 +19,6 @@ public class Grille extends Observable implements Runnable{
     private HashMap<ME, Point> grilleDynamique;
     private HashMap<Point,MS> grilleStatique;
     
-    
-    
     public Grille (){
         CreationTerrain creationTerrain = new CreationTerrain ();
         grilleStatique= creationTerrain.getHashmap();
@@ -42,9 +40,7 @@ public class Grille extends Observable implements Runnable{
             } catch (InterruptedException ex) {
                 Logger.getLogger(SimplePacMan.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
         }
-    
     }
 
     public Point getvalueGD(Point p){

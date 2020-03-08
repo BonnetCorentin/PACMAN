@@ -5,6 +5,7 @@
  */
 package Modele;
 
+import VueControleur.SimpleVC;
 import java.awt.Point;
 import java.util.HashMap;
 
@@ -39,6 +40,7 @@ public class CreationTerrain {
     
     public HashMap<Point,MS> getHashmap (){
         HashMap <Point,MS> hashmap = new HashMap<Point,MS> ();
+        //SimpleVC svc = new SimpleVC();
         
         for (int i=0;i<21;i++){
             for (int j=0;j<21;j++){
@@ -53,32 +55,12 @@ public class CreationTerrain {
                 else {
                     hashmap.put(point,new CouloirVide ());
                 }
+/*                 if (tab[i][j]=='f'){
+                     svc.getvalue(point);
+                }*/
             }
             //System.out.println ();
         }
-        
         return hashmap;
-    }
-    
-     public HashMap<ME,Point> getHashmapDyna (){
-        HashMap <ME,Point> hashmapDyna = new HashMap<ME,Point>();
-        
-         for (int i=0;i<21;i++){
-            for (int j=0;j<21;j++){
-                
-                Point point = new Point(j,i);
-                if (tab[i][j]=='f'){
-                    hashmapDyna.put(new Couloir(),point);
-                }
-                else if (tab[i][j]=='c'){
-                    //hashmap.put(point,new Couloir ());
-                }
-                else {
-                    //hashmap.put(point,new CouloirVide ());
-                }
-            }
-        }
-               
-        return hashmapDyna;
     }
 }
