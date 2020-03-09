@@ -8,11 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-<<<<<<< HEAD
-    <jar href="SimplePacMan.jar" size="216388" download="eager" />
-=======
-    <jar href="SimplePacMan.jar" size="216396" download="eager" />
->>>>>>> d93c08f111567d80c4b720331553465b3427d3a2
+    <jar href="SimplePacMan.jar" size="216394" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SimplePacMan" >
     <param name="requiredFXVersion" value="8.0+"/>

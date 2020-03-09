@@ -12,12 +12,15 @@ import Modele.Images;
 import Modele.MS;
 import Modele.Mur;
 import Modele.SimplePacMan;
+import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -79,11 +82,7 @@ public class SimpleVC extends Application {
         ensembleImage.put("pacmanHaut0",new Images("images/pacmanHaut0.png"));// préparation des images
         ensembleImage.put("pacmanHaut1",new Images("images/pacmanHaut1.png"));
         ensembleImage.put("pouvoir",new Images("images/pouvoir.png"));
-        
-                
-   
-        
-
+  
         for (int i = 0; i < SIZE_Y; i++) { // initialisation de la grille (sans image)
             for (int j = 0; j < SIZE_X; j++) {
                 ImageView img = new ImageView();
@@ -92,8 +91,13 @@ public class SimpleVC extends Application {
                 
                 grid.add(img, j, i);
             }
-            
         }
+        Button button1 = new Button("Start");
+        button1.setStyle("-fx-font: 16 arial; -fx-base: #b6e7c9;");
+        grid.add(button1,30,0);
+        Button button2 = new Button("Quitter");
+        button2.setStyle("-fx-font: 14 arial; -fx-base: #b6e7c9;");
+        grid.add(button2,30,20);
         
         TextureInit();
         
@@ -140,7 +144,7 @@ public class SimpleVC extends Application {
             
                 Point point = new Point(j,i);
                 MS ms = grille.getvalueGS(point);
-                //Point me = grille.getvalueGD(point);
+
                 
                 if(ms instanceof Couloir){  
                     ImageView img;
@@ -165,16 +169,14 @@ public class SimpleVC extends Application {
              
                     grid.add(tab[i][j], j, i);
                 }
-                /*if(me == ){  
-                    ImageView img;
-                    img = new ImageView(ensembleImage.get("fantomeBleu").getPath());
-                    tab[i][j] = img;
-                    grid.add(tab[i][j], j, i);
-               }*/
+
             }
-           
         }
     }
+    
+    /*public Class<? extends Hashtable> getvalue(Point p){
+        return this.ensembleImage.getClass();
+    }*/
 
     /**
      * @param args the command line arguments

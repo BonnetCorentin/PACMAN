@@ -101,7 +101,7 @@ public class SimplePacMan extends Observable implements Runnable {
 
      	initTab ();
         while(true) {
-        	modifierTab();
+        modifierTab();
            //System.out.println(x + " - " + y);
            
            setChanged(); 
@@ -112,7 +112,6 @@ public class SimplePacMan extends Observable implements Runnable {
             } catch (InterruptedException ex) {
                 Logger.getLogger(SimplePacMan.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
         }
     
     }
