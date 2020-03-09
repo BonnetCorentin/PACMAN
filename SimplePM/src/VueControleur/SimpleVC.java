@@ -140,6 +140,8 @@ public class SimpleVC extends Application {
             
                 Point point = new Point(j,i);
                 MS ms = grille.getvalueGS(point);
+                //Point me = grille.getvalueGD(point);
+                
                 if(ms instanceof Couloir){  
                     ImageView img;
                     img = new ImageView(ensembleImage.get("bean").getPath());
@@ -158,11 +160,17 @@ public class SimpleVC extends Application {
                 }
                 else {
                     ImageView img;
-                    img = new ImageView(ensembleImage.get("bean").getPath());
+                    img = new ImageView(ensembleImage.get("blanc").getPath());
                     tab[i][j] = img;
              
                     grid.add(tab[i][j], j, i);
                 }
+                /*if(me == ){  
+                    ImageView img;
+                    img = new ImageView(ensembleImage.get("fantomeBleu").getPath());
+                    tab[i][j] = img;
+                    grid.add(tab[i][j], j, i);
+               }*/
             }
            
         }

@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 public class Grille extends Observable implements Runnable{
     private HashMap<ME, Point> grilleDynamique;
     private HashMap<Point,MS> grilleStatique;
+     
+    
     
     
     public Grille (){
@@ -53,5 +55,4 @@ public class Grille extends Observable implements Runnable{
     public MS getvalueGS(Point p){
         return this.grilleStatique.get(p);
     }
-    
 }
