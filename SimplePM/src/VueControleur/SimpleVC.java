@@ -15,8 +15,10 @@ import Modele.SimplePacMan;
 import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Observable;
+import javafx.scene.input.KeyCode;
 import java.util.Observer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -92,19 +94,24 @@ public class SimpleVC extends Application {
                 grid.add(img, j, i);
             }
         }
-        Button button1 = new Button("Start");
+        /*Button button1 = new Button("Start");
         button1.setStyle("-fx-font: 16 arial; -fx-base: #b6e7c9;");
         grid.add(button1,30,0);
         Button button2 = new Button("Quitter");
         button2.setStyle("-fx-font: 14 arial; -fx-base: #b6e7c9;");
         grid.add(button2,30,20);
+        */
         
-        TextureInit();
         
         Observer o =  new Observer() { // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
             @Override
             public void update(Observable o, Object arg) {
-                TextureInit ();
+                Platform.runLater(new Runnable(){
+                    public void run (){
+                        textureInit ();
+                    }   
+                }
+               );
             }
         };
         
@@ -125,7 +132,16 @@ public class SimpleVC extends Application {
 
             @Override
             public void handle(javafx.scene.input.KeyEvent event) {
-                if (event.isShiftDown()) {
+                if (event.getCode ()==KeyCode.Z) {
+                    
+                }
+                if (event.getCode ()==KeyCode.Q) {
+                    //grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
+                }
+                if (event.getCode ()==KeyCode.D) {
+                    //grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
+                }
+                if (event.getCode ()==KeyCode.S) {
                     //grille.initXY(); // si on clique sur shift, on remet spm en haut à gauche
                 }
             }
@@ -137,14 +153,14 @@ public class SimpleVC extends Application {
         
     }
     
-    public void TextureInit(){
+    public void textureInit(){
         for (int i=0; i<SIZE_Y; i++){
 
             for(int j=0; j<SIZE_X;j++){
             
                 Point point = new Point(j,i);
                 MS ms = grille.getvalueGS(point);
-
+                
                 
                 if(ms instanceof Couloir){  
                     ImageView img;
@@ -169,9 +185,15 @@ public class SimpleVC extends Application {
              
                     grid.add(tab[i][j], j, i);
                 }
-
+                Point pointPacMan = grille.getPacmanPoint();
+                ImageView img;
+                img=new ImageView (ensembleImage.get("pacman").getPath ());
+                
+                tab [(int)pointPacMan.getY()][(int)pointPacMan.getX()]=img;
+                grid.add(tab[(int)pointPacMan.getY()][(int)pointPacMan.getX()],(int)pointPacMan.getX(),(int)pointPacMan.getY());
             }
         }
+        
     }
     
     /*public Class<? extends Hashtable> getvalue(Point p){
