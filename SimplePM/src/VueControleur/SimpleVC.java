@@ -185,12 +185,12 @@ public class SimpleVC extends Application {
              
                     grid.add(tab[i][j], j, i);
                 }
-                Point pointPacMan = grille.getPacmanPoint();
-                ImageView img;
-                img=new ImageView (ensembleImage.get("pacman").getPath ());
+                //Point pointPacMan = grille.getPacmanPoint();
+                //ImageView img;
+                //img=new ImageView (ensembleImage.get("pacman").getPath ());
                 
-                tab [(int)pointPacMan.getY()][(int)pointPacMan.getX()]=img;
-                grid.add(tab[(int)pointPacMan.getY()][(int)pointPacMan.getX()],(int)pointPacMan.getX(),(int)pointPacMan.getY());
+                //tab [(int)pointPacMan.getY()][(int)pointPacMan.getX()]=img;
+                //grid.add(tab[(int)pointPacMan.getY()][(int)pointPacMan.getX()],(int)pointPacMan.getX(),(int)pointPacMan.getY());
             }
         }
         

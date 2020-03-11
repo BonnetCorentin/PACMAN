@@ -73,9 +73,9 @@ public class Grille extends Observable implements Runnable{
         return this.grilleStatique.get(p);
     }
     
-    public Point[] getPointME(int i){
-        return grilleDynamique.keySet().toArray(ME);
-    }
+    /*public Point[] getPointME(int i){
+        //return grilleDynamique.keySet().toArray(ME);
+    }*/
     
      
     public void deplacementBas (ME entiteDynamique){
