@@ -5,12 +5,24 @@
  */
 package VueControleur;
 
+import Modele.CoinD2;
+import Modele.CoinDroite;
 import java.awt.Point;
 import Modele.Couloir;
+import Modele.FermeB;
+import Modele.FermeD;
+import Modele.FermeG;
+import Modele.FermeH;
 import Modele.Grille;
+import Modele.GrosBean;
 import Modele.Images;
 import Modele.MS;
 import Modele.Mur;
+import Modele.Mur2;
+import Modele.OuvertBas;
+import Modele.OuvertDroite;
+import Modele.OuvertGauche;
+import Modele.OuvertHaut;
 import Modele.SimplePacMan;
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -65,7 +77,8 @@ public class SimpleVC extends Application {
         ensembleImage.put("Mort1",new Images("images/Mort1.png"));
         ensembleImage.put("Mort2",new Images("images/Mort2.png"));
         ensembleImage.put("Mort3",new Images("images/Mort3.png"));
-        ensembleImage.put("mur",new Images("images/mur.png"));// préparation des images
+        ensembleImage.put("mur",new Images("images/mur.png"));
+        ensembleImage.put("mur2",new Images("images/mur2.png"));// préparation des images
         ensembleImage.put("pacman",new Images("images/pacman.png"));
         ensembleImage.put("pacman_2",new Images("images/pacman_2.png"));
         ensembleImage.put("pacman_2f",new Images("images/pacman_2f.png"));
@@ -80,10 +93,23 @@ public class SimpleVC extends Application {
         ensembleImage.put("pacmanDroite1",new Images("images/pacmanDroite1.png"));
         ensembleImage.put("pacmanGauche0",new Images("images/pacmanGauche0.png"));
         ensembleImage.put("pacmanGauche1",new Images("images/pacmanGauche1.png"));
-        ensembleImage.put("blanc",new Images("images/blanc.png"));
+        ensembleImage.put("fond",new Images("images/fond.png"));
         ensembleImage.put("pacmanHaut0",new Images("images/pacmanHaut0.png"));// préparation des images
         ensembleImage.put("pacmanHaut1",new Images("images/pacmanHaut1.png"));
         ensembleImage.put("pouvoir",new Images("images/pouvoir.png"));
+        ensembleImage.put("CoinD",new Images("images/coinD.png"));
+        ensembleImage.put("CoinD2",new Images("images/coinD2.png"));
+        ensembleImage.put("CoinG",new Images("images/coinG.png"));
+        ensembleImage.put("CoinG2",new Images("images/coinG2.png"));
+        ensembleImage.put("FermeD",new Images("images/fermeD.png"));
+        ensembleImage.put("FermeG",new Images("images/fermeG.png"));
+        ensembleImage.put("FermeH",new Images("images/fermeH.png"));
+        ensembleImage.put("FermeB",new Images("images/fermeB.png"));
+        ensembleImage.put("OuvertB",new Images("images/ouvertB.png"));
+        ensembleImage.put("OuvertH",new Images("images/ouvertH.png"));
+        ensembleImage.put("OuvertG",new Images("images/ouvertG.png"));
+        ensembleImage.put("OuvertD",new Images("images/ouvertD.png"));
+        ensembleImage.put("PorteFantome",new Images("images/porteFantome.png"));
   
         for (int i = 0; i < SIZE_Y; i++) { // initialisation de la grille (sans image)
             for (int j = 0; j < SIZE_X; j++) {
@@ -164,7 +190,7 @@ public class SimpleVC extends Application {
                 
                 if(ms instanceof Couloir){  
                     ImageView img;
-                    img = new ImageView(ensembleImage.get("bean").getPath());
+                    img = new ImageView(ensembleImage.get("gros_bean").getPath());
                
                     tab[i][j] = img;
                 
@@ -174,25 +200,163 @@ public class SimpleVC extends Application {
                     ImageView img;
          
                     img = new ImageView(ensembleImage.get("mur").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof Mur2){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("mur2").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof CoinDroite){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("CoinD").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof CoinD2){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("CoinD2").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof Modele.CoinG){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("CoinG").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                
+                else if (ms instanceof Modele.CoinG2){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("CoinG2").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof FermeD){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("FermeD").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof FermeG){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("FermeG").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof FermeH){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("FermeH").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof FermeB){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("FermeB").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof OuvertBas){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("OuvertB").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof OuvertHaut){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("OuvertH").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof OuvertDroite){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("OuvertD").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof OuvertGauche){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("OuvertG").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof PorteFantome){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("PorteFantome").getPath());
+                    
+                    tab[i][j] = img;
+
+                    grid.add(tab[i][j], j, i);
+                }
+                else if (ms instanceof GrosBean){
+                    ImageView img;
+         
+                    img = new ImageView(ensembleImage.get("bean").getPath());
+                    
                     tab[i][j] = img;
 
                     grid.add(tab[i][j], j, i);
                 }
                 else {
                     ImageView img;
-                    img = new ImageView(ensembleImage.get("blanc").getPath());
+                    img = new ImageView(ensembleImage.get("fond").getPath());
                     tab[i][j] = img;
              
                     grid.add(tab[i][j], j, i);
                 }
-                //Point pointPacMan = grille.getPacmanPoint();
-                //ImageView img;
-                //img=new ImageView (ensembleImage.get("pacman").getPath ());
+                /*Point pointPacMan = grille.getPacmanPoint();
+                ImageView img;
+                img=new ImageView (ensembleImage.get("pacman").getPath ());
                 
-                //tab [(int)pointPacMan.getY()][(int)pointPacMan.getX()]=img;
-                //grid.add(tab[(int)pointPacMan.getY()][(int)pointPacMan.getX()],(int)pointPacMan.getX(),(int)pointPacMan.getY());
+                tab [(int)pointPacMan.getY()][(int)pointPacMan.getX()]=img;
+                grid.add(tab[(int)pointPacMan.getY()][(int)pointPacMan.getX()],(int)pointPacMan.getX(),(int)pointPacMan.getY());*/
             }
         }
+        
         
     }
     
