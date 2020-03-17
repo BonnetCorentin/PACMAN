@@ -9,6 +9,6 @@ package Modele;
  *
  * @author coren
  */
-public class Couloir extends MS {
+public class Couloir extends Mangeable {
     
 }

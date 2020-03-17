@@ -17,6 +17,11 @@ abstract public class ME extends Observable implements Runnable{
     protected int tempsEntreActions=300;
     protected Grille grille;
    
+    public ME (){
+        actionEnCour = Action.Droite;
+        actif = true;
+    }
+    
     
     public void start() {
         new Thread(this).start();
@@ -27,10 +32,16 @@ abstract public class ME extends Observable implements Runnable{
     public void run (){
         while (actif){
             action();
-
             setChanged ();
             notifyObservers ();
-            //sleep (tempsEntreActions);
+            
+            try {
+                Thread.sleep (tempsEntreActions);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            
         }
         grille.retirerDeLenvironnement (this);
         setChanged ();
@@ -41,5 +52,9 @@ abstract public class ME extends Observable implements Runnable{
     
     public void setGrille (Grille grille){
         this.grille = grille;
+    }
+    
+    public Action getAction (){
+        return this.actionEnCour;
     }
 }

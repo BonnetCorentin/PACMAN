@@ -9,6 +9,14 @@ package Modele;
  *
  * @author coren
  */
-public class Mur extends MS{
+public class Mur extends NomMangeable{
+    private String typeMur;
     
+    public Mur (String typeMur){
+        this.typeMur=typeMur;
+    }
+    
+    public String getTypeMur (){
+        return this.typeMur;
+    }
 }

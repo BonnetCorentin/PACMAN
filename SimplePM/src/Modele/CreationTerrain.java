@@ -39,7 +39,7 @@ public class CreationTerrain {
                     {'b','r','v','v','v','v','v','v','v','v','v','v','v','v','v','v','v','v','v','z','b'}
                 };
     
-    public HashMap<Point,MS> getHashmap (){
+    public HashMap<Point,MS> getHashMap (){
         HashMap <Point,MS> hashmap = new HashMap<Point,MS> ();
         //SimpleVC svc = new SimpleVC();
         
@@ -48,37 +48,37 @@ public class CreationTerrain {
                 
                 Point point = new Point(j,i);
                 if (tab[i][j]=='m'){
-                    hashmap.put(point,new Mur ());
+                    hashmap.put(point,new Mur ("mur"));
                 }
                 else if (tab[i][j]=='v'){
-                    hashmap.put(point,new Mur2 ());
+                    hashmap.put(point,new Mur ("mur2"));
                 }
                 else if (tab[i][j]=='c'){
                     hashmap.put(point,new Couloir ());
                 }
                 else if (tab[i][j]=='a'){
-                    hashmap.put(point,new CoinDroite ());
+                    hashmap.put(point,new Mur("coinD"));
                 }
                 else if (tab[i][j]=='z'){
-                    hashmap.put(point,new CoinD2 ());
+                    hashmap.put(point,new Mur("coinD2"));
                 }
                 else if (tab[i][j]=='e'){
-                    hashmap.put(point,new CoinG ());
+                    hashmap.put(point,new Mur ("coinG"));
                 }
                 else if (tab[i][j]=='r'){
-                    hashmap.put(point,new CoinG2 ());
+                    hashmap.put(point,new Mur("coinG2"));
                 }
                 else if (tab[i][j]=='t'){
-                    hashmap.put(point,new FermeD ());
+                    hashmap.put(point,new Mur ("fermeD"));
                 }
                 else if (tab[i][j]=='y'){
-                    hashmap.put(point,new FermeG ());
+                    hashmap.put(point,new Mur ("fermeG"));
                 }
                 else if (tab[i][j]=='q'){
-                    hashmap.put(point,new FermeH ());
+                    hashmap.put(point,new Mur ("fermeH"));
                 }
                 else if (tab[i][j]=='s'){
-                    hashmap.put(point,new FermeB ());
+                    hashmap.put(point,new Mur("fermeB"));
                 }
                 else if (tab[i][j]=='u'){
                     hashmap.put(point,new OuvertHaut ());

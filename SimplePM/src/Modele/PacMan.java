@@ -10,7 +10,7 @@ package Modele;
  * @author coren
  */
 public class PacMan extends ME{
-    public void action (){
+    public synchronized void action (){
         if (actionEnCour == Action.Bas){
             grille.deplacementBas(this);
         }
@@ -30,9 +30,5 @@ public class PacMan extends ME{
     
     public void setAction (Action action){
         this.actionEnCour = action;
-    }
-    
-    public void run (){
-        
     }
 }

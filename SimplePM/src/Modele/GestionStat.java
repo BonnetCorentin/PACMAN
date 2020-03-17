@@ -7,8 +7,15 @@ package Modele;
 
 /**
  *
- * @author Quentin
+ * @author coren
  */
-public class CoinG extends NomMangeable {
+public class GestionStat {
+    private int vie;
+    private int score;
+    
+    public GestionStat (){
+        vie = 3;
+        score = 0;
+    }
     
 }
