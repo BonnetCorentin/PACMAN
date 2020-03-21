@@ -53,6 +53,8 @@ public class Grille extends Observable implements Runnable {
             @Override
             public void run() {
                 passeSurNourriture();
+                if (pacmanMort ())
+                    getPacman ().setActif();
                 setChanged();
                 notifyObservers(); // notification de l'observer
             }
@@ -208,8 +210,23 @@ public class Grille extends Observable implements Runnable {
         Point point = new Point(grilleDynamique.get(getPacman ()));
 
         if (grilleStatique.get(point) instanceof Couloir) {
-            ((Mangeable) grilleStatique.get(point)).estMange();
-            score.augmenterScore(10);
+            if (!((Mangeable) grilleStatique.get(point)).getEstMange()){
+                ((Mangeable) grilleStatique.get(point)).estMange();
+                score.augmenterScore(10);
+            }
+            
         }
+    }
+    
+    public Boolean pacmanMort (){
+        Point point=grilleDynamique.get(getPacman ());
+        if (point.equals(grilleDynamique.get(getFantomeBleu())))
+            return true;
+        if (point.equals(grilleDynamique.get(getFantomeVert())))
+            return true;
+        if (point.equals(grilleDynamique.get(getFantomeRouge())))
+            return true;
+        
+        return false;
     }
 }

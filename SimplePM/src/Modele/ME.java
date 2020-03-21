@@ -86,4 +86,8 @@ abstract public class ME extends Observable implements Runnable {
     public Action getAction() {
         return this.actionEnCour;
     }
+    public void setActif (){
+        actif = false;
+    }
+    
 }
