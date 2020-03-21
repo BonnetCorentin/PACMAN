@@ -8,187 +8,208 @@ package Modele;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+;
 
 /**
  *
  * @author coren
  */
-public class Grille extends Observable{
+public class Grille extends Observable implements Runnable {
+
     final private HashMap<ME, Point> grilleDynamique;
-    final private HashMap<Point,MS> grilleStatique;
-    
-    public Grille (){
-        CreationTerrain creationTerrain = new CreationTerrain ();
-        grilleStatique= creationTerrain.getHashMap();
-        PacMan pacman = new PacMan ();
+    final private HashMap<Point, MS> grilleStatique;
+    private GestionStat score;
+
+    public Grille(PacMan p,Fantome fR,Fantome fB,Fantome fV) {
+        score = new GestionStat ();
+        CreationTerrain creationTerrain = new CreationTerrain();
+        grilleStatique = creationTerrain.getHashMap();
        
+
+        grilleDynamique = new HashMap<>();
+        grilleDynamique.put(p, new Point(1, 9));
+        grilleDynamique.put(fR, new Point(10, 9));
+        grilleDynamique.put(fB, new Point(9, 9));
+        grilleDynamique.put(fV, new Point(11, 9));
         
-        Fantome fantomeRouge=new Fantome("rouge");
-        Fantome fantomeBleu=new Fantome("bleu");
-        Fantome fantomeVert=new Fantome("vert");
-        
-        
-        grilleDynamique=new HashMap<ME,Point>();
-        grilleDynamique.put (pacman,new Point(1,9));
-        grilleDynamique.put (fantomeRouge,new Point (10,9));
-        grilleDynamique.put (fantomeBleu,new Point (9,9));
-        pacman.setGrille(this);
-        fantomeRouge.setGrille (this);
- 
-        
-    }
-    
-    public void debutJeu() {
-        for (ME me : grilleDynamique.keySet()){
-            if (me instanceof PacMan)    
-                me.start();
-         }
-        boucleJeu ();
-    }
-    
-    public void boucleJeu() {
-        while(true) {    
-           setChanged(); 
-           notifyObservers(); // notification de l'observer
-           
-            try {
-                Thread.sleep(300); // pause
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SimplePacMan.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+
     }
 
-    public Point getvalueGD(Point p){
+    public void start() {
+        new Thread(this).start();
+        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des modèles dynamiques de la grille
+            me.start();
+        });
+    }
+
+    @Override
+    public void run() {
+        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
+        Runnable processDataCmd = new Runnable() {
+            @Override
+            public void run() {
+                passeSurNourriture();
+                setChanged();
+                notifyObservers(); // notification de l'observer
+            }
+        };
+        service.scheduleAtFixedRate(processDataCmd, 0, 100, TimeUnit.MILLISECONDS); //sleep
+    }
+
+    public Point getvalueGD(Point p) {
         return this.grilleDynamique.get(p);
     }
 
-    public MS getvalueGS(Point p){
+    public MS getvalueGS(Point p) {
         return this.grilleStatique.get(p);
-    }  
-     
-    public void deplacementBas (ME entiteDynamique){
-        Point point = getPoint (entiteDynamique);
-        Point inter = new Point (point.x,point.y);
+    }
+
+    public void deplacementBas(ME entiteDynamique) {
+        Point point = getPoint(entiteDynamique);
+        Point inter = new Point(point.x, point.y);
         inter.y++;
-        
-        if (deplacementPossible(inter)){
+
+        if (deplacementPossible(inter)) {
             grilleDynamique.replace(entiteDynamique, inter);
-        }else{
-            if (entiteDynamique instanceof Fantome){
-                ((Fantome)entiteDynamique).deplacementAleatoire();
+        } else {
+            if (entiteDynamique instanceof Fantome) {
+                ((Fantome) entiteDynamique).deplacementAleatoire();
             }
         }
     }
-    
-    public void deplacementHaut (ME entiteDynamique){
-        Point point = getPoint (entiteDynamique);
-        Point inter = new Point (point.x,point.y);
+
+    public void deplacementHaut(ME entiteDynamique) {
+        Point point = getPoint(entiteDynamique);
+        Point inter = new Point(point.x, point.y);
         inter.y--;
-                
-        if (deplacementPossible(inter)){
+
+        if (deplacementPossible(inter)) {
             grilleDynamique.replace(entiteDynamique, inter);
-        }
-        else{
-            if (entiteDynamique instanceof Fantome){
-                ((Fantome)entiteDynamique).deplacementAleatoire();
+        } else {
+            if (entiteDynamique instanceof Fantome) {
+                ((Fantome) entiteDynamique).deplacementAleatoire();
             }
         }
     }
-    
-    public void deplacementDroite (ME entiteDynamique){
-        Point point = getPoint (entiteDynamique);
-        Point inter = new Point (point.x,point.y);
+
+    public void deplacementDroite(ME entiteDynamique) {
+        Point point = getPoint(entiteDynamique);
+        Point inter = new Point(point.x, point.y);
         inter.x++;
-        
-        if (deplacementPossible(inter)){
+
+        if (deplacementPossible(inter)) {
             grilleDynamique.replace(entiteDynamique, inter);
-        }
-        else{
-            if (entiteDynamique instanceof Fantome){
-                ((Fantome)entiteDynamique).deplacementAleatoire();
+        } else {
+            if (entiteDynamique instanceof Fantome) {
+                ((Fantome) entiteDynamique).deplacementAleatoire();
             }
         }
     }
-    
-    public void deplacementGauche (ME entiteDynamique){
-        Point point = getPoint (entiteDynamique);
-        Point inter = new Point (point.x,point.y);
+
+    public void deplacementGauche(ME entiteDynamique) {
+        Point point = getPoint(entiteDynamique);
+        Point inter = new Point(point.x, point.y);
         inter.x--;
-        
-        if (deplacementPossible(inter)){
+
+        if (deplacementPossible(inter)) {
             grilleDynamique.replace(entiteDynamique, inter);
-        }
-        else{
-            if (entiteDynamique instanceof Fantome){
-                ((Fantome)entiteDynamique).deplacementAleatoire();
+        } else {
+            if (entiteDynamique instanceof Fantome) {
+                ((Fantome) entiteDynamique).deplacementAleatoire();
             }
         }
     }
-    
-    public void retirerDeLenvironnement (ME me){
+
+    public void retirerDeLenvironnement(ME me) {
         grilleDynamique.remove(me);
     }
-    
-    private Point getPoint (ME entiteDynamqique){
+
+    private Point getPoint(ME entiteDynamqique) {
         Point point = grilleDynamique.get(entiteDynamqique);
         return point;
     }
-    
-    private Boolean deplacementPossible (Point point){
+
+    private Boolean deplacementPossible(Point point) {
         Boolean possible = true;
-       
-        if (grilleStatique.get(point) instanceof Mur){
+
+        if (grilleStatique.get(point) instanceof Mur) {
             possible = false;
         }
-        
-        if (point.y ==9 && point.x==20 )
-            point.x=0;
-        if (point.y == 9 && point.x == -1)
+
+        if (point.y == 9 && point.x == 20) {
+            point.x = 0;
+        }
+        if (point.y == 9 && point.x == -1) {
             point.x = 19;
-        
+        }
+
         return possible;
     }
-    
-    public HashMap<ME, Point> getGrilleDynamique (){
+
+    public HashMap<ME, Point> getGrilleDynamique() {
         return grilleDynamique;
     }
     
-    public PacMan getPacman (){
+    public int getScore (){
+        return this.score.getScore ();
+    }
+
+    public PacMan getPacman() {
         for (ME me : grilleDynamique.keySet()) {
-            if (me instanceof PacMan)
-                return (PacMan)me;
-            
+            if (me instanceof PacMan) {
+                return (PacMan) me;
+            }
+
+        }
+        return null;
+    }
+
+    public Fantome getFantomeRouge() {
+        for (ME me : grilleDynamique.keySet()) {
+            if (me instanceof Fantome) {
+                if ("rouge".equals(((Fantome) me).getCouleur())) {
+                    return (Fantome) me;
+                }
+            }
+
         }
         return null;
     }
     
-    public Fantome getFantomeRouge (){
+     public Fantome getFantomeVert() {
         for (ME me : grilleDynamique.keySet()) {
-            if (me instanceof Fantome)
-                if (((Fantome)me).getCouleur()=="rouge")
-                    return (Fantome)me;
-            
+            if (me instanceof Fantome) {
+                if ("vert".equals(((Fantome) me).getCouleur())) {
+                    return (Fantome) me;
+                }
+            }
+
         }
         return null;
     }
-    
-    public Fantome getFantomeBleu (){
+
+    public Fantome getFantomeBleu() {
         for (ME me : grilleDynamique.keySet()) {
-            if (me instanceof Fantome)
-                if (((Fantome)me).getCouleur()=="bleu")
-                    return (Fantome)me;
-            
+            if (me instanceof Fantome) {
+                if ("bleu".equals(((Fantome) me).getCouleur())) {
+                    return (Fantome) me;
+                }
+            }
+
         }
         return null;
     }
-    
-    public void passeSurNourriture (PacMan pacman){
-        Point point = new Point (grilleDynamique.get(pacman));
-        
-        if (grilleStatique.get(point) instanceof Couloir)
-            ((Mangeable)grilleStatique.get(point)).estMange();
+
+    private void passeSurNourriture() {
+        Point point = new Point(grilleDynamique.get(getPacman ()));
+
+        if (grilleStatique.get(point) instanceof Couloir) {
+            ((Mangeable) grilleStatique.get(point)).estMange();
+            score.augmenterScore(10);
+        }
     }
 }

@@ -5,56 +5,85 @@
  */
 package Modele;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.Observable;
 
 /**
  *
  * @author coren
  */
-abstract public class ME extends Observable implements Runnable{
+abstract public class ME extends Observable implements Runnable {
+
     Boolean actif;
     protected Action actionEnCour;
-    protected int tempsEntreActions=300;
+    protected int tempsEntreActions = 200;
     protected Grille grille;
-   
-    public ME (){
+
+    public ME() {
         actionEnCour = Action.Droite;
         actif = true;
     }
-    
-    
+
     public void start() {
         new Thread(this).start();
     }
-    
-    abstract public void action ();
-    
-    public void run (){
-        while (actif){
-            action();
-            setChanged ();
-            notifyObservers ();
-            
-            try {
-                Thread.sleep (tempsEntreActions);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            
+
+    public void action (){         
+        if (actionEnCour == Action.Bas){
+            grille.deplacementBas(this);
         }
-        grille.retirerDeLenvironnement (this);
-        setChanged ();
-        notifyObservers ();
+        else if (actionEnCour == Action.Haut){
+            grille.deplacementHaut(this);
+        }
+        else if (actionEnCour == Action.Gauche){
+            grille.deplacementGauche(this);
+        }
+        else if (actionEnCour == Action.Droite){
+            grille.deplacementDroite(this);
+        }
     }
     
-    abstract public void setAction (Action action);
-    
-    public void setGrille (Grille grille){
+    public void setAction (Action action){
+        this.actionEnCour = action;
+    }
+
+    @Override
+    public void run() {
+        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
+        Runnable processDataCmd = new Runnable() {
+            @Override
+            public void run() {
+                action();
+                setChanged();
+                notifyObservers();
+
+                if (!keepGoing()) {
+                    retirerEnvironnement();
+                    setChanged();
+                    notifyObservers();
+                }
+
+            }
+        };
+        service.scheduleAtFixedRate(processDataCmd, 0, tempsEntreActions, TimeUnit.MILLISECONDS);
+    }
+
+    private void retirerEnvironnement() {
+        grille.retirerDeLenvironnement(this);
+    }
+
+    private Boolean keepGoing() {
+        return actif;
+    }
+
+    public void setGrille(Grille grille) {
         this.grille = grille;
     }
-    
-    public Action getAction (){
+
+    public Action getAction() {
         return this.actionEnCour;
     }
 }

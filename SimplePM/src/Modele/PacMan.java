@@ -10,25 +10,5 @@ package Modele;
  * @author coren
  */
 public class PacMan extends ME{
-    public synchronized void action (){
-        if (actionEnCour == Action.Bas){
-            grille.deplacementBas(this);
-        }
-        else if (actionEnCour == Action.Haut){
-            grille.deplacementHaut(this);
-        }
-        else if (actionEnCour == Action.Gauche){
-            grille.deplacementGauche(this);
-        }
-        else if (actionEnCour == Action.Droite){
-            grille.deplacementDroite(this);
-        }
-        else {
-            
-        }
-    }
     
-    public void setAction (Action action){
-        this.actionEnCour = action;
-    }
 }

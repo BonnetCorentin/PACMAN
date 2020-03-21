@@ -11,8 +11,7 @@ import Modele.Couloir;
 import Modele.Fantome;
 import Modele.Grille;
 import Modele.GrosBean;
-import Modele.Images;
-import Modele.ME;
+
 import Modele.MS;
 import Modele.Mangeable;
 import Modele.Mur;
@@ -21,18 +20,21 @@ import Modele.OuvertDroite;
 import Modele.OuvertGauche;
 import Modele.OuvertHaut;
 import Modele.PacMan;
-import java.io.InputStream;
+        
 import java.util.*;
 import java.util.Observable;
 import javafx.scene.input.KeyCode;
 import java.util.Observer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
+
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -43,19 +45,37 @@ public class SimpleVC extends Application {
 
     public final int SIZE_X = 21;
     public final int SIZE_Y = 21;
-    Grille grille = new Grille();
+    
+    Grille grille;
     ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement UTILITE ???????????
     GridPane grid = new GridPane(); // création de la grille 
-    HashMap<String, Images> ensembleImage = new HashMap<String, Images>();
+
+    HashMap<String, Image> ensembleImage = new HashMap<>();
     StackPane root;
+    Text t = new Text(10, 10, "0");
+
+    
     Scene scene;
     PacMan pacman;
     Fantome fantomeRouge;
     Fantome fantomeBleu;
+    Fantome fantomeVert;
 
     @Override
     public void init() {
-
+        t.setFont(new Font(20));
+        pacman = new PacMan ();
+        fantomeRouge = new Fantome("rouge");
+        fantomeBleu = new Fantome("bleu");
+        fantomeVert = new Fantome("vert");
+        
+        grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert);
+               
+        grille.getPacman().setGrille(grille);
+        grille.getFantomeBleu().setGrille(grille);
+        grille.getFantomeVert().setGrille(grille);
+        grille.getFantomeRouge().setGrille(grille);
+        
         initialisationImages();
 
         pacman = grille.getPacman();
@@ -64,8 +84,9 @@ public class SimpleVC extends Application {
 
         root = new StackPane();
         root.getChildren().add(grid);
-
+        root.getChildren().add(t);
         scene = new Scene(root, 1000, 1000);
+        
         textureInit();
 
     }
@@ -73,19 +94,17 @@ public class SimpleVC extends Application {
     @Override
 
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("PAC MAN!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        Observer o;
-        o = (Observable o1, Object arg) -> {
-            Platform.runLater(() -> {
-                System.out.println("a");
-                textureInit();
-                grille.passeSurNourriture(pacman);
-                grid.requestFocus();
+        Observer o = (Observable arg0, Object arg1) -> {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    textureInit ();                   
+                    t.setText (String.valueOf(grille.getScore()));
+                }
             });
-        } // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
-        ;
+        };
+        // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
+        
         root.setOnKeyPressed((javafx.scene.input.KeyEvent event) -> {
             if (event.getCode() == KeyCode.Z) {
                 pacman.setAction(Action.Haut);
@@ -103,7 +122,12 @@ public class SimpleVC extends Application {
         );
 
         grille.addObserver(o);
-        grille.debutJeu();
+        grille.start();
+        
+        primaryStage.setTitle("PAC MAN!");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        grid.requestFocus();
     }
 
     public synchronized void textureInit() {
@@ -115,172 +139,95 @@ public class SimpleVC extends Application {
                 MS ms = grille.getvalueGS(point);
 
                 if (ms instanceof Couloir) {
-                    if (((Mangeable) ms).getEstMange() == false) {
-                        ImageView img;
-
-                        img = new ImageView(ensembleImage.get("gros_bean").getPath());
-
-                        tab[i][j] = img;
-
-                        grid.add(tab[i][j], j, i);
+                    if (((Mangeable) ms).getEstMange() == false) {  
+                        tab[i][j].setImage(ensembleImage.get("gros_bean"));
                     } else {
-                        ImageView img;
-                        img = new ImageView(ensembleImage.get("fond").getPath());
-                        tab[i][j] = img;
-
-                        grid.add(tab[i][j], j, i);
+                        tab[i][j].setImage(ensembleImage.get("fond"));
                     }
 
                 } else if (ms instanceof GrosBean) {
                     if (((Mangeable) ms).getEstMange() == false) {
-                        ImageView img;
-
-                        img = new ImageView(ensembleImage.get("bean").getPath());
-
-                        tab[i][j] = img;
-
-                        grid.add(tab[i][j], j, i);
-                    } else {
-                        ImageView img;
-                        img = new ImageView(ensembleImage.get("fond").getPath());
-                        tab[i][j] = img;
-
-                        grid.add(tab[i][j], j, i);
+                        tab[i][j].setImage(ensembleImage.get("bean"));
+                    } else {            
+                        tab[i][j].setImage(ensembleImage.get("fond"));
                     }
 
                 } else if (ms instanceof Mur) {
                     String typeMur = ((Mur) ms).getTypeMur();
-                    ImageView img;
 
                     switch (typeMur) {
                         case "mur":
-                            img = new ImageView(ensembleImage.get("mur").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("mur"));
                             break;
                         case "mur2":
-                            img = new ImageView(ensembleImage.get("mur2").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("mur2"));
                             break;
                         case "coinD":
-                            img = new ImageView(ensembleImage.get("CoinD").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("CoinD"));
                             break;
                         case "coinD2":
-                            img = new ImageView(ensembleImage.get("CoinD2").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("CoinD2"));
                             break;
                         case "coinG":
-                            img = new ImageView(ensembleImage.get("CoinG").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("CoinG"));
                             break;
                         case "coinG2":
-                            img = new ImageView(ensembleImage.get("CoinG2").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("CoinG2"));
                             break;
                         case "fermeB":
-                            img = new ImageView(ensembleImage.get("FermeB").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("FermeB"));
                             break;
                         case "fermeH":
-                            img = new ImageView(ensembleImage.get("FermeH").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("FermeH"));
                             break;
                         case "fermeG":
-                            img = new ImageView(ensembleImage.get("FermeG").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("FermeG"));
                             break;
                         case "fermeD":
-                            img = new ImageView(ensembleImage.get("FermeD").getPath());
-                            tab[i][j] = img;
+                            tab[i][j].setImage(ensembleImage.get("FermeD"));
                             break;
                     }
 
-                    grid.add(tab[i][j], j, i);
-
                 } else if (ms instanceof OuvertBas) {
-                    ImageView img;
-
-                    img = new ImageView(ensembleImage.get("OuvertB").getPath());
-
-                    tab[i][j] = img;
-
-                    grid.add(tab[i][j], j, i);
+                    tab[i][j].setImage(ensembleImage.get("OuvertB"));
                 } else if (ms instanceof OuvertHaut) {
-                    ImageView img;
-
-                    img = new ImageView(ensembleImage.get("OuvertH").getPath());
-
-                    tab[i][j] = img;
-
-                    grid.add(tab[i][j], j, i);
+                    tab[i][j].setImage(ensembleImage.get("OuvertH"));
                 } else if (ms instanceof OuvertDroite) {
-                    ImageView img;
-
-                    img = new ImageView(ensembleImage.get("OuvertD").getPath());
-
-                    tab[i][j] = img;
-
-                    grid.add(tab[i][j], j, i);
+                    tab[i][j].setImage(ensembleImage.get("OuvertD"));
                 } else if (ms instanceof OuvertGauche) {
-                    ImageView img;
-
-                    img = new ImageView(ensembleImage.get("OuvertG").getPath());
-
-                    tab[i][j] = img;
-
-                    grid.add(tab[i][j], j, i);
+                    tab[i][j].setImage(ensembleImage.get("OuvertG"));
                 } else if (ms instanceof PorteFantome) {
-                    ImageView img;
-
-                    img = new ImageView(ensembleImage.get("PorteFantome").getPath());
-
-                    tab[i][j] = img;
-
-                    grid.add(tab[i][j], j, i);
+                    tab[i][j].setImage(ensembleImage.get("PorteFantome"));
                 } else {
-                    ImageView img;
-                    img = new ImageView(ensembleImage.get("fond").getPath());
-                    tab[i][j] = img;
-
-                    grid.add(tab[i][j], j, i);
+                    tab[i][j].setImage(ensembleImage.get("fond"));
                 }
-
             }
 
             Point point = grille.getGrilleDynamique().get(pacman);
 
             Action action = pacman.getAction();
-            ImageView img;
 
             if (action == Action.Droite) {
-                img = new ImageView(ensembleImage.get("pacmanDroite0").getPath());
+                tab[point.y][point.x].setImage(ensembleImage.get("pacmanDroite0"));
             } else if (action == Action.Gauche) {
-                img = new ImageView(ensembleImage.get("pacmanGauche0").getPath());
+                tab[point.y][point.x].setImage(ensembleImage.get("pacmanGauche0"));
             } else if (action == Action.Bas) {
-                img = new ImageView(ensembleImage.get("pacmanBas0").getPath());
+                tab[point.y][point.x].setImage(ensembleImage.get("pacmanBas0"));
             } else {
-                img = new ImageView(ensembleImage.get("pacmanHaut0").getPath());
+                tab[point.y][point.x].setImage(ensembleImage.get("pacmanHaut0"));
             }
 
-            tab[point.y][point.x] = img;
-
-            grid.add(tab[point.y][point.x], point.x, point.y);
-
             point = grille.getGrilleDynamique().get(fantomeRouge);
-
-            img = new ImageView(ensembleImage.get("fantome_rouge").getPath());
-
-            tab[point.y][point.x] = img;
-
-            grid.add(tab[point.y][point.x], point.x, point.y);
+            
+            tab[point.y][point.x].setImage(ensembleImage.get("fantomeRouge"));
 
             point = grille.getGrilleDynamique().get(fantomeBleu);
 
-            img = new ImageView(ensembleImage.get("fantomeBleu").getPath());
+            tab[point.y][point.x].setImage(ensembleImage.get("fantomeBleu"));
+            
+            point = grille.getGrilleDynamique().get(fantomeVert);
 
-            tab[point.y][point.x] = img;
-
-            grid.add(tab[point.y][point.x], point.x, point.y);
+            tab[point.y][point.x].setImage(ensembleImage.get("fantomeVert"));
 
         }
 
@@ -288,58 +235,54 @@ public class SimpleVC extends Application {
 
     private void initialisationImages() {
         // Pacman.svg.png
-        ensembleImage.put("barriereFantome", new Images("images/barriereFantome.png"));// préparation des images
-        ensembleImage.put("bean", new Images("images/bean.png"));
-        ensembleImage.put("fan_mangeable", new Images("images/fan_mangeable.png"));
-        ensembleImage.put("fan_mangeable", new Images("images/fan_mangeable.png"));
-        ensembleImage.put("fantome_cyan", new Images("images/fan_cyan.png"));
-        ensembleImage.put("fantome_orange", new Images("images/fantome_orange.png"));
-        ensembleImage.put("fantome_rose", new Images("images/fantome_rose.png"));
-        ensembleImage.put("fantome_rouge", new Images("images/fantome_rouge.png"));
-        ensembleImage.put("fantomeBleu", new Images("images/fantomeBleu.png"));// préparation des images
-        ensembleImage.put("fantomePeur0", new Images("images/fantomePeur0.png"));
-        ensembleImage.put("fantomePeur1", new Images("images/fantomePeur1.png"));
-        ensembleImage.put("fantomeRose", new Images("images/fantomeRose.png"));
-        ensembleImage.put("fantomeRouge", new Images("images/fantomeRouge.png"));// préparation des images
-        ensembleImage.put("fantomeVert", new Images("images/fantomeVert.png"));
-        ensembleImage.put("gros_bean", new Images("images/gros_bean.png"));
-        ensembleImage.put("Mort0", new Images("images/Mort0.png"));
-        ensembleImage.put("Mort1", new Images("images/Mort1.png"));
-        ensembleImage.put("Mort2", new Images("images/Mort2.png"));
-        ensembleImage.put("Mort3", new Images("images/Mort3.png"));
-        ensembleImage.put("mur", new Images("images/mur.png"));
-        ensembleImage.put("mur2", new Images("images/mur2.png"));// préparation des images
-        ensembleImage.put("pacman", new Images("images/pacman.png"));
-        ensembleImage.put("pacman_2", new Images("images/pacman_2.png"));
-        ensembleImage.put("pacman_2f", new Images("images/pacman_2f.png"));
-        ensembleImage.put("pacman_3", new Images("images/pacman_3.png"));
-        ensembleImage.put("pacman_3f", new Images("images/pacman_3f.png"));
-        ensembleImage.put("pacman_4", new Images("images/pacman_4.png"));
-        ensembleImage.put("pacman_4f", new Images("images/pacman_4f.png"));
-        ensembleImage.put("pacman_f", new Images("images/pacman_f.png"));
-        ensembleImage.put("pacmanBas0", new Images("images/pacmanBas0.png"));// préparation des images
-        ensembleImage.put("pacmanBas1", new Images("images/pacmanBas1.png"));
-        ensembleImage.put("pacmanDroite0", new Images("images/pacmanDroite0.png"));
-        ensembleImage.put("pacmanDroite1", new Images("images/pacmanDroite1.png"));
-        ensembleImage.put("pacmanGauche0", new Images("images/pacmanGauche0.png"));
-        ensembleImage.put("pacmanGauche1", new Images("images/pacmanGauche1.png"));
-        ensembleImage.put("fond", new Images("images/fond.png"));
-        ensembleImage.put("pacmanHaut0", new Images("images/pacmanHaut0.png"));// préparation des images
-        ensembleImage.put("pacmanHaut1", new Images("images/pacmanHaut1.png"));
-        ensembleImage.put("pouvoir", new Images("images/pouvoir.png"));
-        ensembleImage.put("CoinD", new Images("images/coinD.png"));
-        ensembleImage.put("CoinD2", new Images("images/coinD2.png"));
-        ensembleImage.put("CoinG", new Images("images/coinG.png"));
-        ensembleImage.put("CoinG2", new Images("images/coinG2.png"));
-        ensembleImage.put("FermeD", new Images("images/fermeD.png"));
-        ensembleImage.put("FermeG", new Images("images/fermeG.png"));
-        ensembleImage.put("FermeH", new Images("images/fermeH.png"));
-        ensembleImage.put("FermeB", new Images("images/fermeB.png"));
-        ensembleImage.put("OuvertB", new Images("images/ouvertB.png"));
-        ensembleImage.put("OuvertH", new Images("images/ouvertH.png"));
-        ensembleImage.put("OuvertG", new Images("images/ouvertG.png"));
-        ensembleImage.put("OuvertD", new Images("images/ouvertD.png"));
-        ensembleImage.put("PorteFantome", new Images("images/porteFantome.png"));
+        ensembleImage.put("barriereFantome", new Image("images/barriereFantome.png"));// préparation des images
+        ensembleImage.put("bean", new Image("images/bean.png"));
+        //ensembleImage.put("fan_mangeable", new Image("images/fan_mangeable.png"));
+        //ensembleImage.put("fan_mangeable", new Image("images/fan_mangeable.png"));
+        ensembleImage.put("fantomeBleu", new Image("images/fantomeBleu.png"));// préparation des images
+        //ensembleImage.put("fantomePeur0", new ImageView("images/fantomePeur0.png"));
+        //ensembleImage.put("fantomePeur1", new ImageView("images/fantomePeur1.png"));
+        //ensembleImage.put("fantomeRose", new Image("images/fantomeRose.png"));
+        ensembleImage.put("fantomeRouge", new Image("images/fantomeRouge.png"));// préparation des images
+        ensembleImage.put("fantomeVert", new Image("images/fantomeVert.png"));
+        ensembleImage.put("gros_bean", new Image("images/gros_bean.png"));
+        //ensembleImage.put("Mort0", new Image("images/Mort0.png"));
+        //ensembleImage.put("Mort1", new Image("images/Mort1.png"));
+        //ensembleImage.put("Mort2", new Image("images/Mort2.png"));
+        //ensembleImage.put("Mort3", new Image("images/Mort3.png"));
+        ensembleImage.put("mur", new Image("images/mur.png"));
+        ensembleImage.put("mur2", new Image("images/mur2.png"));// préparation des images
+        ensembleImage.put("pacman", new Image("images/pacman.png"));
+        //ensembleImage.put("pacman_2", new Image("images/pacman_2.png"));
+        //ensembleImage.put("pacman_2f", new Image("images/pacman_2f.png"));
+        //ensembleImage.put("pacman_3", new Image("images/pacman_3.png"));
+        //ensembleImage.put("pacman_3f", new Image("images/pacman_3f.png"));
+        //ensembleImage.put("pacman_4", new Image("images/pacman_4.png"));
+        //ensembleImage.put("pacman_4f", new Image("images/pacman_4f.png"));
+        //ensembleImage.put("pacman_f", new Image("images/pacman_f.png"));
+        ensembleImage.put("pacmanBas0", new Image("images/pacmanBas0.png"));// préparation des images
+        ensembleImage.put("pacmanBas1", new Image("images/pacmanBas1.png"));
+        ensembleImage.put("pacmanDroite0", new Image("images/pacmanDroite0.png"));
+        ensembleImage.put("pacmanDroite1", new Image("images/pacmanDroite1.png"));
+        ensembleImage.put("pacmanGauche0", new Image("images/pacmanGauche0.png"));
+        ensembleImage.put("pacmanGauche1", new Image("images/pacmanGauche1.png"));
+        ensembleImage.put("fond", new Image("images/fond.png"));
+        ensembleImage.put("pacmanHaut0", new Image("images/pacmanHaut0.png"));// préparation des images
+        ensembleImage.put("pacmanHaut1", new Image("images/pacmanHaut1.png"));
+        //ensembleImage.put("pouvoir", new Image("images/pouvoir.png"));
+        ensembleImage.put("CoinD", new Image("images/coinD.png"));
+        ensembleImage.put("CoinD2", new Image("images/coinD2.png"));
+        ensembleImage.put("CoinG", new Image("images/coinG.png"));
+        ensembleImage.put("CoinG2", new Image("images/coinG2.png"));
+        ensembleImage.put("FermeD", new Image("images/fermeD.png"));
+        ensembleImage.put("FermeG", new Image("images/fermeG.png"));
+        ensembleImage.put("FermeH", new Image("images/fermeH.png"));
+        ensembleImage.put("FermeB", new Image("images/fermeB.png"));
+        ensembleImage.put("OuvertB", new Image("images/ouvertB.png"));
+        ensembleImage.put("OuvertH", new Image("images/ouvertH.png"));
+        ensembleImage.put("OuvertG", new Image("images/ouvertG.png"));
+        ensembleImage.put("OuvertD", new Image("images/ouvertD.png"));
+        ensembleImage.put("PorteFantome", new Image("images/porteFantome.png"));
 
         for (int i = 0; i < SIZE_Y; i++) { // initialisation de la grille (sans image)
             for (int j = 0; j < SIZE_X; j++) {

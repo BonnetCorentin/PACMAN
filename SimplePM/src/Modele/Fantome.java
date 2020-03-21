@@ -14,25 +14,7 @@ import java.util.Random;
 public class Fantome extends ME{
     private Boolean mangeable;
     private String couleur;
-       
-     public synchronized void action (){         
-        if (actionEnCour == Action.Bas){
-            grille.deplacementBas(this);
-        }
-        else if (actionEnCour == Action.Haut){
-            grille.deplacementHaut(this);
-        }
-        else if (actionEnCour == Action.Gauche){
-            grille.deplacementGauche(this);
-        }
-        else if (actionEnCour == Action.Droite){
-            grille.deplacementDroite(this);
-        }
-        else {
-            
-        }
-    }
-    
+           
     public Fantome (String couleur){
         this.couleur = couleur;
         mangeable=false;
@@ -42,11 +24,7 @@ public class Fantome extends ME{
     public String getCouleur (){
         return this.couleur;
     }
-    
-    public void setAction (Action action){
-        this.actionEnCour = action;
-    }
-    
+        
     public void deplacementAleatoire (){
         Random rand = new Random ();
         int a = rand.nextInt(4);

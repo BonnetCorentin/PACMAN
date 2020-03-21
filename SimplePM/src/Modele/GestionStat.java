@@ -18,4 +18,12 @@ public class GestionStat {
         score = 0;
     }
     
+    public void augmenterScore (int n){
+        score +=n;
+    }
+    
+    public int getScore (){
+        return this.score;
+    }
+    
 }
