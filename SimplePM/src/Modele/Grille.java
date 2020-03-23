@@ -24,6 +24,7 @@ public class Grille extends Observable implements Runnable {
     private GestionStat score;
 
     public Grille(PacMan p,Fantome fR,Fantome fB,Fantome fV) {
+        grilleDynamique = new HashMap <>();
         initialisation (p,fR,fB,fV);
     }
 
