@@ -184,6 +184,8 @@ public class Grille extends Observable implements Runnable {
     }
     
     public void remettrePacMandebut (){
+        getPacman ().setAction(Action.Droite);
+        getPacman ().setActionAFaire(Action.Droite);
         grilleDynamique.replace(getPacman (),new Point (1,9));
     }
 
