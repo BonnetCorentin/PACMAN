@@ -48,8 +48,10 @@ public class Grille extends Observable implements Runnable {
             @Override
             public void run() {
                 passeSurNourriture();
-                if (pacmanMort ())
-                    getPacman ().setActif();
+                if (pacmanMort ()){
+                    score.setVie();
+                    remettrePacMandebut ();
+                }
                 setChanged();
                 notifyObservers(); // notification de l'observer
             }
@@ -180,6 +182,10 @@ public class Grille extends Observable implements Runnable {
         else
             deplacementFantome ((Fantome)entiteDynamique);
     }
+    
+    public void remettrePacMandebut (){
+        grilleDynamique.replace(getPacman (),new Point (1,9));
+    }
 
     private void mondeTorique(Point point){
         if (point.y == 9 && point.x == 20) {
@@ -293,8 +299,6 @@ public class Grille extends Observable implements Runnable {
         }
     }
     
-    GestionStat gs = new GestionStat();
-    
     public Boolean pacmanMort (){
         Point point=grilleDynamique.get(getPacman ());
         if (point.equals(grilleDynamique.get(getFantomeBleu())))
@@ -303,7 +307,6 @@ public class Grille extends Observable implements Runnable {
             return true;
         if (point.equals(grilleDynamique.get(getFantomeRouge())))
             return true;
-        gs.setVie();
         return false;
     }
     
@@ -330,5 +333,9 @@ public class Grille extends Observable implements Runnable {
         grilleDynamique.put(fB, new Point(9,7));
         grilleDynamique.put(fV, new Point(11,9));
              
+    }
+    
+    public int getVie (){
+        return score.getVie();
     }
 }

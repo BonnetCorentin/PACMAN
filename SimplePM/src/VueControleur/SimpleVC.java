@@ -177,9 +177,8 @@ Button start = new Button();
 
     }
     
-    GestionStat gs = new GestionStat();
     public void decrementeVie(){
-        switch (gs.getVie()) {
+        switch (grille.getVie()) {
             case 2:
                 vie3.setVisible(false);
                 break;
