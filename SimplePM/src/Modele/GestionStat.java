@@ -14,7 +14,7 @@ public class GestionStat {
     private int score;
     
     public GestionStat (){
-        vie = 0;
+        vie = 3;
         score = 0;
     }
     
