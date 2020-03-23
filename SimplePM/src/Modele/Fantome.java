@@ -16,9 +16,11 @@ public class Fantome extends ME{
     private String couleur;
            
     public Fantome (String couleur){
+        super ();
         this.couleur = couleur;
         mangeable=false;
         actionEnCour = Action.Haut;
+        actionAFaire = Action.Haut;
     }
     
     public String getCouleur (){

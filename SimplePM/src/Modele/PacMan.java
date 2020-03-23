@@ -10,5 +10,9 @@ package Modele;
  * @author coren
  */
 public class PacMan extends ME{
-    
+    public PacMan (){
+        super ();
+        actionEnCour = Action.Droite;
+        actionAFaire = Action.Droite;
+    }
 }

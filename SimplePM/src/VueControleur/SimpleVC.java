@@ -27,10 +27,12 @@ import javafx.scene.input.KeyCode;
 import java.util.Observer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -105,21 +107,26 @@ public class SimpleVC extends Application {
         };
         // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
         
-        root.setOnKeyPressed((javafx.scene.input.KeyEvent event) -> {
-            if (event.getCode() == KeyCode.Z) {
-                pacman.setAction(Action.Haut);
-            }
-            if (event.getCode() == KeyCode.Q) {
-                pacman.setAction(Action.Gauche);
-            }
-            if (event.getCode() == KeyCode.D) {
-                pacman.setAction(Action.Droite);
-            }
-            if (event.getCode() == KeyCode.S) {
-                pacman.setAction(Action.Bas);
-            }
-        } // on écoute le clavier
-        );
+        root.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            public void handle(javafx.scene.input.KeyEvent event) {
+                if (event.getCode() == KeyCode.Z) {
+                    pacman.setActionAFaire(Action.Haut);
+                }
+                if (event.getCode() == KeyCode.Q) {
+                    pacman.setActionAFaire(Action.Gauche);
+                }
+                if (event.getCode() == KeyCode.D) {
+                    pacman.setActionAFaire(Action.Droite);
+                }
+                if (event.getCode() == KeyCode.S) {
+                    pacman.setActionAFaire(Action.Bas);
+                }
+                if (event.getCode () == KeyCode.P){
+                    grille.redemarrer (pacman,fantomeRouge,fantomeBleu,fantomeVert);
+                }
+            } // on écoute le clavier
+        });
 
         grille.addObserver(o);
         grille.start();
@@ -186,18 +193,22 @@ public class SimpleVC extends Application {
                         case "fermeD":
                             tab[i][j].setImage(ensembleImage.get("FermeD"));
                             break;
+                        case "OuvertB":
+                            tab[i][j].setImage(ensembleImage.get("OuvertB"));
+                            break;
+                        case "OuvertH":
+                            tab[i][j].setImage(ensembleImage.get("OuvertH"));
+                            break;
+                        case "OuvertG":
+                            tab[i][j].setImage(ensembleImage.get("OuvertG"));
+                            break;
+                        case "OuvertD":
+                            tab[i][j].setImage(ensembleImage.get("OuvertD"));
+                            break;
+                        case "PorteFantome":
+                           tab[i][j].setImage(ensembleImage.get("PorteFantome"));
+                           break;
                     }
-
-                } else if (ms instanceof OuvertBas) {
-                    tab[i][j].setImage(ensembleImage.get("OuvertB"));
-                } else if (ms instanceof OuvertHaut) {
-                    tab[i][j].setImage(ensembleImage.get("OuvertH"));
-                } else if (ms instanceof OuvertDroite) {
-                    tab[i][j].setImage(ensembleImage.get("OuvertD"));
-                } else if (ms instanceof OuvertGauche) {
-                    tab[i][j].setImage(ensembleImage.get("OuvertG"));
-                } else if (ms instanceof PorteFantome) {
-                    tab[i][j].setImage(ensembleImage.get("PorteFantome"));
                 } else {
                     tab[i][j].setImage(ensembleImage.get("fond"));
                 }

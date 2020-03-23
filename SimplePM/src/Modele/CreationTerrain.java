@@ -81,19 +81,19 @@ public class CreationTerrain {
                     hashmap.put(point,new Mur("fermeB"));
                 }
                 else if (tab[i][j]=='u'){
-                    hashmap.put(point,new OuvertHaut ());
+                    hashmap.put(point,new Mur("OuvertH"));
                 }
                 else if (tab[i][j]=='i'){
-                    hashmap.put(point,new OuvertGauche ());
+                    hashmap.put(point,new Mur("OuvertG"));
                 }
                 else if (tab[i][j]=='o'){
-                    hashmap.put(point,new OuvertDroite ());
+                    hashmap.put(point,new Mur("OuvertD"));
                 }
                 else if (tab[i][j]=='p'){
-                    hashmap.put(point,new OuvertBas ());
+                    hashmap.put(point,new Mur("OuvertB"));
                 }
                 else if (tab[i][j]=='d'){
-                    hashmap.put(point,new PorteFantome ());
+                    hashmap.put(point,new Mur("PorteFantome"));
                 }
                 else if (tab[i][j]=='f'){
                     hashmap.put(point,new GrosBean ());

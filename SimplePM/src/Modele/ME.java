@@ -18,11 +18,11 @@ abstract public class ME extends Observable implements Runnable {
 
     Boolean actif;
     protected Action actionEnCour;
-    protected int tempsEntreActions = 200;
+    protected Action actionAFaire;
+    protected int tempsEntreActions = 175;
     protected Grille grille;
 
     public ME() {
-        actionEnCour = Action.Droite;
         actif = true;
     }
 
@@ -31,20 +31,12 @@ abstract public class ME extends Observable implements Runnable {
     }
 
     public void action (){         
-        if (actionEnCour == Action.Bas){
-            grille.deplacementBas(this);
-        }
-        else if (actionEnCour == Action.Haut){
-            grille.deplacementHaut(this);
-        }
-        else if (actionEnCour == Action.Gauche){
-            grille.deplacementGauche(this);
-        }
-        else if (actionEnCour == Action.Droite){
-            grille.deplacementDroite(this);
-        }
+        grille.deplacement (this);
     }
     
+    public void setActionAFaire (Action action){
+        this.actionAFaire = action;
+    }
     public void setAction (Action action){
         this.actionEnCour = action;
     }
@@ -72,6 +64,11 @@ abstract public class ME extends Observable implements Runnable {
     }
 
     private void retirerEnvironnement() {
+         try{
+            wait();
+        }catch(InterruptedException IE){
+            IE.printStackTrace();   
+        }
         grille.retirerDeLenvironnement(this);
     }
 
@@ -85,6 +82,9 @@ abstract public class ME extends Observable implements Runnable {
 
     public Action getAction() {
         return this.actionEnCour;
+    }
+    public Action getActionAFaire() {
+        return this.actionAFaire;
     }
     public void setActif (){
         actif = false;

@@ -19,32 +19,25 @@ import java.util.concurrent.TimeUnit;
  */
 public class Grille extends Observable implements Runnable {
 
-    final private HashMap<ME, Point> grilleDynamique;
-    final private HashMap<Point, MS> grilleStatique;
+    private HashMap<ME, Point> grilleDynamique;
+    private HashMap<Point, MS> grilleStatique;
     private GestionStat score;
 
     public Grille(PacMan p,Fantome fR,Fantome fB,Fantome fV) {
-        score = new GestionStat ();
-        CreationTerrain creationTerrain = new CreationTerrain();
-        grilleStatique = creationTerrain.getHashMap();
-       
-
-        grilleDynamique = new HashMap<>();
-        grilleDynamique.put(p, new Point(1, 9));
-        grilleDynamique.put(fR, new Point(10, 9));
-        grilleDynamique.put(fB, new Point(9, 9));
-        grilleDynamique.put(fV, new Point(11, 9));
-        
-
+        initialisation (p,fR,fB,fV);
     }
 
     public void start() {
         new Thread(this).start();
+        startThread ();
+    }
+    
+    private void startThread (){
         grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des modèles dynamiques de la grille
-            me.start();
+                me.start (); 
         });
     }
-
+    
     @Override
     public void run() {
         final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
@@ -70,62 +63,81 @@ public class Grille extends Observable implements Runnable {
         return this.grilleStatique.get(p);
     }
 
-    public void deplacementBas(ME entiteDynamique) {
+    private void deplacementBas(ME entiteDynamique) {
         Point point = getPoint(entiteDynamique);
-        Point inter = new Point(point.x, point.y);
-        inter.y++;
+        point.y++;
 
-        if (deplacementPossible(inter)) {
-            grilleDynamique.replace(entiteDynamique, inter);
-        } else {
-            if (entiteDynamique instanceof Fantome) {
-                ((Fantome) entiteDynamique).deplacementAleatoire();
-            }
-        }
+        grilleDynamique.replace(entiteDynamique, point);
+        
     }
 
-    public void deplacementHaut(ME entiteDynamique) {
+    private void deplacementHaut(ME entiteDynamique) {
         Point point = getPoint(entiteDynamique);
-        Point inter = new Point(point.x, point.y);
-        inter.y--;
+        point.y--;
 
-        if (deplacementPossible(inter)) {
-            grilleDynamique.replace(entiteDynamique, inter);
-        } else {
-            if (entiteDynamique instanceof Fantome) {
-                ((Fantome) entiteDynamique).deplacementAleatoire();
-            }
-        }
+        grilleDynamique.replace(entiteDynamique, point);
+        
     }
 
-    public void deplacementDroite(ME entiteDynamique) {
+    private void deplacementDroite(ME entiteDynamique) {
         Point point = getPoint(entiteDynamique);
-        Point inter = new Point(point.x, point.y);
-        inter.x++;
+        point.x++;
 
-        if (deplacementPossible(inter)) {
-            grilleDynamique.replace(entiteDynamique, inter);
-        } else {
-            if (entiteDynamique instanceof Fantome) {
-                ((Fantome) entiteDynamique).deplacementAleatoire();
-            }
-        }
+        grilleDynamique.replace(entiteDynamique, point);
+        
     }
 
-    public void deplacementGauche(ME entiteDynamique) {
+    private void deplacementGauche(ME entiteDynamique) {
         Point point = getPoint(entiteDynamique);
-        Point inter = new Point(point.x, point.y);
-        inter.x--;
-
-        if (deplacementPossible(inter)) {
-            grilleDynamique.replace(entiteDynamique, inter);
-        } else {
-            if (entiteDynamique instanceof Fantome) {
-                ((Fantome) entiteDynamique).deplacementAleatoire();
-            }
+        point.x--;
+        
+        grilleDynamique.replace(entiteDynamique, point);
+    }
+    
+    private void choixDeplacement (Action action,ME entiteDynamique){
+        switch (action){
+                    case Bas:
+                        deplacementBas (entiteDynamique);
+                    break;
+                    case Haut:
+                        deplacementHaut (entiteDynamique);
+                    break;
+                    case Droite:
+                        deplacementDroite (entiteDynamique);
+                    break;
+                    case Gauche:
+                        deplacementGauche (entiteDynamique);
+                    break;
+                    default:
+                    break;
+                }
+    }
+    
+    public void deplacement (ME entiteDynamique){
+        if (deplacementPossible (getPoint (entiteDynamique),entiteDynamique.getActionAFaire())){
+            if (entiteDynamique instanceof PacMan)
+                choixDeplacement (entiteDynamique.getActionAFaire(),entiteDynamique);
+            entiteDynamique.setAction(entiteDynamique.getActionAFaire());
         }
+        else {
+            if (deplacementPossible (getPoint (entiteDynamique),entiteDynamique.getAction())){
+                choixDeplacement(entiteDynamique.getAction(),entiteDynamique);
+            }
+                
+        }
+        
+        mondeTorique (getPoint (entiteDynamique));
     }
 
+    private void mondeTorique(Point point){
+        if (point.y == 9 && point.x == 20) {
+            point.x = 0;
+        }
+        if (point.y == 9 && point.x == -1) {
+            point.x = 19;
+        }
+    }
+    
     public void retirerDeLenvironnement(ME me) {
         grilleDynamique.remove(me);
     }
@@ -135,20 +147,31 @@ public class Grille extends Observable implements Runnable {
         return point;
     }
 
-    private Boolean deplacementPossible(Point point) {
+    private Boolean deplacementPossible(Point point, Action action) {
         Boolean possible = true;
+        Point inter = new Point(point.x, point.y);
+        
+        switch (action){
+            case Bas:
+                inter.y++;
+            break;
+            case Haut:
+                inter.y--;
+            break;
+            case Droite:
+                inter.x++;
+            break;
+            case Gauche:
+                inter.x--;
+            break;
+            default:
+                    break;
+        }
 
-        if (grilleStatique.get(point) instanceof Mur) {
+        if (grilleStatique.get(inter) instanceof Mur) {
             possible = false;
-        }
-
-        if (point.y == 9 && point.x == 20) {
-            point.x = 0;
-        }
-        if (point.y == 9 && point.x == -1) {
-            point.x = 19;
-        }
-
+        }     
+        
         return possible;
     }
 
@@ -228,5 +251,29 @@ public class Grille extends Observable implements Runnable {
             return true;
         
         return false;
+    }
+    
+    public void redemarrer (PacMan p,Fantome fR,Fantome fB,Fantome fV){
+        initialisation (p,fR,fB,fV);
+    }
+    
+    private void initialisation (PacMan p,Fantome fR,Fantome fB,Fantome fV){
+        score = new GestionStat ();
+        CreationTerrain creationTerrain = new CreationTerrain();
+        grilleStatique = creationTerrain.getHashMap();
+        
+        if (!grilleDynamique.isEmpty()){
+            grilleDynamique.remove (p);
+            grilleDynamique.remove (fR);
+            grilleDynamique.remove (fB);
+            grilleDynamique.remove (fV);
+        }
+        
+        grilleDynamique = new HashMap<>();
+        grilleDynamique.put(p, new Point(1,9));
+        grilleDynamique.put(fR, new Point(10,9));
+        grilleDynamique.put(fB, new Point(9,7));
+        grilleDynamique.put(fV, new Point(11,9));
+                
     }
 }
