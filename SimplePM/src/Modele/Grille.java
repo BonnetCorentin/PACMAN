@@ -133,8 +133,12 @@ public class Grille extends Observable implements Runnable {
     private void deplacementFantome (Fantome fantome){
         switch (fantome.getCouleur()){
             case "rouge":
+                deplacementFantomeBleu (fantome);
             break;
             case "bleu":
+                deplacementFantomeBleu (fantome);
+            break;
+            case "vert":
                 deplacementFantomeBleu (fantome);
             break;
         }
@@ -143,29 +147,25 @@ public class Grille extends Observable implements Runnable {
     }
     
     private void deplacementFantomeBleu (Fantome fantome){
-        if (deplacementPossible (grilleDynamique.get(fantome),fantome.getActionAFaire())){
-            choixDeplacement (fantome.getActionAFaire(),fantome);
-            fantome.setAction (fantome.getActionAFaire ());            
-        }
-        
         if (deplacementPossible (grilleDynamique.get(fantome),fantome.getAction())){
             choixDeplacement (fantome.getAction(),fantome);
+            fantome.setAction (fantome.getAction());            
         }
         else {
             Random rand = new Random ();
             int a = rand.nextInt(4);
             switch (a){
                 case 0:
-                    fantome.setActionAFaire(Action.Haut);
+                    fantome.setAction(Action.Haut);
                 break;
                 case 1: 
-                    fantome.setActionAFaire(Action.Gauche);
+                    fantome.setAction(Action.Gauche);
                 break;
                 case 2:
-                    fantome.setActionAFaire(Action.Bas);
+                    fantome.setAction(Action.Bas);
                 break;
                 case 3:
-                    fantome.setActionAFaire(Action.Droite);
+                    fantome.setAction(Action.Droite);
                 break;
                 default:
                     System.out.println ("a");
@@ -257,7 +257,7 @@ public class Grille extends Observable implements Runnable {
         return null;
     }
     
-     public Fantome getFantomeVert() {
+    public Fantome getFantomeVert() {
         for (ME me : grilleDynamique.keySet()) {
             if (me instanceof Fantome) {
                 if ("vert".equals(((Fantome) me).getCouleur())) {
@@ -323,9 +323,8 @@ public class Grille extends Observable implements Runnable {
         
         grilleDynamique = new HashMap<>();
         grilleDynamique.put(p, new Point(1,9));
-        grilleDynamique.put(fR, new Point(10,9));
+        grilleDynamique.put(fR, new Point(10,7));
         grilleDynamique.put(fB, new Point(9,7));
-        grilleDynamique.put(fV, new Point(11,9));
-                
+        grilleDynamique.put(fV, new Point(11,7));          
     }
 }
