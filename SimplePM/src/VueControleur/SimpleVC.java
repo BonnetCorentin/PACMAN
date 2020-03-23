@@ -233,6 +233,10 @@ Button start = new Button();
                 }
                 if (event.getCode () == KeyCode.P){
                     grille.redemarrer (pacman,fantomeRouge,fantomeBleu,fantomeVert);
+                    vie3.setVisible(true);
+                    vie2.setVisible(true);
+                    vie.setVisible(true);
+                    gameOverView.setVisible(false);
                 }
             } // on écoute le clavier
         });
