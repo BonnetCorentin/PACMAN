@@ -84,8 +84,10 @@ public class SimpleVC extends Application {
     VBox affichage = new VBox();
 
 
-Image im =  new Image("images/fond.jpg");
-    Image scoreLab =  new Image("images/ScorePM.jpg"); 
+    Image im =  new Image("images/fond.jpg");
+    Image scoreLab =  new Image("images/ScorePM.jpg");
+    Image gameOver =  new Image("images/GameOver.jpg"); 
+    ImageView gameOverView = new ImageView(gameOver);
     ImageView scoreLabView = new ImageView(scoreLab);
     Label score=new Label(" 0");
     Label vie=new Label(" ♥ ");
@@ -127,6 +129,10 @@ Button start = new Button();
         root = new StackPane();
         grid.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(grid);
+        gameOverView.setTranslateX(0);
+        gameOverView.setTranslateY(0);
+        gameOverView.setVisible(false);
+        root.getChildren().add(gameOverView);
         
         vie.setFont(new Font("Arial",30));
         vie.setTextFill(Color.web("#FFFFFF"));
@@ -191,6 +197,7 @@ Button start = new Button();
                 vie3.setVisible(false);
                 vie2.setVisible(false);
                 vie.setVisible(false);
+                gameOverView.setVisible(true);
                 break;
         }
     }
