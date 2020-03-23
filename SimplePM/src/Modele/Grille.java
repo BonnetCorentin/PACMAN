@@ -8,6 +8,7 @@ package Modele;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -114,20 +115,70 @@ public class Grille extends Observable implements Runnable {
                 }
     }
     
-    public void deplacement (ME entiteDynamique){
-        if (deplacementPossible (getPoint (entiteDynamique),entiteDynamique.getActionAFaire())){
-            if (entiteDynamique instanceof PacMan)
-                choixDeplacement (entiteDynamique.getActionAFaire(),entiteDynamique);
-            entiteDynamique.setAction(entiteDynamique.getActionAFaire());
+    private void deplacementPacman (PacMan pacman){
+        if (deplacementPossible (getPoint (pacman),pacman.getActionAFaire())){
+            choixDeplacement (pacman.getActionAFaire(),pacman);
+            pacman.setAction(pacman.getActionAFaire());
         }
         else {
-            if (deplacementPossible (getPoint (entiteDynamique),entiteDynamique.getAction())){
-                choixDeplacement(entiteDynamique.getAction(),entiteDynamique);
+            if (deplacementPossible (getPoint (pacman),pacman.getAction())){
+                choixDeplacement(pacman.getAction(),pacman);
             }
                 
         }
         
-        mondeTorique (getPoint (entiteDynamique));
+        mondeTorique (getPoint (pacman));
+    }
+    
+    private void deplacementFantome (Fantome fantome){
+        switch (fantome.getCouleur()){
+            case "rouge":
+            break;
+            case "bleu":
+                deplacementFantomeBleu (fantome);
+            break;
+        }
+        
+        mondeTorique (getPoint (fantome));
+    }
+    
+    private void deplacementFantomeBleu (Fantome fantome){
+        if (deplacementPossible (grilleDynamique.get(fantome),fantome.getActionAFaire())){
+            choixDeplacement (fantome.getActionAFaire(),fantome);
+            fantome.setAction (fantome.getActionAFaire ());            
+        }
+        
+        if (deplacementPossible (grilleDynamique.get(fantome),fantome.getAction())){
+            choixDeplacement (fantome.getAction(),fantome);
+        }
+        else {
+            Random rand = new Random ();
+            int a = rand.nextInt(4);
+            switch (a){
+                case 0:
+                    fantome.setActionAFaire(Action.Haut);
+                break;
+                case 1: 
+                    fantome.setActionAFaire(Action.Gauche);
+                break;
+                case 2:
+                    fantome.setActionAFaire(Action.Bas);
+                break;
+                case 3:
+                    fantome.setActionAFaire(Action.Droite);
+                break;
+                default:
+                    System.out.println ("a");
+                break;
+            }
+        }
+    }
+    
+    public void deplacement (ME entiteDynamique){
+        if (entiteDynamique instanceof PacMan)
+            deplacementPacman ((PacMan)entiteDynamique);
+        else
+            deplacementFantome ((Fantome)entiteDynamique);
     }
 
     private void mondeTorique(Point point){

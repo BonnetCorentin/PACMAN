@@ -20,6 +20,8 @@ import Modele.OuvertDroite;
 import Modele.OuvertGauche;
 import Modele.OuvertHaut;
 import Modele.PacMan;
+import java.awt.Button;
+import java.awt.event.ActionListener;
         
 import java.util.*;
 import java.util.Observable;
@@ -27,16 +29,38 @@ import javafx.scene.input.KeyCode;
 import java.util.Observer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -53,8 +77,24 @@ public class SimpleVC extends Application {
     GridPane grid = new GridPane(); // création de la grille 
 
     HashMap<String, Image> ensembleImage = new HashMap<>();
-    StackPane root;
-    Text t = new Text(10, 10, "0");
+    StackPane root,menu;
+    
+//HBox menuGrid = new HBox();
+    VBox affichage = new VBox();
+
+
+Image im =  new Image("images/fond.jpg");
+    Image scoreLab =  new Image("images/ScorePM.jpg"); 
+    ImageView scoreLabView = new ImageView(scoreLab);
+    Label score=new Label(" 0");
+    Label vie=new Label(" ♥ ");
+    Label vie2=new Label(" ♥ ");
+    Label vie3=new Label(" ♥ ");
+
+Button start = new Button();  
+    Button niveau= new Button();
+    Button quitter= new Button();
+
 
     
     Scene scene;
@@ -65,7 +105,6 @@ public class SimpleVC extends Application {
 
     @Override
     public void init() {
-        t.setFont(new Font(20));
         pacman = new PacMan ();
         fantomeRouge = new Fantome("rouge");
         fantomeBleu = new Fantome("bleu");
@@ -85,9 +124,53 @@ public class SimpleVC extends Application {
         fantomeBleu = grille.getFantomeBleu();
 
         root = new StackPane();
+        grid.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(grid);
-        root.getChildren().add(t);
-        scene = new Scene(root, 1000, 1000);
+        
+        vie.setFont(new Font("Arial",30));
+        vie.setTextFill(Color.web("#FFFFFF"));
+        vie.setTranslateX(12);
+        vie.setTranslateY(275);
+        root.getChildren().add(vie);
+        vie.setVisible(true);
+        
+        vie2.setFont(new Font("Arial",30));
+        vie2.setTextFill(Color.web("#FFFFFF"));
+        vie2.setTranslateX(36);
+        vie2.setTranslateY(275);
+        root.getChildren().add(vie2);
+        vie2.setVisible(true);
+        
+        vie3.setFont(new Font("Arial",30));
+        vie3.setTextFill(Color.web("#FFFFFF"));
+        vie3.setTranslateX(60);
+        vie3.setTranslateY(275);
+        root.getChildren().add(vie3);
+        vie3.setVisible(true);
+        
+        scoreLabView.setTranslateX(190);
+        scoreLabView.setTranslateY(550);
+        affichage.getChildren().setAll(scoreLabView);         
+        
+        score.setFont(new Font("Arial",30));
+        score.setTextFill(Color.web("#FFFFFF"));
+        score.setTranslateX(310);
+        score.setTranslateY(458);
+        affichage.getChildren().add(score);
+        
+        affichage.setBackground(new Background(new BackgroundImage(im, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        
+        affichage.getChildren().add(root);
+        scene = new Scene(affichage, 600, 700);
+
+        //menuGrid.setSpacing(10);
+        //start.addActionListener((ActionListener) this);
+        //niveau.addActionListener((ActionListener) this);
+        //quitter.addActionListener((ActionListener) this);
+        //menuGrid.getChildren().add(start);
+        //menuGrid.getChildren().add(niveau);
+        //menuGrid.getChildren().add(quitter);
+        //scene2 = new Scene(menuGrid, 1000,1000);
         
         textureInit();
 
@@ -101,7 +184,7 @@ public class SimpleVC extends Application {
                 @Override
                 public void run() {
                     textureInit ();                   
-                    t.setText (String.valueOf(grille.getScore()));
+                    score.setText(String.valueOf(grille.getScore()));
                 }
             });
         };
@@ -131,9 +214,20 @@ public class SimpleVC extends Application {
         grille.addObserver(o);
         grille.start();
         
-        primaryStage.setTitle("PAC MAN!");
+        //primaryStage.setScene(scene2);
+        //primaryStage.show();
+        
+        primaryStage.setTitle("PAC MAN!");        //Créer la grille
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        @Override
+            public void handle(WindowEvent event) {
+                System.exit(0);
+                throw new UnsupportedOperationException("Not supported yet."); 
+            }
+        });
         grid.requestFocus();
     }
 
@@ -311,6 +405,10 @@ public class SimpleVC extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void handle(Event event) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
