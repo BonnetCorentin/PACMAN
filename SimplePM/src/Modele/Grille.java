@@ -176,7 +176,7 @@ public class Grille extends Observable implements Runnable {
         }
     }
     
-    public void deplacement (ME entiteDynamique){
+    synchronized public void deplacement (ME entiteDynamique){
         if (entiteDynamique instanceof PacMan)
             deplacementPacman ((PacMan)entiteDynamique);
         else
