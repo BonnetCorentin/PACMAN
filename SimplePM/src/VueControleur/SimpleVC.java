@@ -9,6 +9,7 @@ import Modele.Action;
 import java.awt.Point;
 import Modele.Couloir;
 import Modele.Fantome;
+import Modele.GestionStat;
 import Modele.Grille;
 import Modele.GrosBean;
 
@@ -175,6 +176,24 @@ Button start = new Button();
         textureInit();
 
     }
+    
+    GestionStat gs = new GestionStat();
+    public void decrementeVie(){
+        switch (gs.getVie()) {
+            case 2:
+                vie3.setVisible(false);
+                break;
+            case 1:
+                vie3.setVisible(false);
+                vie2.setVisible(false);
+                break;
+            case 0:
+                vie3.setVisible(false);
+                vie2.setVisible(false);
+                vie.setVisible(false);
+                break;
+        }
+    }
 
     @Override
 
@@ -183,7 +202,8 @@ Button start = new Button();
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    textureInit ();                   
+                    textureInit ();
+                    decrementeVie();
                     score.setText(String.valueOf(grille.getScore()));
                 }
             });
@@ -398,8 +418,7 @@ Button start = new Button();
                 grid.add(img, j, i);
             }
         }
-    }
-
+    } 
     /**
      * @param args the command line arguments
      */

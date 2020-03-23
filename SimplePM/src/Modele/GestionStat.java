@@ -26,4 +26,17 @@ public class GestionStat {
         return this.score;
     }
     
+    public int getVie(){
+        return vie;
+    }
+    
+    public void setVie(){
+        if(vie>0){
+        vie = vie-1;
+        }
+        else{
+            System.out.println("GameOver");
+        }
+    }
+    
 }

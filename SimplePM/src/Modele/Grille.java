@@ -293,6 +293,8 @@ public class Grille extends Observable implements Runnable {
         }
     }
     
+    GestionStat gs = new GestionStat();
+    
     public Boolean pacmanMort (){
         Point point=grilleDynamique.get(getPacman ());
         if (point.equals(grilleDynamique.get(getFantomeBleu())))
@@ -301,9 +303,10 @@ public class Grille extends Observable implements Runnable {
             return true;
         if (point.equals(grilleDynamique.get(getFantomeRouge())))
             return true;
-        
+        gs.setVie();
         return false;
     }
+    
     
     public void redemarrer (PacMan p,Fantome fR,Fantome fB,Fantome fV){
         initialisation (p,fR,fB,fV);
@@ -326,6 +329,6 @@ public class Grille extends Observable implements Runnable {
         grilleDynamique.put(fR, new Point(10,9));
         grilleDynamique.put(fB, new Point(9,7));
         grilleDynamique.put(fV, new Point(11,9));
-                
+             
     }
 }
