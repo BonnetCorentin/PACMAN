@@ -19,7 +19,7 @@ abstract public class ME extends Observable implements Runnable {
     Boolean actif;
     protected Action actionEnCour;
     protected Action actionAFaire;
-    protected int tempsEntreActions = 175;
+    protected int tempsEntreActions = 200;
     protected Grille grille;
 
     public ME() {

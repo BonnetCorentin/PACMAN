@@ -26,27 +26,4 @@ public class Fantome extends ME{
     public String getCouleur (){
         return this.couleur;
     }
-        
-    public void deplacementAleatoire (){
-        Random rand = new Random ();
-        int a = rand.nextInt(4);
-        
-        switch (a){
-            case 0:
-                actionEnCour = Action.Haut;
-            break;
-            case 1:
-                actionEnCour = Action.Gauche;
-            break;
-            case 2:
-                actionEnCour = Action.Bas;
-            break;
-            case 3:
-                actionEnCour = Action.Droite;
-            break;
-            default:
-                System.out.println ("a");
-            break;
-        }
-    }
 }
