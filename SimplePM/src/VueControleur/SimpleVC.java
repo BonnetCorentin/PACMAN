@@ -9,55 +9,45 @@ import Modele.Action;
 import java.awt.Point;
 import Modele.Couloir;
 import Modele.Fantome;
-import Modele.GestionStat;
+
 import Modele.Grille;
 import Modele.GrosBean;
 
 import Modele.MS;
 import Modele.Mangeable;
 import Modele.Mur;
-import Modele.OuvertBas;
-import Modele.OuvertDroite;
-import Modele.OuvertGauche;
-import Modele.OuvertHaut;
+
 import Modele.PacMan;
 import java.awt.Button;
-import java.awt.event.ActionListener;
+
         
 import java.util.*;
 import java.util.Observable;
 import javafx.scene.input.KeyCode;
 import java.util.Observer;
-import javafx.application.Application;
+
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.CornerRadii;
+
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -81,22 +71,21 @@ public class SimpleVC extends Application {
     StackPane root,menu;
     
 //HBox menuGrid = new HBox();
-    VBox affichage = new VBox();
+    VBox affichage;
 
 
-    Image im =  new Image("images/fond.jpg");
-    Image scoreLab =  new Image("images/ScorePM.jpg");
-    Image gameOver =  new Image("images/GameOver.jpg"); 
-    ImageView gameOverView = new ImageView(gameOver);
-    ImageView scoreLabView = new ImageView(scoreLab);
-    Label score=new Label(" 0");
-    Label vie=new Label(" ♥ ");
-    Label vie2=new Label(" ♥ ");
-    Label vie3=new Label(" ♥ ");
+    Image im;
 
-Button start = new Button();  
+    ImageView gameOverView;
+    ImageView scoreLabView;
+    Label score;
+    Label vie;
+    Label vie2;
+    Label vie3;
+
+    /*Button start = new Button();  
     Button niveau= new Button();
-    Button quitter= new Button();
+    Button quitter= new Button();*/
 
 
     
@@ -105,6 +94,7 @@ Button start = new Button();
     Fantome fantomeRouge;
     Fantome fantomeBleu;
     Fantome fantomeVert;
+    Fantome fantomeRose;
 
     @Override
     public void init() {
@@ -112,19 +102,21 @@ Button start = new Button();
         fantomeRouge = new Fantome("rouge");
         fantomeBleu = new Fantome("bleu");
         fantomeVert = new Fantome("vert");
+        fantomeRose = new Fantome("rose");
         
-        grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert);
+        grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
                
         grille.getPacman().setGrille(grille);
         grille.getFantomeBleu().setGrille(grille);
         grille.getFantomeVert().setGrille(grille);
         grille.getFantomeRouge().setGrille(grille);
+        grille.getFantomeRose().setGrille(grille);
         
         initialisationImages();
 
-        pacman = grille.getPacman();
-        fantomeRouge = grille.getFantomeRouge();
-        fantomeBleu = grille.getFantomeBleu();
+        //pacman = grille.getPacman();
+        //fantomeRouge = grille.getFantomeRouge();
+        //fantomeBleu = grille.getFantomeBleu();
 
         root = new StackPane();
         grid.setAlignment(Pos.TOP_CENTER);
@@ -232,7 +224,7 @@ Button start = new Button();
                     pacman.setActionAFaire(Action.Bas);
                 }
                 if (event.getCode () == KeyCode.P){
-                    grille.redemarrer (pacman,fantomeRouge,fantomeBleu,fantomeVert);
+                    grille.redemarrer (pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
                     vie3.setVisible(true);
                     vie2.setVisible(true);
                     vie.setVisible(true);
@@ -351,18 +343,38 @@ Button start = new Button();
             } else {
                 tab[point.y][point.x].setImage(ensembleImage.get("pacmanHaut0"));
             }
-
-            point = grille.getGrilleDynamique().get(fantomeRouge);
             
-            tab[point.y][point.x].setImage(ensembleImage.get("fantomeRouge"));
+            if (Fantome.estMangeable ()){
+                point = grille.getGrilleDynamique().get(fantomeRouge);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+            }else {
+                point = grille.getGrilleDynamique().get(fantomeRouge);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeRouge"));
+            }
 
-            point = grille.getGrilleDynamique().get(fantomeBleu);
+            if (Fantome.estMangeable ()){
+                point = grille.getGrilleDynamique().get(fantomeBleu);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+            }else {
+                point = grille.getGrilleDynamique().get(fantomeBleu);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeBleu"));
+            }
 
-            tab[point.y][point.x].setImage(ensembleImage.get("fantomeBleu"));
+            if (Fantome.estMangeable ()){
+                point = grille.getGrilleDynamique().get(fantomeVert);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+            }else {
+                point = grille.getGrilleDynamique().get(fantomeVert);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeVert"));
+            }
             
-            point = grille.getGrilleDynamique().get(fantomeVert);
-
-            tab[point.y][point.x].setImage(ensembleImage.get("fantomeVert"));
+            if (Fantome.estMangeable ()){
+                point = grille.getGrilleDynamique().get(fantomeRose);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+            }else {
+                point = grille.getGrilleDynamique().get(fantomeRose);
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeRose"));
+            }
 
         }
 
@@ -372,12 +384,8 @@ Button start = new Button();
         // Pacman.svg.png
         ensembleImage.put("barriereFantome", new Image("images/barriereFantome.png"));// préparation des images
         ensembleImage.put("bean", new Image("images/bean.png"));
-        //ensembleImage.put("fan_mangeable", new Image("images/fan_mangeable.png"));
-        //ensembleImage.put("fan_mangeable", new Image("images/fan_mangeable.png"));
         ensembleImage.put("fantomeBleu", new Image("images/fantomeBleu.png"));// préparation des images
-        //ensembleImage.put("fantomePeur0", new ImageView("images/fantomePeur0.png"));
-        //ensembleImage.put("fantomePeur1", new ImageView("images/fantomePeur1.png"));
-        //ensembleImage.put("fantomeRose", new Image("images/fantomeRose.png"));
+        ensembleImage.put("fantomeRose", new Image("images/fantomeRose.png"));
         ensembleImage.put("fantomeRouge", new Image("images/fantomeRouge.png"));// préparation des images
         ensembleImage.put("fantomeVert", new Image("images/fantomeVert.png"));
         ensembleImage.put("gros_bean", new Image("images/gros_bean.png"));
@@ -388,13 +396,7 @@ Button start = new Button();
         ensembleImage.put("mur", new Image("images/mur.png"));
         ensembleImage.put("mur2", new Image("images/mur2.png"));// préparation des images
         ensembleImage.put("pacman", new Image("images/pacman.png"));
-        //ensembleImage.put("pacman_2", new Image("images/pacman_2.png"));
-        //ensembleImage.put("pacman_2f", new Image("images/pacman_2f.png"));
-        //ensembleImage.put("pacman_3", new Image("images/pacman_3.png"));
-        //ensembleImage.put("pacman_3f", new Image("images/pacman_3f.png"));
-        //ensembleImage.put("pacman_4", new Image("images/pacman_4.png"));
-        //ensembleImage.put("pacman_4f", new Image("images/pacman_4f.png"));
-        //ensembleImage.put("pacman_f", new Image("images/pacman_f.png"));
+        ensembleImage.put("fantomeMangeable", new Image("images/fan_mangeable.png"));
         ensembleImage.put("pacmanBas0", new Image("images/pacmanBas0.png"));// préparation des images
         ensembleImage.put("pacmanBas1", new Image("images/pacmanBas1.png"));
         ensembleImage.put("pacmanDroite0", new Image("images/pacmanDroite0.png"));
@@ -404,7 +406,6 @@ Button start = new Button();
         ensembleImage.put("fond", new Image("images/fond.png"));
         ensembleImage.put("pacmanHaut0", new Image("images/pacmanHaut0.png"));// préparation des images
         ensembleImage.put("pacmanHaut1", new Image("images/pacmanHaut1.png"));
-        //ensembleImage.put("pouvoir", new Image("images/pouvoir.png"));
         ensembleImage.put("CoinD", new Image("images/coinD.png"));
         ensembleImage.put("CoinD2", new Image("images/coinD2.png"));
         ensembleImage.put("CoinG", new Image("images/coinG.png"));
@@ -418,6 +419,20 @@ Button start = new Button();
         ensembleImage.put("OuvertG", new Image("images/ouvertG.png"));
         ensembleImage.put("OuvertD", new Image("images/ouvertD.png"));
         ensembleImage.put("PorteFantome", new Image("images/porteFantome.png"));
+        
+        affichage = new VBox();
+        im =  new Image("images/fond.jpg");
+        
+        Image scoreLab =  new Image("images/ScorePM.jpg");
+        Image gameOver =  new Image("images/GameOver.jpg"); 
+        
+        gameOverView = new ImageView(gameOver);
+        scoreLabView = new ImageView(scoreLab);
+        
+        score=new Label(" 0");
+        vie=new Label(" ♥ ");
+        vie2=new Label(" ♥ ");
+        vie3=new Label(" ♥ ");
 
         for (int i = 0; i < SIZE_Y; i++) { // initialisation de la grille (sans image)
             for (int j = 0; j < SIZE_X; j++) {

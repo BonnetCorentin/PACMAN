@@ -23,10 +23,12 @@ public class Grille extends Observable implements Runnable {
     private HashMap<ME, Point> grilleDynamique;
     private HashMap<Point, MS> grilleStatique;
     private GestionStat score;
+    private int actif;
 
-    public Grille(PacMan p,Fantome fR,Fantome fB,Fantome fV) {
+    public Grille(PacMan p,Fantome fR,Fantome fB,Fantome fV,Fantome fRo) {
+        actif = 5;
         grilleDynamique = new HashMap <>();
-        initialisation (p,fR,fB,fV);
+        initialisation (p,fR,fB,fV,fRo);
     }
 
     public void start() {
@@ -48,10 +50,16 @@ public class Grille extends Observable implements Runnable {
             @Override
             public void run() {
                 passeSurNourriture();
-                if (pacmanMort ()){
+                
+                if (!Fantome.estMangeable()){
+                    if (pacmanMort ()){
                     score.setVie();
                     remettrePacMandebut ();
+                    }
+                }else {
+                    Fantome.decrementerTempsMangeable();
                 }
+                
                 setChanged();
                 notifyObservers(); // notification de l'observer
             }
@@ -170,7 +178,6 @@ public class Grille extends Observable implements Runnable {
                     fantome.setAction(Action.Droite);
                 break;
                 default:
-                    System.out.println ("a");
                 break;
             }
         }
@@ -288,20 +295,45 @@ public class Grille extends Observable implements Runnable {
         }
         return null;
     }
+    
+    public Fantome getFantomeRose() {
+        for (ME me : grilleDynamique.keySet()) {
+            if (me instanceof Fantome) {
+                if ("rose".equals(((Fantome) me).getCouleur())) {
+                    return (Fantome) me;
+                }
+            }
+
+        }
+        return null;
+    }
 
     private void passeSurNourriture() {
         Point point = new Point(grilleDynamique.get(getPacman ()));
 
         if (grilleStatique.get(point) instanceof Couloir) {
-            if (!((Mangeable) grilleStatique.get(point)).getEstMange()){
+            if (!((Mangeable)grilleStatique.get(point)).getEstMange()){
                 ((Mangeable) grilleStatique.get(point)).estMange();
                 score.augmenterScore(10);
             }
             
         }
+        
+        if (grilleStatique.get(point) instanceof GrosBean) {
+            if (!((Mangeable)grilleStatique.get(point)).getEstMange()){
+                ((Mangeable) grilleStatique.get(point)).estMange();
+                score.augmenterScore(20);
+                setFantomeMangeable ();
+            }
+            
+        }
     }
     
-    public Boolean pacmanMort (){
+    private void setFantomeMangeable (){
+        Fantome.setMangeable ();
+    }
+    
+   synchronized public Boolean pacmanMort (){
         Point point=grilleDynamique.get(getPacman ());
         if (point.equals(grilleDynamique.get(getFantomeBleu())))
             return true;
@@ -313,11 +345,11 @@ public class Grille extends Observable implements Runnable {
     }
     
     
-    public void redemarrer (PacMan p,Fantome fR,Fantome fB,Fantome fV){
-        initialisation (p,fR,fB,fV);
+    public void redemarrer (PacMan p,Fantome fR,Fantome fB,Fantome fV,Fantome fRo){
+        initialisation (p,fR,fB,fV,fRo);
     }
     
-    private void initialisation (PacMan p,Fantome fR,Fantome fB,Fantome fV){
+    private void initialisation (PacMan p,Fantome fR,Fantome fB,Fantome fV,Fantome fRo){
         score = new GestionStat ();
         CreationTerrain creationTerrain = new CreationTerrain();
         grilleStatique = creationTerrain.getHashMap();
@@ -327,13 +359,15 @@ public class Grille extends Observable implements Runnable {
             grilleDynamique.remove (fR);
             grilleDynamique.remove (fB);
             grilleDynamique.remove (fV);
+            grilleDynamique.remove (fRo);
         }
         
         grilleDynamique = new HashMap<>();
         grilleDynamique.put(p, new Point(1,9));
         grilleDynamique.put(fR, new Point(10,7));
         grilleDynamique.put(fB, new Point(9,7));
-        grilleDynamique.put(fV, new Point(11,9));
+        grilleDynamique.put(fV, new Point(11,7));
+        grilleDynamique.put (fRo, new Point (10,9));
              
     }
     
