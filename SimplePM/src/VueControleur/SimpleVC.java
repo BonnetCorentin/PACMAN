@@ -18,7 +18,6 @@ import Modele.Mangeable;
 import Modele.Mur;
 
 import Modele.PacMan;
-import java.awt.Button;
 
         
 import java.util.*;
@@ -82,11 +81,6 @@ public class SimpleVC extends Application {
     Label vie;
     Label vie2;
     Label vie3;
-
-    /*Button start = new Button();  
-    Button niveau= new Button();
-    Button quitter= new Button();*/
-
 
     
     Scene scene;
@@ -346,7 +340,11 @@ public class SimpleVC extends Application {
             
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeRouge);
-                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                if (fantomeRouge.estMange ()){
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
+                }else {
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                }
             }else {
                 point = grille.getGrilleDynamique().get(fantomeRouge);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeRouge"));
@@ -354,7 +352,11 @@ public class SimpleVC extends Application {
 
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeBleu);
-                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                if (fantomeBleu.estMange ()){
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
+                }else {
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                }
             }else {
                 point = grille.getGrilleDynamique().get(fantomeBleu);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeBleu"));
@@ -362,7 +364,11 @@ public class SimpleVC extends Application {
 
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeVert);
-                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                if (fantomeVert.estMange ()){
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
+                }else {
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                }
             }else {
                 point = grille.getGrilleDynamique().get(fantomeVert);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeVert"));
@@ -370,7 +376,11 @@ public class SimpleVC extends Application {
             
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeRose);
-                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                if (fantomeRose.estMange ()){
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
+                }else {
+                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                }
             }else {
                 point = grille.getGrilleDynamique().get(fantomeRose);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeRose"));
@@ -397,6 +407,7 @@ public class SimpleVC extends Application {
         ensembleImage.put("mur2", new Image("images/mur2.png"));// préparation des images
         ensembleImage.put("pacman", new Image("images/pacman.png"));
         ensembleImage.put("fantomeMangeable", new Image("images/fan_mangeable.png"));
+        ensembleImage.put("fantomeMange", new Image("images/FantomePeur0.png"));
         ensembleImage.put("pacmanBas0", new Image("images/pacmanBas0.png"));// préparation des images
         ensembleImage.put("pacmanBas1", new Image("images/pacmanBas1.png"));
         ensembleImage.put("pacmanDroite0", new Image("images/pacmanDroite0.png"));

@@ -10,33 +10,39 @@ package Modele;
  * @author coren
  */
 public class GestionStat {
+
     private int vie;
     private int score;
-    
-    public GestionStat (){
+    private int nbBin;
+
+    public GestionStat() {
         vie = 3;
         score = 0;
+        nbBin = 20;
     }
-    
-    public void augmenterScore (int n){
-        score +=n;
+
+    public void augmenterScore(int n) {
+        score += n;
     }
-    
-    public int getScore (){
+
+    public int getScore() {
         return this.score;
     }
-    
-    public int getVie(){
+
+    public int getVie() {
         return vie;
     }
-    
-    public void setVie(){
-        if(vie>0){
-        vie = vie-1;
-        }
-        else{
-            System.out.println("GameOver");
-        }
+
+    public void setVie() {
+        //if (e instanceof PacMan) {
+            if (vie > 0) {
+                vie = vie - 1;
+            }
+        //}
     }
-    
+    public Boolean diminuerBin (){
+        nbBin--;
+        return(nbBin<=0);
+    }
+
 }

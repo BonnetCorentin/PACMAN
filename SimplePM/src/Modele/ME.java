@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +21,7 @@ abstract public class ME extends Observable implements Runnable {
     Boolean actif;
     protected Action actionEnCour;
     protected Action actionAFaire;
-    protected int tempsEntreActions = 150;
+    protected int tempsEntreActions = 200;
     protected Grille grille;
 
     public ME() {
@@ -30,49 +32,62 @@ abstract public class ME extends Observable implements Runnable {
         new Thread(this).start();
     }
 
-    public void action (){         
-        grille.deplacement (this);
+    public void action() {
+        synchronized (grille) {
+            grille.deplacement(this);
+        }
     }
-    
-    public void setActionAFaire (Action action){
+
+    public void setActionAFaire(Action action) {
         this.actionAFaire = action;
     }
-    public void setAction (Action action){
+
+    public void setAction(Action action) {
         this.actionEnCour = action;
     }
 
-    @Override
+     @Override
     public void run() {
-        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
-        Runnable processDataCmd = new Runnable() {
-            @Override
-            public void run() {
-                action();
-                setChanged();
-                notifyObservers();
+        while (keepGoing()) {
+            action();
+            if (Fantome.estMangeable()){
+                Fantome.decrementerTempsMangeable ();
+            }else {
+                synchronized (grille){
+                    if (grille.pacmanMort()) {
+                    grille.getGestionStat().setVie();
+                    grille.remettrePacMandebut();
+                    }
+                } 
+            }
 
-                if (!keepGoing()) {
-                    retirerEnvironnement();
-                    setChanged();
-                    notifyObservers();
-                }
+            grille.passeSurNourriture();
+
+            setChanged();
+            notifyObservers();
+
+            try {
+                Thread.sleep(tempsEntreActions);
+            } catch (InterruptedException ex) {
 
             }
-        };
-        service.scheduleAtFixedRate(processDataCmd, 0, tempsEntreActions, TimeUnit.MILLISECONDS);
+        }
+        retirerEnvironnement();
+        setChanged();
+        notifyObservers();
     }
 
-    private void retirerEnvironnement() {
-         try{
+    protected void retirerEnvironnement() {
+        try {
             wait();
-        }catch(InterruptedException IE){
-            IE.printStackTrace();   
+        } catch (InterruptedException IE) {
+            IE.printStackTrace();
         }
         grille.retirerDeLenvironnement(this);
     }
 
-    private Boolean keepGoing() {
+    protected Boolean keepGoing() {
         return actif;
     }
 
@@ -83,11 +98,13 @@ abstract public class ME extends Observable implements Runnable {
     public Action getAction() {
         return this.actionEnCour;
     }
+
     public Action getActionAFaire() {
         return this.actionAFaire;
     }
-    public void setActif (){
+
+    public void setActif() {
         actif = false;
     }
-    
+
 }

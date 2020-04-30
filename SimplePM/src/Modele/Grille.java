@@ -13,7 +13,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 /**
  *
  * @author coren
@@ -25,23 +24,23 @@ public class Grille extends Observable implements Runnable {
     private GestionStat score;
     private int actif;
 
-    public Grille(PacMan p,Fantome fR,Fantome fB,Fantome fV,Fantome fRo) {
+    public Grille(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
         actif = 5;
-        grilleDynamique = new HashMap <>();
-        initialisation (p,fR,fB,fV,fRo);
+        grilleDynamique = new HashMap<>();
+        initialisation(p, fR, fB, fV, fRo);
     }
 
     public void start() {
         new Thread(this).start();
-        startThread ();
+        startThread();
     }
-    
-    private void startThread (){
+
+    private void startThread() {
         grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des modèles dynamiques de la grille
-                me.start (); 
+            me.start();
         });
     }
-    
+
     @Override
     public void run() {
         final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
@@ -49,17 +48,6 @@ public class Grille extends Observable implements Runnable {
         Runnable processDataCmd = new Runnable() {
             @Override
             public void run() {
-                passeSurNourriture();
-                
-                if (!Fantome.estMangeable()){
-                    if (pacmanMort ()){
-                    score.setVie();
-                    remettrePacMandebut ();
-                    }
-                }else {
-                    Fantome.decrementerTempsMangeable();
-                }
-                
                 setChanged();
                 notifyObservers(); // notification de l'observer
             }
@@ -80,7 +68,7 @@ public class Grille extends Observable implements Runnable {
         point.y++;
 
         grilleDynamique.replace(entiteDynamique, point);
-        
+
     }
 
     private void deplacementHaut(ME entiteDynamique) {
@@ -88,7 +76,7 @@ public class Grille extends Observable implements Runnable {
         point.y--;
 
         grilleDynamique.replace(entiteDynamique, point);
-        
+
     }
 
     private void deplacementDroite(ME entiteDynamique) {
@@ -96,107 +84,106 @@ public class Grille extends Observable implements Runnable {
         point.x++;
 
         grilleDynamique.replace(entiteDynamique, point);
-        
+
     }
 
     private void deplacementGauche(ME entiteDynamique) {
         Point point = getPoint(entiteDynamique);
         point.x--;
-        
+
         grilleDynamique.replace(entiteDynamique, point);
     }
-    
-    private void choixDeplacement (Action action,ME entiteDynamique){
-        switch (action){
-                    case Bas:
-                        deplacementBas (entiteDynamique);
-                    break;
-                    case Haut:
-                        deplacementHaut (entiteDynamique);
-                    break;
-                    case Droite:
-                        deplacementDroite (entiteDynamique);
-                    break;
-                    case Gauche:
-                        deplacementGauche (entiteDynamique);
-                    break;
-                    default:
-                    break;
-                }
-    }
-    
-    private void deplacementPacman (PacMan pacman){
-        if (deplacementPossible (getPoint (pacman),pacman.getActionAFaire())){
-            choixDeplacement (pacman.getActionAFaire(),pacman);
-            pacman.setAction(pacman.getActionAFaire());
-        }
-        else {
-            if (deplacementPossible (getPoint (pacman),pacman.getAction())){
-                choixDeplacement(pacman.getAction(),pacman);
-            }
-                
-        }
-        
-        mondeTorique (getPoint (pacman));
-    }
-    
-    private void deplacementFantome (Fantome fantome){
-        switch (fantome.getCouleur()){
-            case "rouge":
-                deplacementFantomeBleu (fantome);
-            break;
-            case "bleu":
-                deplacementFantomeBleu (fantome);
-            break;
-            case "vert":
-                deplacementFantomeBleu (fantome);
-            break;
-        }
-        
-        mondeTorique (getPoint (fantome));
-    }
-    
-    private void deplacementFantomeBleu (Fantome fantome){
-        if (deplacementPossible (grilleDynamique.get(fantome),fantome.getAction())){
-            choixDeplacement (fantome.getAction(),fantome);
-            fantome.setAction (fantome.getAction());            
-        }
-        else {
-            Random rand = new Random ();
-            int a = rand.nextInt(4);
-            switch (a){
-                case 0:
-                    fantome.setAction(Action.Haut);
+
+    private void choixDeplacement(Action action, ME entiteDynamique) {
+        switch (action) {
+            case Bas:
+                deplacementBas(entiteDynamique);
                 break;
-                case 1: 
-                    fantome.setAction(Action.Gauche);
+            case Haut:
+                deplacementHaut(entiteDynamique);
                 break;
-                case 2:
-                    fantome.setAction(Action.Bas);
+            case Droite:
+                deplacementDroite(entiteDynamique);
                 break;
-                case 3:
-                    fantome.setAction(Action.Droite);
+            case Gauche:
+                deplacementGauche(entiteDynamique);
                 break;
-                default:
+            default:
                 break;
-            }
         }
-    }
-    
-    synchronized public void deplacement (ME entiteDynamique){
-        if (entiteDynamique instanceof PacMan)
-            deplacementPacman ((PacMan)entiteDynamique);
-        else
-            deplacementFantome ((Fantome)entiteDynamique);
-    }
-    
-    public void remettrePacMandebut (){
-        getPacman ().setAction(Action.Droite);
-        getPacman ().setActionAFaire(Action.Droite);
-        grilleDynamique.replace(getPacman (),new Point (1,9));
     }
 
-    private void mondeTorique(Point point){
+    private void deplacementPacman(PacMan pacman) {
+        if (deplacementPossible(getPoint(pacman), pacman.getActionAFaire())) {
+            choixDeplacement(pacman.getActionAFaire(), pacman);
+            pacman.setAction(pacman.getActionAFaire());
+        } else {
+            if (deplacementPossible(getPoint(pacman), pacman.getAction())) {
+                choixDeplacement(pacman.getAction(), pacman);
+            }
+
+        }
+
+        mondeTorique(getPoint(pacman));
+    }
+
+    private void deplacementFantome(Fantome fantome) {
+        switch (fantome.getCouleur()) {
+            case "rouge":
+                deplacementFantomeBleu(fantome);
+                break;
+            case "bleu":
+                deplacementFantomeBleu(fantome);
+                break;
+            case "vert":
+                deplacementFantomeBleu(fantome);
+                break;
+        }
+
+        mondeTorique(getPoint(fantome));
+    }
+
+    private void deplacementFantomeBleu(Fantome fantome) {
+        if (deplacementPossible(grilleDynamique.get(fantome), fantome.getAction())) {
+            choixDeplacement(fantome.getAction(), fantome);
+            fantome.setAction(fantome.getAction());
+        } else {
+            Random rand = new Random();
+            int a = rand.nextInt(4);
+            switch (a) {
+                case 0:
+                    fantome.setAction(Action.Haut);
+                    break;
+                case 1:
+                    fantome.setAction(Action.Gauche);
+                    break;
+                case 2:
+                    fantome.setAction(Action.Bas);
+                    break;
+                case 3:
+                    fantome.setAction(Action.Droite);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void deplacement(ME entiteDynamique) {
+        if (entiteDynamique instanceof PacMan) {
+            deplacementPacman((PacMan) entiteDynamique);
+        } else {
+            deplacementFantome((Fantome) entiteDynamique);
+        }
+    }
+
+    public void remettrePacMandebut() {
+        getPacman().setAction(Action.Droite);
+        getPacman().setActionAFaire(Action.Droite);
+        grilleDynamique.replace(getPacman(), new Point(1, 9));
+    }
+
+    private void mondeTorique(Point point) {
         if (point.y == 9 && point.x == 20) {
             point.x = 0;
         }
@@ -204,7 +191,7 @@ public class Grille extends Observable implements Runnable {
             point.x = 19;
         }
     }
-    
+
     public void retirerDeLenvironnement(ME me) {
         grilleDynamique.remove(me);
     }
@@ -217,37 +204,41 @@ public class Grille extends Observable implements Runnable {
     private Boolean deplacementPossible(Point point, Action action) {
         Boolean possible = true;
         Point inter = new Point(point.x, point.y);
-        
-        switch (action){
+
+        switch (action) {
             case Bas:
                 inter.y++;
-            break;
+                break;
             case Haut:
                 inter.y--;
-            break;
+                break;
             case Droite:
                 inter.x++;
-            break;
+                break;
             case Gauche:
                 inter.x--;
-            break;
+                break;
             default:
-                    break;
+                break;
         }
 
         if (grilleStatique.get(inter) instanceof Mur) {
             possible = false;
-        }     
-        
+        }
+
         return possible;
     }
 
     public HashMap<ME, Point> getGrilleDynamique() {
         return grilleDynamique;
     }
-    
-    public int getScore (){
-        return this.score.getScore ();
+
+    public HashMap<Point, MS> getGrilleStatique() {
+        return grilleStatique;
+    }
+
+    public int getScore() {
+        return this.score.getScore();
     }
 
     public PacMan getPacman() {
@@ -271,7 +262,7 @@ public class Grille extends Observable implements Runnable {
         }
         return null;
     }
-    
+
     public Fantome getFantomeVert() {
         for (ME me : grilleDynamique.keySet()) {
             if (me instanceof Fantome) {
@@ -295,7 +286,7 @@ public class Grille extends Observable implements Runnable {
         }
         return null;
     }
-    
+
     public Fantome getFantomeRose() {
         for (ME me : grilleDynamique.keySet()) {
             if (me instanceof Fantome) {
@@ -308,70 +299,103 @@ public class Grille extends Observable implements Runnable {
         return null;
     }
 
-    private void passeSurNourriture() {
-        Point point = new Point(grilleDynamique.get(getPacman ()));
-
-        if (grilleStatique.get(point) instanceof Couloir) {
-            if (!((Mangeable)grilleStatique.get(point)).getEstMange()){
-                ((Mangeable) grilleStatique.get(point)).estMange();
-                score.augmenterScore(10);
-            }
-            
+    public Boolean pacmanMort() {
+        Point point = grilleDynamique.get(getPacman());
+        if (point.equals(grilleDynamique.get(getFantomeBleu()))) {
+            return true;
         }
-        
-        if (grilleStatique.get(point) instanceof GrosBean) {
-            if (!((Mangeable)grilleStatique.get(point)).getEstMange()){
-                ((Mangeable) grilleStatique.get(point)).estMange();
-                score.augmenterScore(20);
-                setFantomeMangeable ();
-            }
-            
+        if (point.equals(grilleDynamique.get(getFantomeVert()))) {
+            return true;
         }
-    }
-    
-    private void setFantomeMangeable (){
-        Fantome.setMangeable ();
-    }
-    
-   synchronized public Boolean pacmanMort (){
-        Point point=grilleDynamique.get(getPacman ());
-        if (point.equals(grilleDynamique.get(getFantomeBleu())))
+        if (point.equals(grilleDynamique.get(getFantomeRouge()))) {
             return true;
-        if (point.equals(grilleDynamique.get(getFantomeVert())))
+        }
+        if (point.equals(grilleDynamique.get(getFantomeRose()))) {
             return true;
-        if (point.equals(grilleDynamique.get(getFantomeRouge())))
-            return true;
+        }
         return false;
     }
-    
-    
-    public void redemarrer (PacMan p,Fantome fR,Fantome fB,Fantome fV,Fantome fRo){
-        initialisation (p,fR,fB,fV,fRo);
+
+    public GestionStat getGestionStat() {
+        return this.score;
     }
-    
-    private void initialisation (PacMan p,Fantome fR,Fantome fB,Fantome fV,Fantome fRo){
-        score = new GestionStat ();
+
+    public void mangerFantome() {
+        Point point = grilleDynamique.get(getPacman());
+        if (point.equals(grilleDynamique.get(getFantomeBleu()))) {
+            getFantomeBleu().setMange();
+            score.augmenterScore(50);
+        }
+
+        if (point.equals(grilleDynamique.get(getFantomeVert()))) {
+            getFantomeVert().setMange();
+            score.augmenterScore(50);
+        }
+
+        if (point.equals(grilleDynamique.get(getFantomeRouge()))) {
+            getFantomeRouge().setMange();
+            score.augmenterScore(50);
+        }
+
+        if (point.equals(grilleDynamique.get(getFantomeRose()))) {
+            getFantomeRose().setMange();
+            score.augmenterScore(50);
+        }
+
+    }
+
+    public void redemarrer(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
+        initialisation(p, fR, fB, fV, fRo);
+    }
+
+    public void passeSurNourriture() {
+        Point point = new Point(grilleDynamique.get(getPacman()));
+
+        if (grilleStatique.get(point) instanceof Couloir) {
+            if (!((Mangeable) grilleStatique.get(point)).getEstMange()) {
+                ((Mangeable) grilleStatique.get(point)).estMange();
+                score.augmenterScore(10);
+                if (score.diminuerBin()==true)
+                    System.out.println("Gangé");
+            }
+
+        }
+
+        if (grilleStatique.get(point) instanceof GrosBean) {
+            if (!((Mangeable) grilleStatique.get(point)).getEstMange()) {
+                ((Mangeable) grilleStatique.get(point)).estMange();
+                score.augmenterScore(20);
+                Fantome.setMangeable();
+                if (score.diminuerBin()==true){
+                    System.out.println("Gangé");
+                }
+            }
+        }
+    }
+
+    private void initialisation(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
+        score = new GestionStat();
         CreationTerrain creationTerrain = new CreationTerrain();
         grilleStatique = creationTerrain.getHashMap();
-        
-        if (!grilleDynamique.isEmpty()){
-            grilleDynamique.remove (p);
-            grilleDynamique.remove (fR);
-            grilleDynamique.remove (fB);
-            grilleDynamique.remove (fV);
-            grilleDynamique.remove (fRo);
+
+        if (!grilleDynamique.isEmpty()) {
+            grilleDynamique.remove(p);
+            grilleDynamique.remove(fR);
+            grilleDynamique.remove(fB);
+            grilleDynamique.remove(fV);
+            grilleDynamique.remove(fRo);
         }
-        
+
         grilleDynamique = new HashMap<>();
-        grilleDynamique.put(p, new Point(1,9));
-        grilleDynamique.put(fR, new Point(10,7));
-        grilleDynamique.put(fB, new Point(9,7));
-        grilleDynamique.put(fV, new Point(11,7));
-        grilleDynamique.put (fRo, new Point (10,9));
-             
+        grilleDynamique.put(p, new Point(1, 9));
+        grilleDynamique.put(fR, new Point(10, 7));
+        grilleDynamique.put(fB, new Point(9, 7));
+        grilleDynamique.put(fV, new Point(11, 7));
+        grilleDynamique.put(fRo, new Point(10, 9));
+
     }
-    
-    public int getVie (){
+
+    public int getVie() {
         return score.getVie();
     }
 }

@@ -13,14 +13,16 @@ import java.util.Random;
  */
 public class Fantome extends ME{
     static private Boolean mangeable = false;
-    static private int tempsMangeable=50;
+    static private int tempsMangeable=150;
     private String couleur;
+    private Boolean mange;
            
     public Fantome (String couleur){
         super ();
         this.couleur = couleur;
         actionEnCour = Action.Haut;
         actionAFaire = Action.Haut;
+        mange = false;
     }
     
     public String getCouleur (){
@@ -53,5 +55,17 @@ public class Fantome extends ME{
             tempsMangeable = 50;
             mangeable = false;
         }
+    }
+    
+    public void setMange (){
+        mange = true;
+    }
+    
+    public Boolean estMange (){
+        return mange;
+    }
+    
+    public void setNormal (){
+        mange = false;
     }
 }
