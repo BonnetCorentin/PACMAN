@@ -36,7 +36,7 @@ public class Grille extends Observable implements Runnable {
     }
 
     private void startThread() {
-        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des modèles dynamiques de la grille
+        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des mod�les dynamiques de la grille
             me.start();
         });
     }
@@ -355,8 +355,7 @@ public class Grille extends Observable implements Runnable {
             if (!((Mangeable) grilleStatique.get(point)).getEstMange()) {
                 ((Mangeable) grilleStatique.get(point)).estMange();
                 score.augmenterScore(10);
-                if (score.diminuerBin()==true)
-                    System.out.println("Gangé");
+                score.diminuerBin();
             }
 
         }
@@ -366,9 +365,7 @@ public class Grille extends Observable implements Runnable {
                 ((Mangeable) grilleStatique.get(point)).estMange();
                 score.augmenterScore(20);
                 Fantome.setMangeable();
-                if (score.diminuerBin()==true){
-                    System.out.println("Gangé");
-                }
+                score.diminuerBin();
             }
         }
     }
@@ -398,4 +395,9 @@ public class Grille extends Observable implements Runnable {
     public int getVie() {
         return score.getVie();
     }
+
+    public int getBean() {
+        return score.getNbBean();
+    }
+    
 }

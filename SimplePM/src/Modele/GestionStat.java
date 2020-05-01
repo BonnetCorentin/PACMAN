@@ -18,7 +18,7 @@ public class GestionStat {
     public GestionStat() {
         vie = 3;
         score = 0;
-        nbBin = 20;
+        nbBin = 154;
     }
 
     public void augmenterScore(int n) {
@@ -45,4 +45,8 @@ public class GestionStat {
         return(nbBin<=0);
     }
 
+	public int getNbBean() {
+		return nbBin;
+	}
+    
 }
