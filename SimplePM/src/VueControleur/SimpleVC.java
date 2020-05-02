@@ -63,19 +63,19 @@ public class SimpleVC extends Application {
     public final int SIZE_Y = 21;
     
     Grille grille;
-    ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de récupérer les cases graphiques lors du rafraichissement UTILITE ???????????
-    GridPane grid = new GridPane(); // création de la grille 
+    ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de rÃƒÂ©cupÃƒÂ©rer les cases graphiques lors du rafraichissement UTILITE ???????????
+    GridPane grid = new GridPane(); // crÃƒÂ©ation de la grille 
 
     HashMap<String, Image> ensembleImage = new HashMap<>();
     StackPane root,menu;
     
-//HBox menuGrid = new HBox();
     VBox affichage;
 
 
     Image im;
 
     ImageView gameOverView;
+    ImageView victoireView;
     ImageView scoreLabView;
     Label score;
     Label vie;
@@ -115,10 +115,16 @@ public class SimpleVC extends Application {
         root = new StackPane();
         grid.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(grid);
+        
         gameOverView.setTranslateX(0);
         gameOverView.setTranslateY(0);
         gameOverView.setVisible(false);
         root.getChildren().add(gameOverView);
+
+        victoireView.setTranslateX(0);
+        victoireView.setTranslateY(0);
+        victoireView.setVisible(false);
+        root.getChildren().add(victoireView);
         
         vie.setFont(new Font("Arial",30));
         vie.setTextFill(Color.web("#FFFFFF"));
@@ -155,15 +161,6 @@ public class SimpleVC extends Application {
         
         affichage.getChildren().add(root);
         scene = new Scene(affichage, 600, 700);
-
-        //menuGrid.setSpacing(10);
-        //start.addActionListener((ActionListener) this);
-        //niveau.addActionListener((ActionListener) this);
-        //quitter.addActionListener((ActionListener) this);
-        //menuGrid.getChildren().add(start);
-        //menuGrid.getChildren().add(niveau);
-        //menuGrid.getChildren().add(quitter);
-        //scene2 = new Scene(menuGrid, 1000,1000);
         
         textureInit();
 
@@ -186,6 +183,12 @@ public class SimpleVC extends Application {
                 break;
         }
     }
+    
+   public void victoire() {
+    	if(grille.getBean()<=0) {
+    		victoireView.setVisible(true);
+    	}
+    }
 
     @Override
 
@@ -196,11 +199,12 @@ public class SimpleVC extends Application {
                 public void run() {
                     textureInit ();
                     decrementeVie();
+                    victoire();
                     score.setText(String.valueOf(grille.getScore()));
                 }
             });
         };
-        // l'observer observe l'obervable (update est exécuté dès notifyObservers() est appelé côté modèle )
+        // l'observer observe l'obervable (update est exÃƒÂ©cutÃƒÂ© dÃƒÂ¨s notifyObservers() est appelÃƒÂ© cÃƒÂ´tÃƒÂ© modÃƒÂ¨le )
         
         root.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -223,17 +227,15 @@ public class SimpleVC extends Application {
                     vie2.setVisible(true);
                     vie.setVisible(true);
                     gameOverView.setVisible(false);
+                    victoireView.setVisible(false);
                 }
-            } // on écoute le clavier
+            } // on ÃƒÂ©coute le clavier
         });
 
         grille.addObserver(o);
         grille.start();
         
-        //primaryStage.setScene(scene2);
-        //primaryStage.show();
-        
-        primaryStage.setTitle("PAC MAN!");        //Créer la grille
+        primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
@@ -378,31 +380,26 @@ public class SimpleVC extends Application {
     }
 
     private void initialisationImages() {
-        // Pacman.svg.png
-        ensembleImage.put("barriereFantome", new Image("images/barriereFantome.png"));// préparation des images
+        ensembleImage.put("barriereFantome", new Image("images/barriereFantome.png"));// prÃƒÂ©paration des images
         ensembleImage.put("bean", new Image("images/bean.png"));
-        ensembleImage.put("fantomeBleu", new Image("images/fantomeBleu.png"));// préparation des images
+        ensembleImage.put("fantomeBleu", new Image("images/fantomeBleu.png"));// prÃƒÂ©paration des images
         ensembleImage.put("fantomeRose", new Image("images/fantomeRose.png"));
-        ensembleImage.put("fantomeRouge", new Image("images/fantomeRouge.png"));// préparation des images
+        ensembleImage.put("fantomeRouge", new Image("images/fantomeRouge.png"));// prÃƒÂ©paration des images
         ensembleImage.put("fantomeVert", new Image("images/fantomeVert.png"));
         ensembleImage.put("gros_bean", new Image("images/gros_bean.png"));
-        //ensembleImage.put("Mort0", new Image("images/Mort0.png"));
-        //ensembleImage.put("Mort1", new Image("images/Mort1.png"));
-        //ensembleImage.put("Mort2", new Image("images/Mort2.png"));
-        //ensembleImage.put("Mort3", new Image("images/Mort3.png"));
         ensembleImage.put("mur", new Image("images/mur.png"));
-        ensembleImage.put("mur2", new Image("images/mur2.png"));// préparation des images
+        ensembleImage.put("mur2", new Image("images/mur2.png"));// prÃƒÂ©paration des images
         ensembleImage.put("pacman", new Image("images/pacman.png"));
         ensembleImage.put("fantomeMangeable", new Image("images/fan_mangeable.png"));
         ensembleImage.put("fantomeMange", new Image("images/FantomePeur0.png"));
-        ensembleImage.put("pacmanBas0", new Image("images/pacmanBas0.png"));// préparation des images
+        ensembleImage.put("pacmanBas0", new Image("images/pacmanBas0.png"));// prÃƒÂ©paration des images
         ensembleImage.put("pacmanBas1", new Image("images/pacmanBas1.png"));
         ensembleImage.put("pacmanDroite0", new Image("images/pacmanDroite0.png"));
         ensembleImage.put("pacmanDroite1", new Image("images/pacmanDroite1.png"));
         ensembleImage.put("pacmanGauche0", new Image("images/pacmanGauche0.png"));
         ensembleImage.put("pacmanGauche1", new Image("images/pacmanGauche1.png"));
         ensembleImage.put("fond", new Image("images/fond.png"));
-        ensembleImage.put("pacmanHaut0", new Image("images/pacmanHaut0.png"));// préparation des images
+        ensembleImage.put("pacmanHaut0", new Image("images/pacmanHaut0.png"));// prÃƒÂ©paration des images
         ensembleImage.put("pacmanHaut1", new Image("images/pacmanHaut1.png"));
         ensembleImage.put("CoinD", new Image("images/coinD.png"));
         ensembleImage.put("CoinD2", new Image("images/coinD2.png"));
@@ -423,11 +420,13 @@ public class SimpleVC extends Application {
         
         Image scoreLab =  new Image("images/ScorePM.jpg");
         Image gameOver =  new Image("images/GameOver.jpg"); 
+        Image victoire =  new Image("images/victoire.jpg"); 
         
         gameOverView = new ImageView(gameOver);
+        victoireView = new ImageView(victoire);
         scoreLabView = new ImageView(scoreLab);
         
-        score=new Label(" 0");
+        score=new Label(" 0 ");
         vie=new Label(" ♥ ");
         vie2=new Label(" ♥ ");
         vie3=new Label(" ♥ ");

@@ -36,7 +36,7 @@ public class Grille extends Observable implements Runnable {
     }
 
     private void startThread() {
-        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des modèles dynamiques de la grille
+        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des mod�les dynamiques de la grille
             me.start();
         });
     }
@@ -360,7 +360,6 @@ public class Grille extends Observable implements Runnable {
                 ((Mangeable) grilleStatique.get(point)).estMange();
                 augmenterScore(10);
                 score.diminuerBin();
-              
             }
 
         }
@@ -404,4 +403,10 @@ public class Grille extends Observable implements Runnable {
     public void augmenterScore (int augmentation){
         this.score.augmenterScore(augmentation);
     }
+
+
+    public int getBean() {
+        return score.getNbBean();
+    }
+    
 }
