@@ -5,8 +5,11 @@
  */
 package Modele;
 
-import VueControleur.PorteFantome;
-import VueControleur.SimpleVC;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import java.awt.Point;
 import java.util.HashMap;
 
@@ -15,36 +18,72 @@ import java.util.HashMap;
  * @author
  */
 public class CreationTerrain {
-    
-   char [][]tab=    {{'b','a','v','v','v','v','v','v','v','v','p','v','v','v','v','v','v','v','v','e','b'},
-                    {'b','m','c','c','c','c','c','c','c','c','m','c','c','c','c','c','c','c','c','m','b'},
-                    {'b','m','c','y','t','c','y','v','t','c','s','c','y','v','t','c','y','t','c','m','b'},
-                    {'b','m','f','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','f','m','b'},
-                    {'b','m','c','y','t','c','q','c','y','v','p','v','t','c','q','c','y','t','c','m','b'},
-                    {'b','m','c','c','c','c','m','c','c','c','m','c','c','c','m','c','c','c','c','m','b'},
-                    {'b','r','v','v','e','c','o','v','t','b','s','b','y','v','i','c','a','v','v','z','b'},
-                    {'b','b','b','b','m','c','m','b','b','b','b','b','b','b','m','c','m','b','b','b','b'},
-                    {'v','v','v','v','z','c','s','b','a','d','d','d','e','b','s','c','r','v','v','v','v'},
-                    {'b','b','b','b','b','b','b','b','m','b','b','b','m','b','b','b','b','b','b','b','b'},
-                    {'v','v','v','v','e','c','q','b','r','v','v','v','z','b','q','c','a','v','v','v','v'},
-                    {'b','b','b','b','m','c','m','b','b','b','b','b','b','b','m','c','m','b','b','b','b'},
-                    {'b','a','v','v','z','c','s','b','y','v','p','v','t','b','s','c','r','v','v','e','b'},
-                    {'b','m','c','c','c','c','c','c','c','c','m','c','c','c','c','c','c','c','c','m','b'},
-                    {'b','m','c','y','e','c','y','v','t','c','s','c','y','v','t','c','a','t','c','m','b'},
-                    {'b','m','f','c','m','c','c','c','c','c','c','c','c','c','c','c','m','c','f','m','b'},
-                    {'b','o','t','c','s','c','q','c','y','v','p','v','t','c','q','c','s','c','y','i','b'},
-                    {'b','m','c','c','c','c','m','c','c','c','m','c','c','c','m','c','c','c','c','m','b'},
-                    {'b','m','c','y','v','v','u','v','t','c','s','c','y','v','u','v','v','t','c','m','b'},
-                    {'b','m','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','m','b'},
-                    {'b','r','v','v','v','v','v','v','v','v','v','v','v','v','v','v','v','v','v','z','b'}
-                };
+   private String nomFichier;
+   private BufferedReader bufferLecture;
+   
+   public CreationTerrain (String nomFichier) {
+	this.nomFichier = nomFichier;
+        initialisationMap ();
+   }
+   
+   private char [][]tab;
+   private int tailleX;
+   private int tailleY;
+   private int nbBin;
+   
+   public void initialisationMap(){
+       debutTraitement ();
+       String line;
+           
+        try {
+            int i=0;
+            while ((line = bufferLecture.readLine()) != null) {
+                if (line.length()<10){                   
+                    String [] a = line.split("[ ]");
+                    tailleX = Integer.parseInt(a[0]);
+                    tailleY = Integer.parseInt(a[1]);
+                    nbBin = Integer.parseInt(a[2]);
+                    tab = new char [tailleY][tailleX];
+                }else{
+                    String [] a = line.split("[ ]");
+               
+                    for (int j=0;j<tailleX;j++){
+                        tab[i][j]=a[j].charAt(0);
+                    }   
+                    i++;
+                }    
+            }
+	} catch (IOException e) {
+		e.printStackTrace();
+	}       
+        finDeTraitement ();
+   }
+
+   
+   private void debutTraitement () {
+	try {
+		bufferLecture = new BufferedReader(new InputStreamReader(new FileInputStream(nomFichier),"UTF-8"));    		    
+
+	}
+	catch (IOException e) {
+		    e.printStackTrace();
+	}
+}
+	
+    private void finDeTraitement () {
+	try {
+		bufferLecture.close();
+	}
+	catch (IOException e) {
+		e.printStackTrace();
+	}
+}
     
     public HashMap<Point,MS> getHashMap (){
         HashMap <Point,MS> hashmap = new HashMap<Point,MS> ();
-        //SimpleVC svc = new SimpleVC();
         
-        for (int i=0;i<21;i++){
-            for (int j=0;j<21;j++){
+        for (int i=0;i<tailleX;i++){
+            for (int j=0;j<tailleY;j++){
                 
                 Point point = new Point(j,i);
                 if (tab[i][j]=='m'){

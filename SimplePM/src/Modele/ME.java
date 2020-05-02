@@ -5,12 +5,7 @@
  */
 package Modele;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -52,9 +47,13 @@ abstract public class ME extends Observable implements Runnable {
         while (keepGoing()) {
             action();
             if (Fantome.estMangeable()){
-                Fantome.decrementerTempsMangeable ();
+                synchronized(grille){
+                   grille.mangerFantome();
+                   Fantome.decrementerTempsMangeable ();
+                }
             }else {
                 synchronized (grille){
+                    String couleur=new String ();
                     if (grille.pacmanMort()) {
                     grille.getGestionStat().setVie();
                     grille.remettrePacMandebut();

@@ -323,25 +323,29 @@ public class Grille extends Observable implements Runnable {
     public void mangerFantome() {
         Point point = grilleDynamique.get(getPacman());
         if (point.equals(grilleDynamique.get(getFantomeBleu()))) {
-            getFantomeBleu().setMange();
-            score.augmenterScore(50);
+            remettreDebut (getFantomeBleu ());
+            augmenterScore(50);
         }
 
         if (point.equals(grilleDynamique.get(getFantomeVert()))) {
-            getFantomeVert().setMange();
-            score.augmenterScore(50);
+            remettreDebut (getFantomeVert ());
+            augmenterScore(50);
         }
 
         if (point.equals(grilleDynamique.get(getFantomeRouge()))) {
-            getFantomeRouge().setMange();
-            score.augmenterScore(50);
+            remettreDebut (getFantomeRouge ());
+            augmenterScore(50);
         }
 
         if (point.equals(grilleDynamique.get(getFantomeRose()))) {
-            getFantomeRose().setMange();
-            score.augmenterScore(50);
+            remettreDebut (getFantomeRose ());
+            augmenterScore(50);
         }
 
+    }
+    
+    public void remettreDebut (Fantome fantome){
+        grilleDynamique.replace(fantome, new Point(11, 9));
     }
 
     public void redemarrer(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
@@ -354,9 +358,9 @@ public class Grille extends Observable implements Runnable {
         if (grilleStatique.get(point) instanceof Couloir) {
             if (!((Mangeable) grilleStatique.get(point)).getEstMange()) {
                 ((Mangeable) grilleStatique.get(point)).estMange();
-                score.augmenterScore(10);
-                if (score.diminuerBin()==true)
-                    System.out.println("Gangé");
+                augmenterScore(10);
+                score.diminuerBin();
+              
             }
 
         }
@@ -364,18 +368,16 @@ public class Grille extends Observable implements Runnable {
         if (grilleStatique.get(point) instanceof GrosBean) {
             if (!((Mangeable) grilleStatique.get(point)).getEstMange()) {
                 ((Mangeable) grilleStatique.get(point)).estMange();
-                score.augmenterScore(20);
+                augmenterScore(20);
                 Fantome.setMangeable();
-                if (score.diminuerBin()==true){
-                    System.out.println("Gangé");
-                }
+                score.diminuerBin();
             }
         }
     }
 
     private void initialisation(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
         score = new GestionStat();
-        CreationTerrain creationTerrain = new CreationTerrain();
+        CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map1.txt");
         grilleStatique = creationTerrain.getHashMap();
 
         if (!grilleDynamique.isEmpty()) {
@@ -397,5 +399,9 @@ public class Grille extends Observable implements Runnable {
 
     public int getVie() {
         return score.getVie();
+    }
+    
+    public void augmenterScore (int augmentation){
+        this.score.augmenterScore(augmentation);
     }
 }

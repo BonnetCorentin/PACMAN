@@ -340,11 +340,8 @@ public class SimpleVC extends Application {
             
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeRouge);
-                if (fantomeRouge.estMange ()){
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
-                }else {
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
-                }
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                
             }else {
                 point = grille.getGrilleDynamique().get(fantomeRouge);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeRouge"));
@@ -352,11 +349,8 @@ public class SimpleVC extends Application {
 
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeBleu);
-                if (fantomeBleu.estMange ()){
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
-                }else {
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
-                }
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                
             }else {
                 point = grille.getGrilleDynamique().get(fantomeBleu);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeBleu"));
@@ -364,11 +358,8 @@ public class SimpleVC extends Application {
 
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeVert);
-                if (fantomeVert.estMange ()){
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
-                }else {
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
-                }
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
+                
             }else {
                 point = grille.getGrilleDynamique().get(fantomeVert);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeVert"));
@@ -376,11 +367,7 @@ public class SimpleVC extends Application {
             
             if (Fantome.estMangeable ()){
                 point = grille.getGrilleDynamique().get(fantomeRose);
-                if (fantomeRose.estMange ()){
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMange"));
-                }else {
-                    tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
-                }
+                tab[point.y][point.x].setImage(ensembleImage.get("fantomeMangeable"));
             }else {
                 point = grille.getGrilleDynamique().get(fantomeRose);
                 tab[point.y][point.x].setImage(ensembleImage.get("fantomeRose"));

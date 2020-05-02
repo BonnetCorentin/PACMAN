@@ -40,9 +40,8 @@ public class GestionStat {
             }
         //}
     }
-    public Boolean diminuerBin (){
+    public void diminuerBin (){
         nbBin--;
-        return(nbBin<=0);
     }
 
 }
