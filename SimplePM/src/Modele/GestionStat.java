@@ -18,7 +18,7 @@ public class GestionStat {
     public GestionStat() {
         vie = 3;
         score = 0;
-        nbBin = 154;
+        nbBin = 149;
     }
 
     public void augmenterScore(int n) {
