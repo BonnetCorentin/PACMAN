@@ -5,26 +5,39 @@
  */
 package Modele;
 
+import static java.lang.Thread.sleep;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author coren
  */
 abstract public class ME extends Observable implements Runnable {
-
-    Boolean actif;
     protected Action actionEnCour;
     protected Action actionAFaire;
     protected int tempsEntreActions = 200;
     protected Grille grille;
+    protected int tempsAvantApparition;
+    protected Boolean actif;
+    static Boolean actionPossible = false;
 
-    public ME() {
-        actif = true;
+    public ME(int tempsAvantApparition) {
+        this.tempsAvantApparition=tempsAvantApparition;
+        actif = false;
     }
 
     public void start() {
         new Thread(this).start();
+    }
+    
+    public static void setActionPossible (){
+        actionPossible=true;
+    }
+    
+     public static void setActionImpossible (){
+        actionPossible=false;
     }
 
     public void action() {
@@ -40,37 +53,54 @@ abstract public class ME extends Observable implements Runnable {
     public void setAction(Action action) {
         this.actionEnCour = action;
     }
-
-     @Override
+    
+    public void threadSleep (){
+         try {
+            sleep(getTempsAvantApparition());
+            setActif ();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Grille.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+   
+    @Override
     public void run() {
-
+        threadSleep ();
         while (keepGoing()) {
-            action();
-            if (Fantome.estMangeable()){
-                synchronized(grille){
-                   grille.mangerFantome();
-                   Fantome.decrementerTempsMangeable ();
-                }
-            }else {
-                synchronized (grille){
-                    String couleur=new String ();
-                    if (grille.pacmanMort()) {
-                    grille.getGestionStat().setVie();
-                    grille.remettrePacMandebut();
+            if (actionPossible){
+                action();
+                if (Fantome.estMangeable()){
+                    synchronized(grille){
+                       grille.mangerFantome();
+                       Fantome.decrementerTempsMangeable ();
                     }
-                } 
+                }else {
+                    synchronized (grille){
+                        String couleur=new String ();
+                        if (grille.pacmanMort()) {
+                            setActionImpossible();
+                            grille.getGestionStat().setVie();
+                            grille.remettrePacMandebut();
+                        }
+                    } 
+                }
+                
+                synchronized(grille){
+                    grille.passeSurNourriture();
+                }
+                setChanged();
+                notifyObservers();
+
+                try {
+                    Thread.sleep(tempsEntreActions);
+                } catch (InterruptedException ex) {
+
+                }
             }
-
-            grille.passeSurNourriture();
-
-            setChanged();
-            notifyObservers();
-
-            try {
-                Thread.sleep(tempsEntreActions);
-            } catch (InterruptedException ex) {
-
+            else {
+                System.out.println("Action impossbile");
             }
+            
         }
         retirerEnvironnement();
         setChanged();
@@ -78,11 +108,6 @@ abstract public class ME extends Observable implements Runnable {
     }
 
     protected void retirerEnvironnement() {
-        try {
-            wait();
-        } catch (InterruptedException IE) {
-            IE.printStackTrace();
-        }
         grille.retirerDeLenvironnement(this);
     }
 
@@ -103,7 +128,15 @@ abstract public class ME extends Observable implements Runnable {
     }
 
     public void setActif() {
-        actif = false;
+        this.actif = true;
+    }   
+    
+    public void stopJeu (){
+        this.actif = false;
+    }
+    
+    public int getTempsAvantApparition (){
+        return this.tempsAvantApparition;
     }
 
 }

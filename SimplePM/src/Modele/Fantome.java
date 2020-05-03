@@ -14,9 +14,10 @@ public class Fantome extends ME{
     static private int tempsMangeable=150;
     private String couleur;
            
-    public Fantome (String couleur){
-        super ();
+    public Fantome (String couleur,int tempsAvantApparition){
+        super (tempsAvantApparition);
         this.couleur = couleur;
+        this.tempsAvantApparition=tempsAvantApparition;
         actionEnCour = Action.Haut;
         actionAFaire = Action.Haut;
     }
@@ -29,7 +30,7 @@ public class Fantome extends ME{
         mangeable = true;
     }
     
-    static private void setNonMangeable (){
+    static public void setNonMangeable (){
         mangeable = false;
     }
     

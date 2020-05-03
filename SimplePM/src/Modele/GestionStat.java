@@ -13,12 +13,12 @@ public class GestionStat {
 
     private int vie;
     private int score;
-    private int nbBin;
+    private int nbBean;
 
-    public GestionStat() {
+    public GestionStat(int nbBean) {
         vie = 3;
         score = 0;
-        nbBin = 154;
+        this.nbBean = nbBean;
     }
 
     public void augmenterScore(int n) {
@@ -34,18 +34,16 @@ public class GestionStat {
     }
 
     public void setVie() {
-        //if (e instanceof PacMan) {
-            if (vie > 0) {
-                vie = vie - 1;
-            }
-        //}
+        if (vie > 0) {
+            vie = vie - 1;
+        }
     }
-    public void diminuerBin (){
-        nbBin--;
+    public void diminuerBean (){
+        nbBean--;  
     }
 
-	public int getNbBean() {
-		return nbBin;
-	}
+    public int getNbBean() {
+	return nbBean;
+    }
     
 }

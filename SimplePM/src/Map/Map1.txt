@@ -1,4 +1,4 @@
-21 21 152
+21 21 149
 b a v v v v v v v v p v v v v v v v v e b 
 b m c c c c c c c c m c c c c c c c c m b 
 b m c y t c y v t c s c y v t c y t c m b 

@@ -92,11 +92,11 @@ public class SimpleVC extends Application {
 
     @Override
     public void init() {
-        pacman = new PacMan ();
-        fantomeRouge = new Fantome("rouge");
-        fantomeBleu = new Fantome("bleu");
-        fantomeVert = new Fantome("vert");
-        fantomeRose = new Fantome("rose");
+        pacman = new PacMan (0);
+        fantomeRouge = new Fantome("rouge",100000);
+        fantomeBleu = new Fantome("bleu",100000);
+        fantomeVert = new Fantome("vert",200000);
+        fantomeRose = new Fantome("rose",300000);
         
         grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
                
@@ -107,10 +107,6 @@ public class SimpleVC extends Application {
         grille.getFantomeRose().setGrille(grille);
         
         initialisationImages();
-
-        //pacman = grille.getPacman();
-        //fantomeRouge = grille.getFantomeRouge();
-        //fantomeBleu = grille.getFantomeBleu();
 
         root = new StackPane();
         grid.setAlignment(Pos.TOP_CENTER);
@@ -212,16 +208,16 @@ public class SimpleVC extends Application {
                 if (event.getCode() == KeyCode.Z) {
                     pacman.setActionAFaire(Action.Haut);
                 }
-                if (event.getCode() == KeyCode.Q) {
+                else if (event.getCode() == KeyCode.Q) {
                     pacman.setActionAFaire(Action.Gauche);
                 }
-                if (event.getCode() == KeyCode.D) {
+                else if (event.getCode() == KeyCode.D) {
                     pacman.setActionAFaire(Action.Droite);
                 }
-                if (event.getCode() == KeyCode.S) {
+                else if (event.getCode() == KeyCode.S) {
                     pacman.setActionAFaire(Action.Bas);
                 }
-                if (event.getCode () == KeyCode.P){
+                else if (event.getCode () == KeyCode.P){
                     grille.redemarrer (pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
                     vie3.setVisible(true);
                     vie2.setVisible(true);
@@ -229,7 +225,10 @@ public class SimpleVC extends Application {
                     gameOverView.setVisible(false);
                     victoireView.setVisible(false);
                 }
-            } // on ÃƒÂ©coute le clavier
+                else{
+                    Modele.ME.setActionPossible ();
+                }
+            }
         });
 
         grille.addObserver(o);
@@ -249,7 +248,7 @@ public class SimpleVC extends Application {
         grid.requestFocus();
     }
 
-    public synchronized void textureInit() {
+    public void textureInit() {
         for (int i = 0; i < SIZE_Y; i++) {
 
             for (int j = 0; j < SIZE_X; j++) {

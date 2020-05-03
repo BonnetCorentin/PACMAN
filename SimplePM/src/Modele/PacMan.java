@@ -11,8 +11,8 @@ package Modele;
  */
 public class PacMan extends ME {
 
-    public PacMan() {
-        super();
+    public PacMan(int tempsAvantApparition) {
+        super(tempsAvantApparition);
         actionEnCour = Action.Droite;
         actionAFaire = Action.Droite;
     }

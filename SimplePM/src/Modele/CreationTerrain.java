@@ -29,7 +29,7 @@ public class CreationTerrain {
    private char [][]tab;
    private int tailleX;
    private int tailleY;
-   private int nbBin;
+   private int nbBean;
    
    public void initialisationMap(){
        debutTraitement ();
@@ -42,7 +42,7 @@ public class CreationTerrain {
                     String [] a = line.split("[ ]");
                     tailleX = Integer.parseInt(a[0]);
                     tailleY = Integer.parseInt(a[1]);
-                    nbBin = Integer.parseInt(a[2]);
+                    nbBean = Integer.parseInt(a[2]);
                     tab = new char [tailleY][tailleX];
                 }else{
                     String [] a = line.split("[ ]");
@@ -77,7 +77,11 @@ public class CreationTerrain {
 	catch (IOException e) {
 		e.printStackTrace();
 	}
-}
+    }
+    
+    public int getNbBean (){
+        return this.nbBean;
+    }
     
     public HashMap<Point,MS> getHashMap (){
         HashMap <Point,MS> hashmap = new HashMap<Point,MS> ();
