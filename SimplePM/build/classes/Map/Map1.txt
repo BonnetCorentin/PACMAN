@@ -1,0 +1,22 @@
+21 21 149
+b a v v v v v v v v p v v v v v v v v e b 
+b m c c c c c c c c m c c c c c c c c m b 
+b m c y t c y v t c s c y v t c y t c m b 
+b m f c c c c c c c c c c c c c c c f m b 
+b m c y t c q c y v p v t c q c y t c m b 
+b m c c c c m c c c m c c c m c c c c m b 
+b r v v e c o v t b s b y v i c a v v z b 
+b b b b m c m b b b b b b b m c m b b b b 
+v v v v z c s b a d d d e b s c r v v v v 
+b b b b b b b b m b b b m b b b b b b b b 
+v v v v e c q b r v v v z b q c a v v v v 
+b b b b m c m b b b b b b b m c m b b b b 
+b a v v z c s b y v p v t b s c r v v e b 
+b m c c c c c c c c m c c c c c c c c m b 
+b m c y e c y v t c s c y v t c a t c m b 
+b m f c m c c c c c c c c c c c m c f m b 
+b o t c s c q c y v p v t c q c s c y i b 
+b m c c c c m c c c m c c c m c c c c m b 
+b m c y v v u v t c s c y v u v v t c m b 
+b m c c c c c c c c c c c c c c c c c m b 
+b r v v v v v v v v v v v v v v v v v z b 

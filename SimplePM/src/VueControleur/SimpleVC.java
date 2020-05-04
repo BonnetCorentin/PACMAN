@@ -99,19 +99,7 @@ public class SimpleVC extends Application {
 
     @Override
     public void init() {
-        pacman = new PacMan (0);
-        fantomeRouge = new Fantome("rouge",100000);
-        fantomeBleu = new Fantome("bleu",100000);
-        fantomeVert = new Fantome("vert",200000);
-        fantomeRose = new Fantome("rose",300000);
-        
-        grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
-               
-        grille.getPacman().setGrille(grille);
-        grille.getFantomeBleu().setGrille(grille);
-        grille.getFantomeVert().setGrille(grille);
-        grille.getFantomeRouge().setGrille(grille);
-        grille.getFantomeRose().setGrille(grille);
+        initialisationJeu ();
         
         initialisationImages();
 
@@ -238,7 +226,8 @@ public class SimpleVC extends Application {
                     pacman.setActionAFaire(Action.Bas);
                 }
                 else if (event.getCode () == KeyCode.P){
-                    grille.redemarrer (pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
+                    initialisationJeu ();
+                    
                     vie3.setVisible(true);
                     vie2.setVisible(true);
                     vie.setVisible(true);
@@ -480,5 +469,21 @@ public class SimpleVC extends Application {
     public void handle(Event event) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    private void initialisationJeu (){
+        pacman = new PacMan (0);
+        fantomeRouge = new Fantome("rouge",1000);
+        fantomeBleu = new Fantome("bleu",10000);
+        fantomeVert = new Fantome("vert",20000);
+        fantomeRose = new Fantome("rose",25000);
+        
+        grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
+
+        grille.getPacman().setGrille(grille);
+        grille.getFantomeBleu().setGrille(grille);
+        grille.getFantomeVert().setGrille(grille);
+        grille.getFantomeRouge().setGrille(grille);
+        grille.getFantomeRose().setGrille(grille);
+   }
 
 }

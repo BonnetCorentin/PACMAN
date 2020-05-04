@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 
 
+
 /**
  *
  * @author coren
@@ -49,8 +50,8 @@ public class Grille extends Observable implements Runnable {
         Runnable processDataCmd = new Runnable() {
             @Override
             public void run() {
-                if (score.getVie()==0)
-                    finDeJeu ();
+                //if (score.getVie()==0)
+                    //finDeJeu ();
                 setChanged();
                 notifyObservers(); // notification de l'observer
             }
@@ -147,6 +148,9 @@ public class Grille extends Observable implements Runnable {
             case "vert":
                 deplacementFantomeBleu(fantome);
                 break;
+            case "rose":
+                deplacementFantomeBleu(fantome);
+                break;
         }
 
         mondeTorique(getPoint(fantome));
@@ -232,7 +236,11 @@ public class Grille extends Observable implements Runnable {
         }
 
         if (grilleStatique.get(inter) instanceof Mur) {
-            possible = false;
+            if ("PorteFantome".equals(((Mur)grilleStatique.get(inter)).getTypeMur())){
+                if (action!=Action.Haut)
+                    possible = false;
+            }else
+                possible = false;
         }
 
         return possible;
@@ -355,6 +363,7 @@ public class Grille extends Observable implements Runnable {
     
     public void remettreDebut (Fantome fantome){
         grilleDynamique.replace(fantome, new Point(11, 9));
+        fantome.sleep(3000);
     }
 
     public void redemarrer(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
@@ -403,9 +412,9 @@ public class Grille extends Observable implements Runnable {
 
         grilleDynamique = new HashMap<>();
         grilleDynamique.put(p, new Point(1, 9));
-        grilleDynamique.put(fR, new Point(10, 7));
-        grilleDynamique.put(fB, new Point(9, 7));
-        grilleDynamique.put(fV, new Point(11, 7));
+        grilleDynamique.put(fR, new Point(10, 9));
+        grilleDynamique.put(fB, new Point(9, 9));
+        grilleDynamique.put(fV, new Point(11, 9));
         grilleDynamique.put(fRo, new Point(10, 9));     
         
     }

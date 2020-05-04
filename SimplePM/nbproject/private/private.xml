@@ -5,13 +5,14 @@
         <group>
             <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/CreationTerrain.java</file>
             <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/Grille.java</file>
-            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/Action.java</file>
+            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/Mur.java</file>
+            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Map/Map1.txt</file>
             <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/PacMan.java</file>
             <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/ME.java</file>
-            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/SimplePacMan.java</file>
             <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/Fantome.java</file>
             <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/VueControleur/SimpleVC.java</file>
-            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/SuperPacGomme.java</file>
+            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/GrosBean.java</file>
+            <file>file:/C:/Users/coren/Documents/Cours%203A/Projet%20Encadré%20JavaFX/PACMAN/SimplePM/src/Modele/GestionStat.java</file>
         </group>
     </open-files>
 </project-private>

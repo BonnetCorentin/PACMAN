@@ -19,4 +19,6 @@ public class Mur extends NomMangeable{
     public String getTypeMur (){
         return this.typeMur;
     }
+    
+    
 }

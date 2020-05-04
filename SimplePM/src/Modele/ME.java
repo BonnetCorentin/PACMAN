@@ -55,7 +55,7 @@ abstract public class ME extends Observable implements Runnable {
     }
     
     public void threadSleep (){
-         try {
+        try {
             sleep(getTempsAvantApparition());
             setActif ();
         } catch (InterruptedException ex) {
@@ -98,7 +98,7 @@ abstract public class ME extends Observable implements Runnable {
                 }
             }
             else {
-                System.out.println("Action impossbile");
+                System.out.println("Veuillez appuier sur une touche pour commencer.");
             }
             
         }
