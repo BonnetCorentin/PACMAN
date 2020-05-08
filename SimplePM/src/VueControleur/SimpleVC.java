@@ -113,15 +113,15 @@ public class SimpleVC extends Application {
         grid.setAlignment(Pos.TOP_CENTER);
         root.getChildren().add(grid);
         
-        gameOverView.setTranslateX(0);
-        gameOverView.setTranslateY(0);
+        gameOverView.setTranslateX(-1);
+        gameOverView.setTranslateY(-3);
         gameOverView.setVisible(false);
         root.getChildren().add(gameOverView);
 
-        optionView.setTranslateX(200);
+        optionView.setTranslateX(185);
         optionView.setTranslateY(290);
         optionView.setFitHeight(150);
-        optionView.setFitWidth(200);
+        optionView.setFitWidth(225);
         optionView.setVisible(true);
         root.getChildren().add(optionView);
         
@@ -132,23 +132,23 @@ public class SimpleVC extends Application {
         readyView.setVisible(true);
         root.getChildren().add(readyView);
 
-        victoireView.setTranslateX(0);
-        victoireView.setTranslateY(0);
+        victoireView.setTranslateX(-1);
+        victoireView.setTranslateY(-3);
         victoireView.setVisible(false);
         root.getChildren().add(victoireView);
         
-        vieView.setTranslateX(12);
-        vieView.setTranslateY(275);
+        vieView.setTranslateX(-145);
+        vieView.setTranslateY(285);
         root.getChildren().add(vieView);
         vieView.setVisible(true);
-        
-        vieView2.setTranslateX(36);
-        vieView2.setTranslateY(275);
+
+        vieView2.setTranslateX(-115);
+        vieView2.setTranslateY(285);
         root.getChildren().add(vieView2);
         vieView2.setVisible(true);
-        
-        vieView3.setTranslateX(60);
-        vieView3.setTranslateY(275);
+
+        vieView3.setTranslateX(-85);
+        vieView3.setTranslateY(285);
         root.getChildren().add(vieView3);
         vieView3.setVisible(true);
 
@@ -158,14 +158,14 @@ public class SimpleVC extends Application {
         quitter.setPrefSize(150,10);
         root.getChildren().add(quitter);
         
-        scoreLabView.setTranslateX(190);
-        scoreLabView.setTranslateY(550);
+        scoreLabView.setTranslateX(20);
+        scoreLabView.setTranslateY(565);
         affichage.getChildren().setAll(scoreLabView);         
         
-        score.setFont(new Font("Arial",30));
+        score.setFont(new Font("Arial",40));
         score.setTextFill(Color.web("#FFFFFF"));
-        score.setTranslateX(310);
-        score.setTranslateY(458);
+        score.setTranslateX(150);
+        score.setTranslateY(467);
         affichage.getChildren().add(score);
         
         affichage.setBackground(new Background(new BackgroundImage(im, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
