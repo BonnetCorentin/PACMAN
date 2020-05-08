@@ -363,7 +363,6 @@ public class Grille extends Observable implements Runnable {
     
     public void remettreDebut (Fantome fantome){
         grilleDynamique.replace(fantome, new Point(11, 9));
-        fantome.sleep(3000);
     }
 
     public void redemarrer(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
