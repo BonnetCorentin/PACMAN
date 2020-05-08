@@ -84,10 +84,16 @@ public class SimpleVC extends Application {
     ImageView gameOverView;
     ImageView victoireView;
     ImageView scoreLabView;
+    ImageView vieView;
+    ImageView vieView2;
+    ImageView vieView3;
+    ImageView readyView;
+    
     Label score;
-    Label vie;
-    Label vie2;
-    Label vie3;
+    Image vie;
+    Image vie2;
+    Image vie3;
+    Image ready;
 
     
     Scene scene;
@@ -118,32 +124,33 @@ public class SimpleVC extends Application {
         optionView.setFitWidth(200);
         optionView.setVisible(true);
         root.getChildren().add(optionView);
+        
+        readyView.setTranslateX(5);
+        readyView.setTranslateY(17);
+        readyView.setFitHeight(20);
+        readyView.setFitWidth(90);
+        readyView.setVisible(true);
+        root.getChildren().add(readyView);
 
         victoireView.setTranslateX(0);
         victoireView.setTranslateY(0);
         victoireView.setVisible(false);
         root.getChildren().add(victoireView);
         
-        vie.setFont(new Font("Arial",30));
-        vie.setTextFill(Color.web("#FFFFFF"));
-        vie.setTranslateX(12);
-        vie.setTranslateY(275);
-        root.getChildren().add(vie);
-        vie.setVisible(true);
+        vieView.setTranslateX(12);
+        vieView.setTranslateY(275);
+        root.getChildren().add(vieView);
+        vieView.setVisible(true);
         
-        vie2.setFont(new Font("Arial",30));
-        vie2.setTextFill(Color.web("#FFFFFF"));
-        vie2.setTranslateX(36);
-        vie2.setTranslateY(275);
-        root.getChildren().add(vie2);
-        vie2.setVisible(true);
+        vieView2.setTranslateX(36);
+        vieView2.setTranslateY(275);
+        root.getChildren().add(vieView2);
+        vieView2.setVisible(true);
         
-        vie3.setFont(new Font("Arial",30));
-        vie3.setTextFill(Color.web("#FFFFFF"));
-        vie3.setTranslateX(60);
-        vie3.setTranslateY(275);
-        root.getChildren().add(vie3);
-        vie3.setVisible(true);
+        vieView3.setTranslateX(60);
+        vieView3.setTranslateY(275);
+        root.getChildren().add(vieView3);
+        vieView3.setVisible(true);
 
         quitter.setTranslateX(0);
         quitter.setTranslateY(330);
@@ -173,24 +180,25 @@ public class SimpleVC extends Application {
     public void decrementeVie(){
         switch (grille.getVie()) {
             case 2:
-                vie3.setVisible(false);
+            	vieView3.setVisible(false);
                 break;
             case 1:
-                vie3.setVisible(false);
-                vie2.setVisible(false);
+            	vieView3.setVisible(false);
+            	vieView2.setVisible(false);
                 break;
             case 0:
-                vie3.setVisible(false);
-                vie2.setVisible(false);
-                vie.setVisible(false);
+            	vieView3.setVisible(false);
+            	vieView2.setVisible(false);
+            	vieView.setVisible(false);
                 gameOverView.setVisible(true);
+                Modele.ME.setX(false);
                 break;
         }
     }
     
    public void victoire() {
     	if(grille.getBean()<=0) {
-    		victoireView.setVisible(true);
+    		victoireView.setVisible(true); 		
     	}
     }
 
@@ -205,6 +213,9 @@ public class SimpleVC extends Application {
                     decrementeVie();
                     victoire();
                     score.setText(String.valueOf(grille.getScore()));
+                    if(Modele.ME.getX()==true) {
+                        readyView.setVisible(true);
+                    }
                 }
             });
         };
@@ -227,16 +238,17 @@ public class SimpleVC extends Application {
                 }
                 else if (event.getCode () == KeyCode.P){
                     initialisationJeu ();
-                    
-                    vie3.setVisible(true);
-                    vie2.setVisible(true);
-                    vie.setVisible(true);
+                    readyView.setVisible(true);
+                    vieView3.setVisible(true);
+                    vieView2.setVisible(true);
+                    vieView.setVisible(true);
                     gameOverView.setVisible(false);
                     victoireView.setVisible(false);
                 }
-
-                else{
+                else if (event.getCode () == KeyCode.ENTER){
                     Modele.ME.setActionPossible ();
+                    readyView.setVisible(false);
+                    Modele.ME.setX(false);
                 }
 
                 quitter.setOnMouseClicked(e->{
@@ -245,7 +257,7 @@ public class SimpleVC extends Application {
                 });
             }
         });
-
+        
         grille.addObserver(o);
         grille.start();
         
@@ -439,15 +451,21 @@ public class SimpleVC extends Application {
         Image victoire =  new Image("images/victoire.jpg"); 
         Image option =  new Image("images/Option.png");
         
+        score=new Label(" 0 ");
+        vie=new Image("images/pacmanDroite1.png");
+        vie2=new Image("images/pacmanDroite1.png");
+        vie3=new Image("images/pacmanDroite1.png");
+        ready=new Image("images/ready.png");
+        
         optionView = new ImageView(option);
         gameOverView = new ImageView(gameOver);
         victoireView = new ImageView(victoire);
         scoreLabView = new ImageView(scoreLab);
+        vieView=new ImageView(vie);
+        vieView2=new ImageView(vie2);
+        vieView3=new ImageView(vie3);
+        readyView=new ImageView(ready);
         
-        score=new Label(" 0 ");
-        vie=new Label(" ♥ ");
-        vie2=new Label(" ♥ ");
-        vie3=new Label(" ♥ ");
 
         for (int i = 0; i < SIZE_Y; i++) { // initialisation de la grille (sans image)
             for (int j = 0; j < SIZE_X; j++) {
@@ -471,6 +489,7 @@ public class SimpleVC extends Application {
     }
     
     private void initialisationJeu (){
+
         pacman = new PacMan (0);
         fantomeRouge = new Fantome("rouge",1000);
         fantomeBleu = new Fantome("bleu",10000);

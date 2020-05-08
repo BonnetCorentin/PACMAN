@@ -21,9 +21,40 @@ abstract public class ME extends Observable implements Runnable {
     protected Grille grille;
     protected int tempsAvantApparition;
     protected Boolean actif;
+	private static boolean x=false;
     static Boolean actionPossible = false;
 
-    public ME(int tempsAvantApparition) {
+    
+    public static boolean getX() {
+		return x;
+	}
+
+	public static void setX(boolean x) {
+		ME.x = x;
+	}
+
+
+	public Action getActionEnCour() {
+		return actionEnCour;
+	}
+
+	public int getTempsEntreActions() {
+		return tempsEntreActions;
+	}
+
+	public Grille getGrille() {
+		return grille;
+	}
+
+	public Boolean getActif() {
+		return actif;
+	}
+
+	public static Boolean getActionPossible() {
+		return actionPossible;
+	}
+
+	public ME(int tempsAvantApparition) {
         this.tempsAvantApparition=tempsAvantApparition;
         actif = false;
     }
@@ -76,11 +107,11 @@ abstract public class ME extends Observable implements Runnable {
                     }
                 }else {
                     synchronized (grille){
-                        String couleur=new String ();
                         if (grille.pacmanMort()) {
                             setActionImpossible();
                             grille.getGestionStat().setVie();
                             grille.remettrePacMandebut();
+                            x = true;
                         }
                     } 
                 }
@@ -98,7 +129,7 @@ abstract public class ME extends Observable implements Runnable {
                 }
             }
             else {
-                System.out.println("Veuillez appuier sur une touche pour commencer.");
+                System.out.println("Veuillez appuyer sur une touche pour commencer.");
             }
             
         }
