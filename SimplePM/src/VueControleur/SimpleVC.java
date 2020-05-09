@@ -237,6 +237,7 @@ public class SimpleVC extends Application {
                     pacman.setActionAFaire(Action.Bas);
                 }
                 else if (event.getCode () == KeyCode.P){
+                    grille.finJeu ();
                     initialisationJeu ();
                     readyView.setVisible(true);
                     vieView3.setVisible(true);
@@ -244,7 +245,6 @@ public class SimpleVC extends Application {
                     vieView.setVisible(true);
                     gameOverView.setVisible(false);
                     victoireView.setVisible(false);
-                    Modele.ME.setActionImpossible ();
                 }
                 else if (event.getCode () == KeyCode.ENTER){
                     Modele.ME.setActionPossible ();
@@ -253,7 +253,8 @@ public class SimpleVC extends Application {
                 }
 
                 else if (event.getCode () == KeyCode.F1){
-                	secret = 1;
+                    grille.finJeu ();
+                    secret = 1;
                     initialisationJeu ();
                 }
                 
@@ -265,7 +266,6 @@ public class SimpleVC extends Application {
         });
         
         grille.addObserver(o);
-        //grille.start();
         
         primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
@@ -497,10 +497,10 @@ public class SimpleVC extends Application {
     private void initialisationJeu (){
 
         pacman = new PacMan (0);
-        fantomeRouge = new Fantome("rouge",1000);
-        fantomeBleu = new Fantome("bleu",2000);
-        fantomeVert = new Fantome("vert",3000);
-        fantomeRose = new Fantome("rose",4000);
+        fantomeRouge = new Fantome("rouge",100000);
+        fantomeBleu = new Fantome("bleu",200000);
+        fantomeVert = new Fantome("vert",300000);
+        fantomeRose = new Fantome("rose",400000);
         
         if(secret == 0) {
             grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,0);

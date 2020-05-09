@@ -133,13 +133,9 @@ abstract public class ME extends Observable implements Runnable {
             }
             
         }
-        retirerEnvironnement();
+       
         setChanged();
         notifyObservers();
-    }
-
-    protected void retirerEnvironnement() {
-        grille.retirerDeLenvironnement(this);
     }
 
     protected Boolean keepGoing() {

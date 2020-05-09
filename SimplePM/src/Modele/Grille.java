@@ -9,9 +9,7 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 
 
@@ -25,17 +23,18 @@ public class Grille extends Observable implements Runnable {
     private HashMap<ME, Point> grilleDynamique;
     private HashMap<Point, MS> grilleStatique;
     private GestionStat score;
-    private Boolean actif;
+    private Boolean actif = true;
 
     public Grille(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo, int map) {
         actif = true;
         grilleDynamique = new HashMap<>();
         if (map == 0) {
-        initialisation(p, fR, fB, fV, fRo);
+            initialisation(p, fR, fB, fV, fRo);
         }
         else {
-        	initialisationSecret(p, fR, fB, fV, fRo);
+            initialisationSecret(p, fR, fB, fV, fRo);
         }
+        Modele.ME.setActionImpossible ();
     }
 
     public void start() {
@@ -50,18 +49,22 @@ public class Grille extends Observable implements Runnable {
     }
     @Override
     public void run() {
-        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        
+        while (keepGoing()) {
+            setChanged ();
+            notifyObservers ();
+            
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
 
-        Runnable processDataCmd = new Runnable() {
-            @Override
-            public void run() {
-                //if (score.getVie()==0)
-                    //finDeJeu ();
-                setChanged();
-                notifyObservers(); // notification de l'observer
             }
-        };
-        service.scheduleAtFixedRate(processDataCmd, 0, 100, TimeUnit.MILLISECONDS); //sleep
+            
+        }
+    }
+    
+    public Boolean keepGoing (){
+        return this.actif;
     }
     
     public void finDeJeu (){
@@ -370,10 +373,6 @@ public class Grille extends Observable implements Runnable {
         grilleDynamique.replace(fantome, new Point(11, 9));
     }
 
-    public void redemarrer(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
-        initialisation(p, fR, fB, fV, fRo);
-        ME.setActionImpossible ();
-    }
 
     public void passeSurNourriture() {
         Point point = new Point(grilleDynamique.get(getPacman()));
@@ -448,6 +447,12 @@ public class Grille extends Observable implements Runnable {
 
     public int getBean() {
         return score.getNbBean();
+    }
+    
+    public void finJeu (){
+        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des mod�les dynamiques de la grille
+            me.stopJeu();
+        });
     }
     
 }
