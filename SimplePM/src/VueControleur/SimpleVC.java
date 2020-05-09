@@ -508,10 +508,10 @@ public class SimpleVC extends Application {
     private void initialisationJeu (){
 
         pacman = new PacMan (0);
-        fantomeRouge = new Fantome("rouge",100000);
-        fantomeBleu = new Fantome("bleu",200000);
-        fantomeVert = new Fantome("vert",300000);
-        fantomeRose = new Fantome("rose",400000);
+        fantomeRouge = new Fantome("rouge",1000);
+        fantomeBleu = new Fantome("bleu",5000);
+        fantomeVert = new Fantome("vert",10000);
+        fantomeRose = new Fantome("rose",15000);
         
         if(secret == 0) {
             grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,0);
