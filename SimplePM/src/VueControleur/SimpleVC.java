@@ -251,9 +251,18 @@ public class SimpleVC extends Application {
                     readyView.setVisible(false);
                     Modele.ME.setX(false);
                 }
-
+                
                 else if (event.getCode () == KeyCode.F1){
+                	secret = 0;
+                    initialisationJeu ();
+                }
+                
+                else if (event.getCode () == KeyCode.F2){
                 	secret = 1;
+                    initialisationJeu ();
+                }
+                else if (event.getCode () == KeyCode.F3){
+                	secret = 2;
                     initialisationJeu ();
                 }
                 
@@ -265,7 +274,6 @@ public class SimpleVC extends Application {
         });
         
         grille.addObserver(o);
-        //grille.start();
         
         primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
@@ -505,8 +513,11 @@ public class SimpleVC extends Application {
         if(secret == 0) {
             grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,0);
         }
-        else {
+        else if (secret ==1) {
             grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,1);
+        }
+        else if (secret ==2) {
+            grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,2);
         }
 
         grille.getPacman().setGrille(grille);
@@ -515,7 +526,7 @@ public class SimpleVC extends Application {
         grille.getFantomeRouge().setGrille(grille);
         grille.getFantomeRose().setGrille(grille);
         
-        grille.start ();
+        grille.start();
    }
 
 }
