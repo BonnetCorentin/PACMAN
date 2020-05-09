@@ -1,0 +1,22 @@
+21 21 78
+b a v v v v v v v v v v v v v v v v v e b
+b m c c c c c c c c c c c c c c c c c m b
+b m c a v v v v v v v v v v v v v e c m b
+b m c m b b b b b b b b b b b b b m c m b
+b m c r v v e b b b b b b b a v v z c m b
+b m c c c c m b b b b b b b m c c c c m b
+b r v v e c r v v v v v p v i c a v v z b
+b b b b m c b b b b b b m b m c m b b b b
+v v v v z c a v p d d d i b m c r v v v v
+b b b b b b m b m b b b m b m b b b b b b
+v v v v e c o v u v v v u v i c a v v v v
+b b b b m c m b b b b b b b m c m b b b b
+b a v v z c m b b b b b b b m c r v v e b
+b m c c c c m b b b b b b b m c c c c m b
+b m c a v v z b b b b b b b r v v e c m b
+b m c m b b b b b b b b b b b b b m c m b
+b m c m b b b b b b b b b b b b b m c m b
+b m c m b b b b b b b b b b b b b m c m b
+b m c r v v v v v v v v v v v v v z c m b
+b m c c c c c c c c c c c c c c c c c m b
+b r v v v v v v v v v v v v v v v v v z b
