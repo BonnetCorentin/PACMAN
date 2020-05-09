@@ -8,7 +8,6 @@ package VueControleur;
 import Modele.Action;
 
 import java.awt.Point;
-import java.awt.event.ActionEvent;
 
 import Modele.Couloir;
 import Modele.Fantome;
@@ -54,7 +53,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -244,6 +243,7 @@ public class SimpleVC extends Application {
                     vieView.setVisible(true);
                     gameOverView.setVisible(false);
                     victoireView.setVisible(false);
+                    Modele.ME.setActionImpossible ();
                 }
                 else if (event.getCode () == KeyCode.ENTER){
                     Modele.ME.setActionPossible ();
@@ -259,7 +259,7 @@ public class SimpleVC extends Application {
         });
         
         grille.addObserver(o);
-        grille.start();
+        //grille.start();
         
         primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
@@ -503,6 +503,8 @@ public class SimpleVC extends Application {
         grille.getFantomeVert().setGrille(grille);
         grille.getFantomeRouge().setGrille(grille);
         grille.getFantomeRose().setGrille(grille);
+        
+        grille.start ();
    }
 
 }

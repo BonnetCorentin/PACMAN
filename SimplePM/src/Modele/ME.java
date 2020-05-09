@@ -21,7 +21,7 @@ abstract public class ME extends Observable implements Runnable {
     protected Grille grille;
     protected int tempsAvantApparition;
     protected Boolean actif;
-	private static boolean x=false;
+    private static boolean x=false;
     static Boolean actionPossible = false;
 
     
