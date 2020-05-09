@@ -66,6 +66,7 @@ public class SimpleVC extends Application {
 
     public final int SIZE_X = 21;
     public final int SIZE_Y = 21;
+    private static int secret = 0;
     
     Grille grille;
     ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de rÃƒÆ’Ã‚Â©cupÃƒÆ’Ã‚Â©rer les cases graphiques lors du rafraichissement UTILITE ???????????
@@ -132,8 +133,8 @@ public class SimpleVC extends Application {
         readyView.setVisible(true);
         root.getChildren().add(readyView);
 
-        victoireView.setTranslateX(-1);
-        victoireView.setTranslateY(-3);
+        victoireView.setTranslateX(-2);
+        victoireView.setTranslateY(0);
         victoireView.setVisible(false);
         root.getChildren().add(victoireView);
         
@@ -251,6 +252,11 @@ public class SimpleVC extends Application {
                     Modele.ME.setX(false);
                 }
 
+                else if (event.getCode () == KeyCode.F1){
+                	secret = 1;
+                    initialisationJeu ();
+                }
+                
                 quitter.setOnMouseClicked(e->{
                 	primaryStage.close();
                 	System.exit(0);
@@ -492,11 +498,16 @@ public class SimpleVC extends Application {
 
         pacman = new PacMan (0);
         fantomeRouge = new Fantome("rouge",1000);
-        fantomeBleu = new Fantome("bleu",10000);
-        fantomeVert = new Fantome("vert",20000);
-        fantomeRose = new Fantome("rose",25000);
+        fantomeBleu = new Fantome("bleu",2000);
+        fantomeVert = new Fantome("vert",3000);
+        fantomeRose = new Fantome("rose",4000);
         
-        grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
+        if(secret == 0) {
+            grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,0);
+        }
+        else {
+            grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,1);
+        }
 
         grille.getPacman().setGrille(grille);
         grille.getFantomeBleu().setGrille(grille);
