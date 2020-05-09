@@ -31,9 +31,13 @@ public class Grille extends Observable implements Runnable {
         if (map == 0) {
             initialisation(p, fR, fB, fV, fRo);
         }
-        else {
-            initialisationSecret(p, fR, fB, fV, fRo);
+        else if (map ==1){
+        	initialisationSecret(p, fR, fB, fV, fRo);
         }
+        else if (map ==2){
+        	initialisationSecret2(p, fR, fB, fV, fRo);
+        }
+        
         Modele.ME.setActionImpossible ();
     }
 
@@ -412,6 +416,32 @@ public class Grille extends Observable implements Runnable {
     
     private void initialisationSecret(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
         CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map2.txt");
+        score = new GestionStat(creationTerrain.getNbBean());
+        grilleStatique = creationTerrain.getHashMap();
+
+       if (!grilleDynamique.isEmpty()) {
+            grilleDynamique.remove(p);
+            grilleDynamique.remove(fR);
+            grilleDynamique.remove(fB);
+            grilleDynamique.remove(fV);
+            grilleDynamique.remove(fRo);
+            
+            p.setAction(Action.Droite);
+            
+            Fantome.setNonMangeable ();
+        }
+
+        grilleDynamique = new HashMap<>();
+        grilleDynamique.put(p, new Point(1, 9));
+        grilleDynamique.put(fR, new Point(10, 9));
+        grilleDynamique.put(fB, new Point(9, 9));
+        grilleDynamique.put(fV, new Point(11, 9));
+        grilleDynamique.put(fRo, new Point(10, 9));     
+        
+    }
+    
+    private void initialisationSecret2(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
+        CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map3.txt");
         score = new GestionStat(creationTerrain.getNbBean());
         grilleStatique = creationTerrain.getHashMap();
 
