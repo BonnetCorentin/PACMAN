@@ -64,6 +64,7 @@ abstract public class ME extends Observable implements Runnable {
     }
     
     public static void setActionPossible (){
+        threadSleep ();
         actionPossible=true;
     }
     
@@ -95,19 +96,18 @@ abstract public class ME extends Observable implements Runnable {
     }
    
     @Override
-    public void run() {
-        threadSleep ();
+    public void run() {       
         while (keepGoing()) {
             if (actionPossible){
                 action();
                 if (Fantome.estMangeable()){
                     synchronized(grille){
                        grille.mangerFantome();
-                       Fantome.decrementerTempsMangeable ();
                     }
                 }else {
                     synchronized (grille){
                         if (grille.pacmanMort()) {
+                            System.out.println("PacMan mort");
                             setActionImpossible();
                             grille.getGestionStat().setVie();
                             grille.remettrePacMandebut();
@@ -121,18 +121,15 @@ abstract public class ME extends Observable implements Runnable {
                 }
                 setChanged();
                 notifyObservers();
-
-                try {
-                    Thread.sleep(tempsEntreActions);
-                } catch (InterruptedException ex) {
-
-                }
             }
-            else {
-                System.out.println("Veuillez appuyer sur une touche pour commencer.");
+            try {
+                Thread.sleep(tempsEntreActions);
+            } catch (InterruptedException ex) {
+
             }
             
         }
+        System.out.println("fin thread");
        
         setChanged();
         notifyObservers();
