@@ -56,7 +56,7 @@ abstract public class ME extends Observable implements Runnable {
 
 	public ME(int tempsAvantApparition) {
         this.tempsAvantApparition=tempsAvantApparition;
-        actif = false;
+        actif = true;
     }
 
     public void start() {
@@ -64,7 +64,6 @@ abstract public class ME extends Observable implements Runnable {
     }
     
     public static void setActionPossible (){
-        threadSleep ();
         actionPossible=true;
     }
     
@@ -96,7 +95,8 @@ abstract public class ME extends Observable implements Runnable {
     }
    
     @Override
-    public void run() {       
+    public void run() {
+        threadSleep ();
         while (keepGoing()) {
             if (actionPossible){
                 action();
@@ -107,7 +107,6 @@ abstract public class ME extends Observable implements Runnable {
                 }else {
                     synchronized (grille){
                         if (grille.pacmanMort()) {
-                            System.out.println("PacMan mort");
                             setActionImpossible();
                             grille.getGestionStat().setVie();
                             grille.remettrePacMandebut();
@@ -122,6 +121,7 @@ abstract public class ME extends Observable implements Runnable {
                 setChanged();
                 notifyObservers();
             }
+     
             try {
                 Thread.sleep(tempsEntreActions);
             } catch (InterruptedException ex) {

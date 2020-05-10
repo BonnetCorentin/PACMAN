@@ -57,7 +57,7 @@ public class Grille extends Observable implements Runnable {
         while (keepGoing()) {
             setChanged ();
             notifyObservers ();
-                    
+                  
              if (Fantome.estMangeable())
                  Fantome.decrementerTempsMangeable();;
             try {
