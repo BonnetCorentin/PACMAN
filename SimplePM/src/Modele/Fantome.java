@@ -11,7 +11,7 @@ package Modele;
  */
 public class Fantome extends ME{
     static private Boolean mangeable = false;
-    static private int tempsMangeable=300;
+    static private int tempsMangeable=100;
     private String couleur;
            
     public Fantome (String couleur,int tempsAvantApparition){
@@ -49,7 +49,7 @@ public class Fantome extends ME{
     static public void decrementerTempsMangeable (){
         tempsMangeable--;
         if (tempsMangeable <0){
-            tempsMangeable = 50;
+            tempsMangeable = 100;
             mangeable = false;
         }
     }
