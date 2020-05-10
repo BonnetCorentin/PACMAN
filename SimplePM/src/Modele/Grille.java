@@ -57,7 +57,9 @@ public class Grille extends Observable implements Runnable {
         while (keepGoing()) {
             setChanged ();
             notifyObservers ();
-            
+                  
+             if (Fantome.estMangeable())
+                 Fantome.decrementerTempsMangeable();;
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
@@ -419,18 +421,6 @@ public class Grille extends Observable implements Runnable {
         score = new GestionStat(creationTerrain.getNbBean());
         grilleStatique = creationTerrain.getHashMap();
 
-       if (!grilleDynamique.isEmpty()) {
-            grilleDynamique.remove(p);
-            grilleDynamique.remove(fR);
-            grilleDynamique.remove(fB);
-            grilleDynamique.remove(fV);
-            grilleDynamique.remove(fRo);
-            
-            p.setAction(Action.Droite);
-            
-            Fantome.setNonMangeable ();
-        }
-
         grilleDynamique = new HashMap<>();
         grilleDynamique.put(p, new Point(1, 9));
         grilleDynamique.put(fR, new Point(10, 9));
@@ -444,18 +434,6 @@ public class Grille extends Observable implements Runnable {
         CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map3.txt");
         score = new GestionStat(creationTerrain.getNbBean());
         grilleStatique = creationTerrain.getHashMap();
-
-       if (!grilleDynamique.isEmpty()) {
-            grilleDynamique.remove(p);
-            grilleDynamique.remove(fR);
-            grilleDynamique.remove(fB);
-            grilleDynamique.remove(fV);
-            grilleDynamique.remove(fRo);
-            
-            p.setAction(Action.Droite);
-            
-            Fantome.setNonMangeable ();
-        }
 
         grilleDynamique = new HashMap<>();
         grilleDynamique.put(p, new Point(1, 9));

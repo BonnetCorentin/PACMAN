@@ -56,7 +56,7 @@ abstract public class ME extends Observable implements Runnable {
 
 	public ME(int tempsAvantApparition) {
         this.tempsAvantApparition=tempsAvantApparition;
-        actif = false;
+        actif = true;
     }
 
     public void start() {
@@ -103,7 +103,6 @@ abstract public class ME extends Observable implements Runnable {
                 if (Fantome.estMangeable()){
                     synchronized(grille){
                        grille.mangerFantome();
-                       Fantome.decrementerTempsMangeable ();
                     }
                 }else {
                     synchronized (grille){
@@ -121,18 +120,16 @@ abstract public class ME extends Observable implements Runnable {
                 }
                 setChanged();
                 notifyObservers();
-
-                try {
-                    Thread.sleep(tempsEntreActions);
-                } catch (InterruptedException ex) {
-
-                }
             }
-            else {
-                System.out.println("Veuillez appuyer sur une touche pour commencer.");
+     
+            try {
+                Thread.sleep(tempsEntreActions);
+            } catch (InterruptedException ex) {
+
             }
             
         }
+        System.out.println("fin thread");
        
         setChanged();
         notifyObservers();
