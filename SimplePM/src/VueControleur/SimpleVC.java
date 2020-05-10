@@ -66,6 +66,7 @@ public class SimpleVC extends Application {
     public final int SIZE_X = 21;
     public final int SIZE_Y = 21;
     private static int secret = 0;
+    private static boolean enCours = true;
     
     Grille grille;
     ImageView[][] tab = new ImageView[SIZE_Y][SIZE_X]; // tableau permettant de rÃƒÆ’Ã‚Â©cupÃƒÆ’Ã‚Â©rer les cases graphiques lors du rafraichissement UTILITE ???????????
@@ -237,6 +238,7 @@ public class SimpleVC extends Application {
                     pacman.setActionAFaire(Action.Bas);
                 }
                 else if (event.getCode () == KeyCode.P){
+                	enCours=false;
                     grille.finJeu ();
                     initialisationJeu ();
                     readyView.setVisible(true);
@@ -253,20 +255,29 @@ public class SimpleVC extends Application {
                 }
                 
                 else if (event.getCode () == KeyCode.F1){
-                    grille.finJeu ();
-                    secret = 0;
-                    initialisationJeu ();
+                	if(enCours==false) {
+	                	enCours=true;
+	                    grille.finJeu ();
+	                    secret = 0;
+	                    initialisationJeu ();
+                	}
                 }
                 
                 else if (event.getCode () == KeyCode.F2){
-                    grille.finJeu ();
-                    secret = 1;
-                    initialisationJeu ();
+                	if(enCours==false) {
+	                	enCours=true;
+	                	grille.finJeu ();
+	                	secret = 1;
+	                	initialisationJeu ();
+                	}
                 }
                 else if (event.getCode () == KeyCode.F3){
-                    grille.finJeu ();
-                    secret = 2;
-                    initialisationJeu ();
+                	if(enCours==false) {
+	                	enCours=true;
+	                	grille.finJeu ();
+	                	secret = 2;
+	                	initialisationJeu ();
+                	}
                 }
                 
                 quitter.setOnMouseClicked(e->{
