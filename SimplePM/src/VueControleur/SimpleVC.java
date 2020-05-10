@@ -245,11 +245,9 @@ public class SimpleVC extends Application {
                     vieView.setVisible(true);
                     gameOverView.setVisible(false);
                     victoireView.setVisible(false);
-                    System.out.println("fds");
                 }
                 else if (event.getCode () == KeyCode.ENTER){
                     Modele.ME.setActionPossible ();
-                    System.out.println("a");
                     readyView.setVisible(false);
                     Modele.ME.setX(false);
                 }

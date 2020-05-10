@@ -129,8 +129,6 @@ abstract public class ME extends Observable implements Runnable {
             }
             
         }
-        System.out.println("fin thread");
-       
         setChanged();
         notifyObservers();
     }

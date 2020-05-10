@@ -11,7 +11,7 @@ package Modele;
  */
 public class Fantome extends ME{
     static private Boolean mangeable = false;
-    static private int tempsMangeable=150;
+    static private int tempsMangeable=300;
     private String couleur;
            
     public Fantome (String couleur,int tempsAvantApparition){
