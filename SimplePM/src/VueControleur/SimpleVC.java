@@ -263,17 +263,18 @@ public class SimpleVC extends Application {
                 else if (event.getCode () == KeyCode.F1){
 	            secret = 0;
 	            initialisationJeu ();
-                	
+                    grille.reinitialisation(secret);
                 }
                 
                 else if (event.getCode () == KeyCode.F2){
 	            secret = 1;
 	            initialisationJeu ();
-                	
+                    grille.reinitialisation(secret);
                 }
                 else if (event.getCode () == KeyCode.F3){
 	            secret = 2;
 	            initialisationJeu ();
+                    grille.reinitialisation(secret);
                 	
                 }
                 
@@ -522,8 +523,6 @@ public class SimpleVC extends Application {
         vieView.setVisible(true);
         gameOverView.setVisible(false);
         victoireView.setVisible(false);       
-        
-        grille.reinitialisation(secret);
     
    }
 
