@@ -5,10 +5,8 @@
  */
 package Modele;
 
-import static java.lang.Thread.sleep;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -58,7 +56,20 @@ abstract public class ME extends Observable implements Runnable {
         this.tempsAvantApparition=tempsAvantApparition;
         actif = true;
     }
+        
+    public Boolean peutBouger (){
+        if (tempsAvantApparition<0)
+            return true;
+        else{
+            tempsAvantApparition --;
+            return false;
+        }
+    } 
 
+    
+    public void setTempAvantApparition (int i){
+        tempsAvantApparition=i;
+    }
     public void start() {
         new Thread(this).start();
     }
@@ -84,21 +95,11 @@ abstract public class ME extends Observable implements Runnable {
     public void setAction(Action action) {
         this.actionEnCour = action;
     }
-    
-    public void threadSleep (){
-        try {
-            sleep(getTempsAvantApparition());
-            setActif ();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Grille.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
    
     @Override
     public void run() {
-        threadSleep ();
         while (keepGoing()) {
-            if (actionPossible){
+            if (actionPossible && peutBouger ()){
                 action();
                 if (Fantome.estMangeable()){
                     synchronized(grille){
@@ -152,10 +153,6 @@ abstract public class ME extends Observable implements Runnable {
     public void setActif() {
         this.actif = true;
     }   
-    
-    public void stopJeu (){
-        this.actif = false;
-    }
     
     public int getTempsAvantApparition (){
         return this.tempsAvantApparition;

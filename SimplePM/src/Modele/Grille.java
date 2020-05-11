@@ -25,18 +25,12 @@ public class Grille extends Observable implements Runnable {
     private GestionStat score;
     private Boolean actif = true;
 
-    public Grille(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo, int map) {
+    public Grille(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
         actif = true;
         grilleDynamique = new HashMap<>();
-        if (map == 0) {
-            initialisation(p, fR, fB, fV, fRo);
-        }
-        else if (map ==1){
-        	initialisationSecret(p, fR, fB, fV, fRo);
-        }
-        else if (map ==2){
-        	initialisationSecret2(p, fR, fB, fV, fRo);
-        }
+       
+        initialisation(p,fR,fB,fV,fRo);
+        
         
         Modele.ME.setActionImpossible ();
     }
@@ -55,6 +49,7 @@ public class Grille extends Observable implements Runnable {
     public void run() {
         
         while (keepGoing()) {
+        
             setChanged ();
             notifyObservers ();
                   
@@ -71,12 +66,6 @@ public class Grille extends Observable implements Runnable {
     
     public Boolean keepGoing (){
         return this.actif;
-    }
-    
-    public void finDeJeu (){
-        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des mod�les dynamiques de la grille
-            me.stopJeu();
-        });
     }
 
     public Point getvalueGD(Point p) {
@@ -354,32 +343,59 @@ public class Grille extends Observable implements Runnable {
     public void mangerFantome() {
         Point point = grilleDynamique.get(getPacman());
         if (point.equals(grilleDynamique.get(getFantomeBleu()))) {
-            remettreDebut (getFantomeBleu ());
+            remettreDebutMort (getFantomeBleu ());
+            getFantomeBleu ().setTempAvantApparition (5);
             augmenterScore(50);
         }
 
         if (point.equals(grilleDynamique.get(getFantomeVert()))) {
-            remettreDebut (getFantomeVert ());
+            remettreDebutMort (getFantomeVert ());
+            getFantomeVert ().setTempAvantApparition (5);
             augmenterScore(50);
         }
 
         if (point.equals(grilleDynamique.get(getFantomeRouge()))) {
-            remettreDebut (getFantomeRouge ());
+            remettreDebutMort (getFantomeRouge ());
+            getFantomeRouge ().setTempAvantApparition (5);
             augmenterScore(50);
         }
 
         if (point.equals(grilleDynamique.get(getFantomeRose()))) {
-            remettreDebut (getFantomeRose ());
+            remettreDebutMort (getFantomeRose ());
+            getFantomeRose ().setTempAvantApparition (5);
             augmenterScore(50);
         }
 
     }
     
-    public void remettreDebut (Fantome fantome){
-        grilleDynamique.replace(fantome, new Point(11, 9));
+    public void remettreDebut (ME me){
+        if (me instanceof Fantome){
+            switch (((Fantome)me).getCouleur()){
+                case "vert":
+                    grilleDynamique.replace((Fantome)me, new Point(9, 9));
+                    break;
+                case "rouge":
+                    grilleDynamique.replace((Fantome)me, new Point(10, 7));
+                    break;
+                case "rose":
+                    grilleDynamique.replace((Fantome)me, new Point(11, 9));
+                    break;
+                case "bleu":
+                    grilleDynamique.replace((Fantome)me, new Point(10, 9));
+                    break;
+                default:
+                    break;
+            }
+        }
+            
+        else
+            remettrePacMandebut ();
     }
 
-
+    public void remettreDebutMort (Fantome fantome){
+        grilleDynamique.replace(fantome, new Point(10, 9));
+    }
+    
     public void passeSurNourriture() {
         Point point = new Point(grilleDynamique.get(getPacman()));
 
@@ -402,46 +418,45 @@ public class Grille extends Observable implements Runnable {
         }
     }
 
+    private void initialisation2(String map) {
+        CreationTerrain creationTerrain = new CreationTerrain(map);
+        score = new GestionStat(creationTerrain.getNbBean());
+        grilleStatique = creationTerrain.getHashMap();
+
+         for (ME me : grilleDynamique.keySet()) {
+           this.remettreDebut(me);
+        } 
+        
+    }
+    
     private void initialisation(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
         CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map1.txt");
         score = new GestionStat(creationTerrain.getNbBean());
         grilleStatique = creationTerrain.getHashMap();
-
         grilleDynamique = new HashMap<>();
-        grilleDynamique.put(p, new Point(1, 9));
-        grilleDynamique.put(fR, new Point(10, 9));
-        grilleDynamique.put(fB, new Point(9, 9));
-        grilleDynamique.put(fV, new Point(11, 9));
-        grilleDynamique.put(fRo, new Point(10, 9));   
-        
+
+        grilleDynamique.put(p,new Point(1, 9));
+        grilleDynamique.put(fR,new Point(10, 7));
+        grilleDynamique.put(fB,new Point(10, 9));
+        grilleDynamique.put(fV,new Point(9, 9));
+        grilleDynamique.put(fRo,new Point(11, 9));
     }
     
-    private void initialisationSecret(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
-        CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map2.txt");
-        score = new GestionStat(creationTerrain.getNbBean());
-        grilleStatique = creationTerrain.getHashMap();
-
-        grilleDynamique = new HashMap<>();
-        grilleDynamique.put(p, new Point(1, 9));
-        grilleDynamique.put(fR, new Point(10, 9));
-        grilleDynamique.put(fB, new Point(9, 9));
-        grilleDynamique.put(fV, new Point(11, 9));
-        grilleDynamique.put(fRo, new Point(10, 9));     
-        
-    }
     
-    private void initialisationSecret2(PacMan p, Fantome fR, Fantome fB, Fantome fV, Fantome fRo) {
-        CreationTerrain creationTerrain = new CreationTerrain("src/Map/Map3.txt");
-        score = new GestionStat(creationTerrain.getNbBean());
-        grilleStatique = creationTerrain.getHashMap();
-
-        grilleDynamique = new HashMap<>();
-        grilleDynamique.put(p, new Point(1, 9));
-        grilleDynamique.put(fR, new Point(10, 9));
-        grilleDynamique.put(fB, new Point(9, 9));
-        grilleDynamique.put(fV, new Point(11, 9));
-        grilleDynamique.put(fRo, new Point(10, 9));     
-        
+   
+    
+    public void reinitialisation (int map){
+        ME.setActionImpossible();
+        Fantome.setNonMangeable();
+        if (map == 0) {
+            initialisation2("src/Map/Map1.txt");
+        }
+        else if (map ==1){
+            initialisation2("src/Map/Map2.txt");
+        }
+        else if (map ==2){
+            initialisation2("src/Map/Map3.txt");
+        }
     }
 
     public int getVie() {
@@ -455,12 +470,5 @@ public class Grille extends Observable implements Runnable {
 
     public int getBean() {
         return score.getNbBean();
-    }
-    
-    public void finJeu (){
-        grilleDynamique.keySet().stream().forEach((me) -> { //parcourt l'ensemble des mod�les dynamiques de la grille
-            me.stopJeu();
-        });
-    }
-    
+    }    
 }

@@ -106,7 +106,18 @@ public class SimpleVC extends Application {
 
     @Override
     public void init() {
-        initialisationJeu ();
+        pacman = new PacMan (0);
+        fantomeRouge = new Fantome("rouge",10);
+        fantomeBleu = new Fantome("bleu",70);
+        fantomeVert = new Fantome("vert",100);
+        fantomeRose = new Fantome("rose",150);
+        
+        grille = new Grille (pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose);
+        pacman.setGrille(grille);
+        fantomeRouge.setGrille(grille);
+        fantomeBleu.setGrille(grille);
+        fantomeVert.setGrille(grille);
+        fantomeRose.setGrille(grille);
         
         initialisationImages();
 
@@ -238,15 +249,10 @@ public class SimpleVC extends Application {
                     pacman.setActionAFaire(Action.Bas);
                 }
                 else if (event.getCode () == KeyCode.P){
-                	enCours=false;
-                    grille.finJeu ();
+                
+                    
                     initialisationJeu ();
-                    readyView.setVisible(true);
-                    vieView3.setVisible(true);
-                    vieView2.setVisible(true);
-                    vieView.setVisible(true);
-                    gameOverView.setVisible(false);
-                    victoireView.setVisible(false);
+                    
                 }
                 else if (event.getCode () == KeyCode.ENTER){
                     Modele.ME.setActionPossible ();
@@ -255,29 +261,20 @@ public class SimpleVC extends Application {
                 }
                 
                 else if (event.getCode () == KeyCode.F1){
-                	if(enCours==false) {
-	                	enCours=true;
-	                    grille.finJeu ();
-	                    secret = 0;
-	                    initialisationJeu ();
-                	}
+	            secret = 0;
+	            initialisationJeu ();
+                	
                 }
                 
                 else if (event.getCode () == KeyCode.F2){
-                	if(enCours==false) {
-	                	enCours=true;
-	                	grille.finJeu ();
-	                	secret = 1;
-	                	initialisationJeu ();
-                	}
+	            secret = 1;
+	            initialisationJeu ();
+                	
                 }
                 else if (event.getCode () == KeyCode.F3){
-                	if(enCours==false) {
-	                	enCours=true;
-	                	grille.finJeu ();
-	                	secret = 2;
-	                	initialisationJeu ();
-                	}
+	            secret = 2;
+	            initialisationJeu ();
+                	
                 }
                 
                 quitter.setOnMouseClicked(e->{
@@ -288,6 +285,7 @@ public class SimpleVC extends Application {
         });
         
         grille.addObserver(o);
+        grille.start ();
         
         primaryStage.setTitle("PAC MAN!");
         primaryStage.setScene(scene);
@@ -517,30 +515,22 @@ public class SimpleVC extends Application {
     }
     
     private void initialisationJeu (){
-
-        pacman = new PacMan (0);
-        fantomeRouge = new Fantome("rouge",1000);
-        fantomeBleu = new Fantome("bleu",5000);
-        fantomeVert = new Fantome("vert",10000);
-        fantomeRose = new Fantome("rose",15000);
         
-        if(secret == 0) {
-            grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,0);
-        }
-        else if (secret ==1) {
-            grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,1);
-        }
-        else if (secret ==2) {
-            grille = new Grille(pacman,fantomeRouge,fantomeBleu,fantomeVert,fantomeRose,2);
-        }
-
-        grille.getPacman().setGrille(grille);
-        grille.getFantomeBleu().setGrille(grille);
-        grille.getFantomeVert().setGrille(grille);
-        grille.getFantomeRouge().setGrille(grille);
-        grille.getFantomeRose().setGrille(grille);
+        readyView.setVisible(true);
+        vieView3.setVisible(true);
+        vieView2.setVisible(true);
+        vieView.setVisible(true);
+        gameOverView.setVisible(false);
+        victoireView.setVisible(false);
         
-        grille.start();
+        fantomeRouge.setTempAvantApparition(10);
+        fantomeBleu.setTempAvantApparition(70);
+        fantomeVert.setTempAvantApparition(100);
+        fantomeRose.setTempAvantApparition(100);
+        
+        
+        grille.reinitialisation(secret);
+    
    }
 
 }

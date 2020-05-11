@@ -23,7 +23,7 @@ public class CreationTerrain {
    
    public CreationTerrain (String nomFichier) {
 	this.nomFichier = nomFichier;
-        initialisationMap ();
+        initialisationMap (); 
    }
    
    private char [][]tab;
