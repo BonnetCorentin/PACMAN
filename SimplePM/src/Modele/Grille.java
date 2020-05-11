@@ -457,6 +457,11 @@ public class Grille extends Observable implements Runnable {
         else if (map ==2){
             initialisation2("src/Map/Map3.txt");
         }
+        
+        getFantomeRouge().setTempAvantApparition(10);
+        getFantomeBleu().setTempAvantApparition(70);
+        getFantomeVert().setTempAvantApparition(100);
+        getFantomeRose().setTempAvantApparition(100);
     }
 
     public int getVie() {

@@ -521,13 +521,7 @@ public class SimpleVC extends Application {
         vieView2.setVisible(true);
         vieView.setVisible(true);
         gameOverView.setVisible(false);
-        victoireView.setVisible(false);
-        
-        fantomeRouge.setTempAvantApparition(10);
-        fantomeBleu.setTempAvantApparition(70);
-        fantomeVert.setTempAvantApparition(100);
-        fantomeRose.setTempAvantApparition(100);
-        
+        victoireView.setVisible(false);       
         
         grille.reinitialisation(secret);
     
